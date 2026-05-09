@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maestro-dark: #050505;
+  --color-maestro-carbon: #111111;
+  --color-maestro-graphite: #1B1B1B;
+  --color-maestro-bone: #F5F5F5;
+  --color-maestro-gold: #C8A96B;
+  --color-maestro-silver: #8C8C8C;
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: var(--color-maestro-dark);
+  --foreground: var(--color-maestro-bone);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-maestro-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-maestro-graphite);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-maestro-silver);
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(17, 17, 17, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.text-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+}

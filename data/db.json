@@ -1,0 +1,135 @@
+{
+  "settings": {
+    "heroTitle": "DISEÑADO\r\nPARA MUJERES",
+    "heroSubtitle": "que imponen estilo.",
+    "heroCaption": "Denim premium · Edición limitada",
+    "heroValueProp": "Confección colombiana con estándares globales",
+    "heroImage": "/uploads/hero-1778282820183-19231369.png"
+  },
+  "products": [
+    {
+      "id": "prod-1778291491912",
+      "name": "Marshcall",
+      "reference": "11001",
+      "price": 180000,
+      "description": "Blusón oversize en popelina suave con efecto satinado. Corte largo con pinzas en cintura para dar forma. Doble uso: úsalo como blusa o como mini vestido. Disponible en negro y blanco.",
+      "details": [],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Bluem Black"
+      ],
+      "status": "Activo",
+      "categoryId": "blusas-y-corset",
+      "images": [
+        "/uploads/product-1778291491910-835382242.jpg"
+      ]
+    },
+    {
+      "id": "prod-1778291574019",
+      "name": "Vega",
+      "reference": "11005",
+      "price": 140000,
+      "description": "Blusa crop sin mangas en denim con spandex azul cielo. Corte estructurado con drapeado elástico en el torso. Look casual-chic, ideal combinada con jean o falda.",
+      "details": [],
+      "sizes": [
+        "Única"
+      ],
+      "colors": [],
+      "status": "Activo",
+      "categoryId": "blusas-y-corset",
+      "images": [
+        "/uploads/product-1778291574015-801508081.jpg"
+      ]
+    },
+    {
+      "id": "prod-1778291830181",
+      "name": "INFINITI",
+      "reference": "11152",
+      "price": 180000,
+      "description": "Corset en denim algodón rígido azul claro. Pinzas en delantero y espalda para ajuste perfecto en cintura. Resorte en espalda que se adapta de talla S a L. Botones inoxidables decorativos.",
+      "details": [],
+      "sizes": [
+        "Única (S-L)"
+      ],
+      "colors": [
+        "Blue"
+      ],
+      "status": "Activo",
+      "categoryId": "blusas-y-corset",
+      "images": [
+        "/uploads/product-1778291830179-18806232.jpg"
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "chaquetas",
+      "name": "Chaquetas",
+      "image": "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1 md:col-span-2",
+      "rowSpan": "row-span-1 md:row-span-2",
+      "status": "Activa"
+    },
+    {
+      "id": "blusas-y-corset",
+      "name": "Blusas y Corset",
+      "image": "https://images.unsplash.com/photo-1621815155702-8ebfce7e012e?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "pantalones",
+      "name": "Pantalones",
+      "image": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "vestidos",
+      "name": "Vestidos",
+      "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "faldas",
+      "name": "Faldas",
+      "image": "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1 md:col-span-2",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "gabardinas",
+      "name": "Gabardinas",
+      "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "chalecos",
+      "name": "Chalecos",
+      "image": "https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    },
+    {
+      "id": "enterizo",
+      "name": "Enterizo",
+      "image": "https://images.unsplash.com/photo-1601614947936-a83a055d78be?q=80&w=800&auto=format&fit=crop",
+      "colSpan": "col-span-1",
+      "rowSpan": "row-span-1",
+      "status": "Activa"
+    }
+  ]
+}
