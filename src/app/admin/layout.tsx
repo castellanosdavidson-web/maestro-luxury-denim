@@ -1,13 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { LayoutDashboard, Package, Tag, Settings, LogOut } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router   = useRouter();
+  const pathname = usePathname();
+
   const navItems = [
-    { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { name: "Productos", href: "/admin/products", icon: Package },
-    { name: "Categorías", href: "/admin/categories", icon: Tag },
-    { name: "Configuración", href: "/admin/settings", icon: Settings },
+    { name: "Dashboard",     href: "/admin",            icon: LayoutDashboard },
+    { name: "Productos",     href: "/admin/products",   icon: Package },
+    { name: "Categorías",    href: "/admin/categories", icon: Tag },
+    { name: "Configuración", href: "/admin/settings",   icon: Settings },
   ];
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+    router.refresh();
+  };
+
+  // No mostrar el layout en la página de login
+  if (pathname === "/admin/login") return <>{children}</>;
 
   return (
     <div className="min-h-screen bg-maestro-carbon flex font-sans">
@@ -18,13 +39,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             MAESTRO <span className="text-xs tracking-widest text-maestro-gold block mt-1 font-sans">Admin Panel</span>
           </Link>
         </div>
-        
+
         <nav className="flex-1 py-6 px-4 space-y-2">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="flex items-center gap-3 px-4 py-3 text-sm tracking-widest uppercase text-maestro-bone/60 hover:text-maestro-bone hover:bg-maestro-bone/5 rounded-sm transition-colors"
+              className={`flex items-center gap-3 px-4 py-3 text-sm tracking-widest uppercase rounded-sm transition-colors ${
+                pathname === item.href
+                  ? "text-maestro-bone bg-maestro-bone/10 border-l-2 border-maestro-gold"
+                  : "text-maestro-bone/60 hover:text-maestro-bone hover:bg-maestro-bone/5"
+              }`}
             >
               <item.icon size={18} />
               {item.name}
@@ -33,7 +58,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
 
         <div className="p-4 border-t border-maestro-bone/10">
-          <button className="flex items-center gap-3 px-4 py-3 w-full text-sm tracking-widest uppercase text-maestro-bone/60 hover:text-maestro-gold transition-colors">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-4 py-3 w-full text-sm tracking-widest uppercase text-maestro-bone/60 hover:text-maestro-gold transition-colors"
+          >
             <LogOut size={18} />
             Cerrar Sesión
           </button>
