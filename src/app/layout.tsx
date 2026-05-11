@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/cart/CartSidebar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,7 +18,35 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "MAESTRO | Luxury Denim",
-  description: "Diseñado para mujeres que imponen estilo. Denim premium, edición limitada.",
+  description: "Diseñado para mujeres que imponen estilo. Denim premium y de lujo, edición limitada.",
+  keywords: ["denim", "luxury streetwear", "jeans premium", "maestro denim", "moda femenina", "ropa de lujo colombia", "streetwear mujer"],
+  openGraph: {
+    title: "MAESTRO | Luxury Denim",
+    description: "Diseñado para mujeres que imponen estilo. Denim premium, edición limitada.",
+    url: "https://maestro-denim.com", // Cambiar por el dominio final
+    siteName: "MAESTRO Denim",
+    images: [
+      {
+        url: "/uploads/hero-custom.jpg", // Asegúrate de tener una imagen por defecto o logo aquí
+        width: 1200,
+        height: 630,
+        alt: "MAESTRO Luxury Denim",
+      },
+    ],
+    locale: "es_CO",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -34,6 +63,9 @@ export default function RootLayout({
             <CartSidebar />
           </CartProvider>
         </SmoothScroll>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );
