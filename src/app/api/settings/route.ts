@@ -28,6 +28,12 @@ export async function POST(request: Request) {
       const heroValueProp = formData.get('heroValueProp') as string;
       if (heroValueProp !== null) db.settings.heroValueProp = heroValueProp;
 
+      const heroFontSize = formData.get('heroFontSize') as string;
+      if (heroFontSize) (db.settings as any).heroFontSize = heroFontSize;
+
+      const heroFontFamily = formData.get('heroFontFamily') as string;
+      if (heroFontFamily) (db.settings as any).heroFontFamily = heroFontFamily;
+
       const heroImageFile = formData.get('heroImage') as File;
       if (heroImageFile && heroImageFile.name) {
         const bytes = await heroImageFile.arrayBuffer();

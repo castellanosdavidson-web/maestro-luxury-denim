@@ -2,7 +2,26 @@
 
 import { motion } from "framer-motion";
 
+// Mapa de tamaños de texto disponibles para el título
+const fontSizeMap: Record<string, string> = {
+  small:  "text-3xl md:text-4xl lg:text-5xl",
+  medium: "text-4xl md:text-5xl lg:text-6xl",
+  large:  "text-5xl md:text-6xl lg:text-7xl",
+  xlarge: "text-5xl md:text-7xl lg:text-8xl",
+};
+
+// Mapa de tipografías disponibles
+const fontFamilyMap: Record<string, string> = {
+  editorial: "font-['Playfair_Display',serif]",
+  modern:    "font-['Inter',sans-serif]",
+  classic:   "font-['Georgia',serif]",
+  elegant:   "font-['Cormorant_Garamond',serif]",
+};
+
 export default function Hero({ settings }: { settings?: any }) {
+  const sizeClass  = fontSizeMap[settings?.heroFontSize  || "large"]  ?? fontSizeMap.large;
+  const familyClass = fontFamilyMap[settings?.heroFontFamily || "editorial"] ?? fontFamilyMap.editorial;
+
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center">
       {/* Background Image */}
@@ -18,19 +37,21 @@ export default function Hero({ settings }: { settings?: any }) {
         />
       </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-6 md:px-12 relative z-20">
+      {/* Content — pt-20 deja espacio bajo el menú fijo */}
+      <div className="container mx-auto px-6 md:px-12 relative z-20 pt-20">
         <div className="max-w-3xl">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl md:text-7xl lg:text-8xl text-editorial text-maestro-bone leading-[1.1] mb-6 whitespace-pre-line"
+            className={`${sizeClass} ${familyClass} text-maestro-bone leading-[1.1] mb-6 whitespace-pre-line`}
           >
             {settings?.heroTitle || "DISEÑADO\nPARA MUJERES"}
-            <span className="text-maestro-gold italic block mt-2">{settings?.heroSubtitle || "que imponen estilo."}</span>
+            <span className="text-maestro-gold italic block mt-2">
+              {settings?.heroSubtitle || "que imponen estilo."}
+            </span>
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -64,9 +85,9 @@ export default function Hero({ settings }: { settings?: any }) {
           </motion.div>
         </div>
       </div>
-      
+
       {/* Scroll indicator */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2, duration: 1 }}
@@ -74,7 +95,7 @@ export default function Hero({ settings }: { settings?: any }) {
       >
         <span className="text-maestro-bone/60 text-xs tracking-widest uppercase mb-4">Scroll</span>
         <div className="w-[1px] h-12 bg-maestro-bone/20 relative overflow-hidden">
-          <motion.div 
+          <motion.div
             animate={{ y: ["-100%", "100%"] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
             className="absolute inset-0 bg-maestro-gold"

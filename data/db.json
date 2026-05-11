@@ -64,13 +64,32 @@
       "images": [
         "/uploads/product-1778291830179-18806232.jpg"
       ]
+    },
+    {
+      "id": "prod-1778296819281",
+      "name": "prueba",
+      "reference": "prueba",
+      "price": 11111,
+      "description": "prueba",
+      "details": [],
+      "sizes": [
+        "prueba"
+      ],
+      "colors": [
+        "prueba"
+      ],
+      "status": "Activo",
+      "categoryId": "chaquetas",
+      "images": [
+        "/uploads/product-1778296819280-277284212.jpg"
+      ]
     }
   ],
   "categories": [
     {
       "id": "chaquetas",
       "name": "Chaquetas",
-      "image": "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=800&auto=format&fit=crop",
+      "image": "/uploads/cat-chaquetas-1778296858431-21803055.jpg",
       "colSpan": "col-span-1 md:col-span-2",
       "rowSpan": "row-span-1 md:row-span-2",
       "status": "Activa"
