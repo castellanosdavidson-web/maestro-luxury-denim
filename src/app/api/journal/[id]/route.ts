@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import path from 'path';
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const formData = await request.formData();
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     
     const updates: any = {
       title: formData.get('title') as string,
@@ -38,7 +40,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const { data, error } = await supabaseAdmin
       .from('journal')
       .update(updates)
-      .eq('id', params.id)
+      .eq('id', id)
       .select()
       .single();
 
@@ -49,8 +51,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const { error } = await supabaseAdmin.from('journal').delete().eq('id', params.id);
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const { error } = await supabaseAdmin.from('journal').delete().eq('id', resolvedParams.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }
