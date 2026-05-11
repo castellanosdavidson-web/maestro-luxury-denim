@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Instagram, Facebook, Twitter } from "lucide-react";
+import { ArrowRight, Instagram, Mail } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -76,8 +76,7 @@ export default function Footer() {
           
           <div className="flex gap-6">
             <a href="#" className="hover:text-maestro-gold transition-colors"><Instagram size={16} /></a>
-            <a href="#" className="hover:text-maestro-gold transition-colors"><Facebook size={16} /></a>
-            <a href="#" className="hover:text-maestro-gold transition-colors"><Twitter size={16} /></a>
+            <a href="#" className="hover:text-maestro-gold transition-colors"><Mail size={16} /></a>
           </div>
         </div>
 
