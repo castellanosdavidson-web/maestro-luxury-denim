@@ -36,7 +36,6 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "The Journal", href: "/journal" },
     { name: "Colecciones", href: "/collections" },
     { name: "Blusas y Corset", href: "/category/blusas-y-corset" },
     { name: "Chaquetas", href: "/category/chaquetas" },
@@ -46,6 +45,7 @@ export default function Navbar() {
     { name: "Vestidos", href: "/category/vestidos" },
     { name: "Pantalones", href: "/category/pantalones" },
     { name: "Enterizo", href: "/category/enterizo" },
+    { name: "The Journal", href: "/journal" },
   ];
 
   return (

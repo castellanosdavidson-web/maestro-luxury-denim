@@ -23,6 +23,8 @@ export async function GET() {
     heroFontFamily: data.hero_font_family,
     whatsappNumber: data.whatsapp_number,
     instagramUrl:   data.instagram_url,
+    facebookUrl:    data.facebook_url,
+    tiktokUrl:      data.tiktok_url,
     mailUrl:        data.mail_url,
     logoUrl:        data.logo_url,
     aboutText:      data.about_text,
@@ -99,6 +101,12 @@ export async function POST(request: Request) {
     // Redes Sociales
     const instagramUrl = formData.get('instagramUrl') as string;
     if (instagramUrl !== null) updates.instagram_url = instagramUrl;
+
+    const facebookUrl = formData.get('facebookUrl') as string;
+    if (facebookUrl !== null) updates.facebook_url = facebookUrl;
+
+    const tiktokUrl = formData.get('tiktokUrl') as string;
+    if (tiktokUrl !== null) updates.tiktok_url = tiktokUrl;
 
     const mailUrl = formData.get('mailUrl') as string;
     if (mailUrl !== null) updates.mail_url = mailUrl;

@@ -6,6 +6,7 @@ import { Plus, Edit2, Trash2, X, Upload } from "lucide-react";
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -47,16 +48,20 @@ export default function AdminProducts() {
     const formData = new FormData(e.currentTarget);
     
     try {
-      const res = await fetch('/api/products', {
-        method: 'POST',
+      const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
+      const method = editingProduct ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
         body: formData,
       });
       
       if (res.ok) {
         setIsModalOpen(false);
+        setEditingProduct(null);
         fetchProducts();
       } else {
-        alert("Error al crear producto");
+        alert("Error al guardar producto");
       }
     } catch (e) {
       console.error(e);
@@ -114,6 +119,9 @@ export default function AdminProducts() {
                   </span>
                 </td>
                 <td className="p-4 text-right">
+                  <button onClick={() => { setEditingProduct(p); setIsModalOpen(true); }} className="text-maestro-bone/40 hover:text-maestro-gold transition-colors mr-3">
+                    <Edit2 size={16} />
+                  </button>
                   <button onClick={() => handleDelete(p.id)} className="text-maestro-bone/40 hover:text-red-400 transition-colors">
                     <Trash2 size={16} />
                   </button>
@@ -133,40 +141,42 @@ export default function AdminProducts() {
         <div className="fixed inset-0 bg-maestro-dark/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-maestro-carbon border border-maestro-bone/10 w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8 relative">
             <button 
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => { setIsModalOpen(false); setEditingProduct(null); }}
               className="absolute top-6 right-6 text-maestro-bone/60 hover:text-maestro-bone"
             >
               <X size={24} />
             </button>
-            <h2 className="text-2xl text-editorial text-maestro-bone mb-8">Agregar Nuevo Producto</h2>
+            <h2 className="text-2xl text-editorial text-maestro-bone mb-8">
+              {editingProduct ? "Editar Producto" : "Agregar Nuevo Producto"}
+            </h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Nombre</label>
-                  <input required name="name" type="text" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  <input required name="name" type="text" defaultValue={editingProduct?.name} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Referencia</label>
-                  <input required name="reference" type="text" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  <input required name="reference" type="text" defaultValue={editingProduct?.reference} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
               </div>
               
               <div className="grid grid-cols-3 gap-6">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Precio (COP)</label>
-                  <input required name="price" type="number" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  <input required name="price" type="number" defaultValue={editingProduct?.price} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Estado</label>
-                  <select name="status" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none">
+                  <select name="status" defaultValue={editingProduct?.status || "Activo"} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none">
                     <option value="Activo">Activo</option>
                     <option value="Agotado">Agotado</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Categoría</label>
-                  <select required name="categoryId" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none">
+                  <select required name="categoryId" defaultValue={editingProduct?.category_id} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none">
                     <option value="">Selecciona...</option>
                     <option value="blusas-y-corset">Blusas y Corset</option>
                     <option value="chaquetas">Chaquetas</option>
@@ -182,25 +192,25 @@ export default function AdminProducts() {
 
               <div>
                 <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción</label>
-                <textarea required name="description" rows={3} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                <textarea required name="description" rows={3} defaultValue={editingProduct?.description} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
               </div>
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Tallas (Separadas por coma)</label>
-                  <input name="sizes" type="text" placeholder="XS, S, M, L" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  <input name="sizes" type="text" placeholder="XS, S, M, L" defaultValue={editingProduct?.sizes?.join(', ')} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Colores (Separados por coma)</label>
-                  <input name="colors" type="text" placeholder="Vintage Blue, Black" className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  <input name="colors" type="text" placeholder="Vintage Blue, Black" defaultValue={editingProduct?.colors?.join(', ')} className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Imagen Principal</label>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Imagen Principal {editingProduct && "(Opcional, dejar vacío para no cambiar)"}</label>
                 <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
                   <Upload size={24} className="text-maestro-bone/40 mb-2" />
-                  <input required name="image" type="file" accept="image/*" className="text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold" />
+                  <input name="image" type="file" accept="image/*" required={!editingProduct} className="text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold" />
                 </div>
               </div>
 

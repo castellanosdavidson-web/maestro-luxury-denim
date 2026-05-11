@@ -29,6 +29,8 @@ export default function AdminSettings() {
     heroFontSize:   "large",
     heroFontFamily: "editorial",
     instagramUrl:   "",
+    facebookUrl:    "",
+    tiktokUrl:      "",
     mailUrl:        "",
     logoUrl:        "",
     aboutText:      "",
@@ -245,6 +247,22 @@ export default function AdminSettings() {
                 <input
                   type="url" name="instagramUrl" value={settings.instagramUrl} onChange={handleChange}
                   placeholder="https://instagram.com/maestrodenim"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link Facebook</label>
+                <input
+                  type="url" name="facebookUrl" value={settings.facebookUrl} onChange={handleChange}
+                  placeholder="https://facebook.com/maestrodenim"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link TikTok</label>
+                <input
+                  type="url" name="tiktokUrl" value={settings.tiktokUrl} onChange={handleChange}
+                  placeholder="https://tiktok.com/@maestrodenim"
                   className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
                 />
               </div>
