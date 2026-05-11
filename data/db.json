@@ -64,25 +64,6 @@
       "images": [
         "/uploads/product-1778291830179-18806232.jpg"
       ]
-    },
-    {
-      "id": "prod-1778296819281",
-      "name": "prueba",
-      "reference": "prueba",
-      "price": 11111,
-      "description": "prueba",
-      "details": [],
-      "sizes": [
-        "prueba"
-      ],
-      "colors": [
-        "prueba"
-      ],
-      "status": "Activo",
-      "categoryId": "chaquetas",
-      "images": [
-        "/uploads/product-1778296819280-277284212.jpg"
-      ]
     }
   ],
   "categories": [
