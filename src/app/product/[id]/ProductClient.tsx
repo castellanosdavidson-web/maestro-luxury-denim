@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { ChevronRight, Ruler } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
+import Link from "next/link";
 
 export default function ProductClient({ product }: { product: any }) {
   const { addItem } = useCart();
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "U");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "Default");
-  const [activeImage, setActiveImage] = useState(0);
 
   const images = product.image 
     ? [product.image] 
@@ -30,114 +30,137 @@ export default function ProductClient({ product }: { product: any }) {
   };
 
   return (
-    <main className="min-h-screen bg-maestro-dark pt-28 pb-20">
+    <main className="min-h-screen bg-maestro-dark selection:bg-maestro-gold selection:text-maestro-dark">
       <Navbar />
       
-      <div className="container mx-auto px-6 md:px-12">
-        <div className="flex items-center text-xs text-maestro-bone/40 uppercase tracking-widest mb-8">
-          <span>Inicio</span>
-          <ChevronRight size={14} className="mx-2" />
-          <span>Colecciones</span>
-          <ChevronRight size={14} className="mx-2" />
-          <span className="text-maestro-bone">{product.name}</span>
+      {/* Editorial Layout */}
+      <div className="flex flex-col lg:flex-row w-full min-h-screen pt-20">
+        
+        {/* Left Side - Massive Imagery */}
+        <div className="w-full lg:w-[60%] flex flex-col p-4 md:p-8 lg:p-12 gap-8">
+          <div className="flex items-center text-[10px] text-maestro-bone/40 uppercase tracking-[0.2em] mb-4">
+            <Link href="/" className="hover:text-maestro-gold transition-colors">Inicio</Link>
+            <ChevronRight size={12} className="mx-2" />
+            <Link href="/collections" className="hover:text-maestro-gold transition-colors">Colección</Link>
+            <ChevronRight size={12} className="mx-2" />
+            <span className="text-maestro-bone">{product.name}</span>
+          </div>
+
+          {images.map((img: string, idx: number) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: idx * 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-[70vh] lg:h-[120vh] bg-maestro-carbon overflow-hidden"
+            >
+              <img 
+                src={img} 
+                alt={`${product.name} vista ${idx}`} 
+                className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 hover:scale-105"
+              />
+            </motion.div>
+          ))}
+          
+          {/* Si quieres agregar más imágenes estáticas de ambiente editorial en un futuro */}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Image Gallery */}
-          <div className="flex flex-col md:flex-row gap-4 h-[60vh] lg:h-[80vh]">
-            <div className="flex md:flex-col gap-4 overflow-x-auto md:overflow-y-auto no-scrollbar order-2 md:order-1 pb-2 md:pb-0">
-              {images.map((img: string, idx: number) => (
-                <button 
-                  key={idx} 
-                  onClick={() => setActiveImage(idx)}
-                  className={`w-20 h-28 flex-shrink-0 border transition-all duration-300 ${activeImage === idx ? 'border-maestro-gold scale-105' : 'border-transparent opacity-50 hover:opacity-100'}`}
-                >
-                  <img src={img} alt={`Vista ${idx}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
-            <div className="flex-1 bg-maestro-carbon relative order-1 md:order-2 overflow-hidden group">
-              <AnimatePresence mode="wait">
-                <motion.img 
-                  key={activeImage}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  src={images[activeImage]} 
-                  alt={product.name} 
-                  className="w-full h-full object-cover object-center cursor-zoom-in group-hover:scale-125 transition-transform duration-1000 origin-center"
-                />
-              </AnimatePresence>
-            </div>
-          </div>
-
-          {/* Product Info */}
-          <div className="flex flex-col justify-center">
-            <h1 className="text-4xl lg:text-5xl text-editorial text-maestro-bone mb-2">{product.name}</h1>
-            <p className="text-sm text-maestro-bone/50 tracking-widest uppercase mb-6">REF: {product.reference}</p>
-            <p className="text-2xl text-maestro-gold tracking-widest mb-10">${Number(product.price).toLocaleString("es-CO")}</p>
+        {/* Right Side - Sticky Product Info */}
+        <div className="w-full lg:w-[40%] bg-maestro-dark p-8 lg:p-16 lg:sticky lg:top-0 h-auto lg:h-screen lg:overflow-y-auto no-scrollbar flex flex-col justify-center">
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-md w-full mx-auto"
+          >
+            <h1 className="text-4xl lg:text-6xl text-editorial text-maestro-bone mb-2 leading-none uppercase">{product.name}</h1>
+            <p className="text-xs text-maestro-bone/40 tracking-[0.3em] uppercase mb-8">Ref. {product.reference}</p>
             
-            <p className="text-maestro-bone/80 font-light leading-relaxed mb-8">{product.description}</p>
+            <p className="text-2xl text-maestro-bone tracking-widest mb-10 border-b border-maestro-bone/10 pb-8">
+              ${Number(product.price).toLocaleString("es-CO")}
+            </p>
+            
+            <p className="text-sm text-maestro-bone/60 font-light leading-relaxed mb-12 tracking-wide text-justify">
+              {product.description || "Diseño exclusivo y confección de lujo para un estilo inigualable. Cada detalle ha sido cuidadosamente seleccionado para ofrecer una experiencia premium."}
+            </p>
 
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm uppercase tracking-widest text-maestro-bone">Color</span>
-                <span className="text-xs text-maestro-bone/50 uppercase tracking-wider">{selectedColor}</span>
-              </div>
-              <div className="flex gap-3 flex-wrap">
-                {product.colors?.map((color: string) => (
-                  <button 
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`px-6 py-3 border text-xs tracking-widest uppercase transition-colors ${selectedColor === color ? 'border-maestro-gold text-maestro-gold' : 'border-maestro-bone/20 text-maestro-bone/60 hover:border-maestro-bone/50'}`}
-                  >
-                    {color}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="mb-10">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-sm uppercase tracking-widest text-maestro-bone">Talla</span>
-                <button className="text-[10px] text-maestro-bone/50 uppercase hover:text-maestro-gold flex items-center gap-1 transition-colors tracking-widest">
-                  <Ruler size={12} /> Guía de Tallas
-                </button>
-              </div>
-              <div className="grid grid-cols-4 gap-3">
-                {product.sizes?.map((size: string) => (
-                  <button 
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`py-3 border text-sm tracking-widest transition-colors ${selectedSize === size ? 'border-maestro-bone bg-maestro-bone text-maestro-dark font-semibold' : 'border-maestro-bone/20 text-maestro-bone hover:border-maestro-bone/50'}`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button 
-              onClick={handleAddToCart}
-              className="w-full py-5 border border-maestro-gold text-maestro-gold uppercase tracking-[0.2em] text-sm hover:bg-maestro-gold hover:text-maestro-dark transition-colors duration-500 font-semibold mb-12"
-            >
-              Agregar a la Cotización
-            </button>
-
-            {product.details?.length > 0 && (
-              <div className="border-t border-maestro-bone/10 pt-8">
-                <h3 className="text-xs uppercase tracking-widest text-maestro-bone mb-6">Detalles y Cuidados</h3>
-                <ul className="space-y-3">
-                  {product.details.map((detail: string, idx: number) => (
-                    <li key={idx} className="text-sm text-maestro-bone/60 font-light flex items-center before:content-[''] before:w-1 before:h-1 before:bg-maestro-gold before:rounded-full before:mr-3">
-                      {detail}
-                    </li>
+            <div className="space-y-10">
+              {/* Color Selection */}
+              <div>
+                <div className="flex justify-between items-center mb-4 border-b border-maestro-bone/10 pb-2">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone">Color</span>
+                  <span className="text-[10px] text-maestro-bone/50 uppercase tracking-widest">{selectedColor}</span>
+                </div>
+                <div className="flex gap-3 flex-wrap">
+                  {product.colors?.map((color: string) => (
+                    <button 
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-8 py-3 text-[10px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                        selectedColor === color 
+                          ? 'border border-maestro-gold text-maestro-gold' 
+                          : 'border border-transparent text-maestro-bone/60 hover:text-maestro-bone hover:border-maestro-bone/30'
+                      }`}
+                    >
+                      {color}
+                    </button>
                   ))}
-                </ul>
+                </div>
               </div>
-            )}
-          </div>
+
+              {/* Size Selection */}
+              <div>
+                <div className="flex justify-between items-center mb-4 border-b border-maestro-bone/10 pb-2">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone">Talla</span>
+                  <button className="text-[10px] text-maestro-bone/50 uppercase hover:text-maestro-gold flex items-center gap-2 transition-colors tracking-widest">
+                    <Ruler size={10} /> Guía
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {product.sizes?.map((size: string) => (
+                    <button 
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`py-4 text-[10px] tracking-[0.2em] uppercase transition-all duration-300 ${
+                        selectedSize === size 
+                          ? 'bg-maestro-bone text-maestro-dark font-semibold' 
+                          : 'border border-maestro-bone/20 text-maestro-bone hover:border-maestro-bone/50 hover:bg-maestro-bone/5'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <button 
+                onClick={handleAddToCart}
+                className="w-full py-6 mt-8 border border-maestro-gold text-maestro-gold uppercase tracking-[0.3em] text-xs hover:bg-maestro-gold hover:text-maestro-dark transition-colors duration-500 font-semibold relative overflow-hidden group"
+              >
+                <span className="relative z-10">Agregar a Cotización</span>
+                <div className="absolute inset-0 bg-maestro-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] -z-0" />
+                <span className="absolute inset-0 flex items-center justify-center text-maestro-dark scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] z-20">
+                  Agregar a Cotización
+                </span>
+              </button>
+
+              {/* Editorial Details */}
+              {product.details?.length > 0 && (
+                <div className="pt-8">
+                  <h3 className="text-[10px] uppercase tracking-[0.2em] text-maestro-gold mb-6">Especificaciones</h3>
+                  <ul className="space-y-4">
+                    {product.details.map((detail: string, idx: number) => (
+                      <li key={idx} className="text-xs text-maestro-bone/60 font-light flex items-start leading-relaxed">
+                        <span className="text-maestro-gold mr-3 mt-1 text-[8px]">✦</span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </motion.div>
         </div>
       </div>
     </main>
