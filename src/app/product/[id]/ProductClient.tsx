@@ -12,14 +12,16 @@ export default function ProductClient({ product }: { product: any }) {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "Default");
   const [activeImage, setActiveImage] = useState(0);
 
-  const images = product.images?.length > 0 ? product.images : ["https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=2000&auto=format&fit=crop"];
+  const images = product.image 
+    ? [product.image] 
+    : ["https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=2000&auto=format&fit=crop"];
 
   const handleAddToCart = () => {
     addItem({
       id: product.id,
       name: product.name,
       reference: product.reference,
-      price: product.price,
+      price: Number(product.price),
       size: selectedSize,
       color: selectedColor,
       image: images[0],
@@ -74,7 +76,7 @@ export default function ProductClient({ product }: { product: any }) {
           <div className="flex flex-col justify-center">
             <h1 className="text-4xl lg:text-5xl text-editorial text-maestro-bone mb-2">{product.name}</h1>
             <p className="text-sm text-maestro-bone/50 tracking-widest uppercase mb-6">REF: {product.reference}</p>
-            <p className="text-2xl text-maestro-gold tracking-widest mb-10">${product.price.toLocaleString("es-CO")}</p>
+            <p className="text-2xl text-maestro-gold tracking-widest mb-10">${Number(product.price).toLocaleString("es-CO")}</p>
             
             <p className="text-maestro-bone/80 font-light leading-relaxed mb-8">{product.description}</p>
 
