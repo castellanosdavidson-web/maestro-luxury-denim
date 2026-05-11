@@ -12,20 +12,21 @@ const categoryMap: Record<string, string> = {
   "enterizo": "Enterizo",
 };
 
+import { supabaseAdmin } from "@/lib/supabase";
+
 async function getProductsByCategory(categoryId: string) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?category_id=eq.${categoryId}&select=*&order=created_at.desc`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-        },
-        cache: 'no-store',
-      }
-    );
-    return await res.json();
-  } catch {
+    const { data, error } = await supabaseAdmin
+      .from('products')
+      .select('*')
+      .eq('category_id', categoryId)
+      .eq('status', 'Activo')
+      .order('created_at', { ascending: false });
+
+    if (error || !data) return [];
+    return data;
+  } catch (e) {
+    console.error("Error fetching products by category:", e);
     return [];
   }
 }

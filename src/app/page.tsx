@@ -5,48 +5,42 @@ import Categories from "@/components/home/Categories";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+import { supabaseAdmin } from "@/lib/supabase";
+
 async function getSettings() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/settings?id=eq.1&select=*`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-        },
-        cache: 'no-store',
-      }
-    );
-    const data = await res.json();
-    const s = data[0] || {};
+    const { data, error } = await supabaseAdmin
+      .from('settings')
+      .select('*')
+      .eq('id', 1)
+      .single();
+
+    if (error || !data) return {};
+
     return {
-      heroTitle:      s.hero_title      || "DISEÑADO\nPARA MUJERES",
-      heroSubtitle:   s.hero_subtitle   || "que imponen estilo.",
-      heroCaption:    s.hero_caption    || "Denim premium · Edición limitada",
-      heroValueProp:  s.hero_value_prop || "Confección colombiana con estándares globales",
-      heroImage:      s.hero_image      || "",
-      heroFontSize:   s.hero_font_size  || "large",
-      heroFontFamily: s.hero_font_family || "editorial",
+      heroTitle:      data.hero_title      || "DISEÑADO\nPARA MUJERES",
+      heroSubtitle:   data.hero_subtitle   || "que imponen estilo.",
+      heroCaption:    data.hero_caption    || "Denim premium · Edición limitada",
+      heroValueProp:  data.hero_value_prop || "Confección colombiana con estándares globales",
+      heroImage:      data.hero_image      || "",
+      heroFontSize:   data.hero_font_size  || "large",
+      heroFontFamily: data.hero_font_family || "editorial",
     };
-  } catch {
+  } catch (e) {
+    console.error("Error fetching settings:", e);
     return {};
   }
 }
 
 async function getCategories() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/categories?select=*`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-        },
-        cache: 'no-store',
-      }
-    );
-    const data = await res.json();
-    return (data || []).map((c: any) => ({
+    const { data, error } = await supabaseAdmin
+      .from('categories')
+      .select('*');
+
+    if (error || !data) return [];
+
+    return data.map((c: any) => ({
       id:      c.id,
       name:    c.name,
       image:   c.image,
@@ -54,7 +48,8 @@ async function getCategories() {
       rowSpan: c.row_span,
       status:  c.status,
     }));
-  } catch {
+  } catch (e) {
+    console.error("Error fetching categories:", e);
     return [];
   }
 }

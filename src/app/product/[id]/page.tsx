@@ -1,21 +1,20 @@
 import { notFound } from "next/navigation";
 import ProductClient from "./ProductClient";
 
+import { supabaseAdmin } from "@/lib/supabase";
+
 async function getProduct(id: string) {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/products?id=eq.${id}&select=*`,
-      {
-        headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!}`,
-        },
-        cache: 'no-store',
-      }
-    );
-    const data = await res.json();
-    return data[0] || null;
-  } catch {
+    const { data, error } = await supabaseAdmin
+      .from('products')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) return null;
+    return data;
+  } catch (e) {
+    console.error("Error fetching product:", e);
     return null;
   }
 }
