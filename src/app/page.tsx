@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
+import FeaturedShowcase from "@/components/home/FeaturedShowcase";
 import Categories from "@/components/home/Categories";
 
 export const dynamic = 'force-dynamic';
@@ -23,6 +24,7 @@ async function getSettings() {
       heroCaption:    data.hero_caption    || "Denim premium · Edición limitada",
       heroValueProp:  data.hero_value_prop || "Confección colombiana con estándares globales",
       heroImage:      data.hero_image      || "",
+      heroVideo:      data.hero_video      || "",
       heroFontSize:   data.hero_font_size  || "large",
       heroFontFamily: data.hero_font_family || "editorial",
     };
@@ -54,13 +56,35 @@ async function getCategories() {
   }
 }
 
+async function getProducts() {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('products')
+      .select('*')
+      .eq('status', 'Activo')
+      .order('created_at', { ascending: false })
+      .limit(6);
+
+    if (error || !data) return [];
+    return data;
+  } catch (e) {
+    console.error("Error fetching products:", e);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const [settings, categories] = await Promise.all([getSettings(), getCategories()]);
+  const [settings, categories, products] = await Promise.all([
+    getSettings(), 
+    getCategories(),
+    getProducts()
+  ]);
 
   return (
     <main className="min-h-screen bg-maestro-dark">
       <Navbar />
       <Hero settings={settings} />
+      <FeaturedShowcase products={products} />
       <Categories categories={categories} />
     </main>
   );

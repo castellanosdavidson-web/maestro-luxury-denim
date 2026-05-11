@@ -18,6 +18,7 @@ export async function GET() {
     heroCaption:    data.hero_caption,
     heroValueProp:  data.hero_value_prop,
     heroImage:      data.hero_image,
+    heroVideo:      data.hero_video,
     heroFontSize:   data.hero_font_size,
     heroFontFamily: data.hero_font_family,
   });
@@ -64,6 +65,24 @@ export async function POST(request: Request) {
       if (!uploadError) {
         const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
         updates.hero_image = urlData.publicUrl;
+      }
+    }
+
+    // Manejo de video
+    const heroVideoFile = formData.get('heroVideo') as File;
+    if (heroVideoFile && heroVideoFile.size > 0) {
+      const bytes = await heroVideoFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const ext = path.extname(heroVideoFile.name);
+      const filename = `hero-vid-${Date.now()}${ext}`;
+
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('uploads')
+        .upload(filename, buffer, { contentType: heroVideoFile.type, upsert: true });
+
+      if (!uploadError) {
+        const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
+        updates.hero_video = urlData.publicUrl;
       }
     }
 

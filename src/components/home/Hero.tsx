@@ -24,17 +24,32 @@ export default function Hero({ settings }: { settings?: any }) {
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-maestro-dark/80 via-maestro-dark/40 to-maestro-dark/10 z-10" />
-        <motion.img
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          src={settings?.heroImage || '/uploads/hero-custom.jpg'}
-          alt="Maestro Luxury Denim Collection"
-          className="w-full h-full object-cover object-center"
-        />
+      {/* Background Media */}
+      <div className="absolute inset-0 z-0 bg-maestro-dark">
+        <div className="absolute inset-0 bg-gradient-to-r from-maestro-dark/90 via-maestro-dark/50 to-maestro-dark/20 z-10" />
+        
+        {settings?.heroVideo ? (
+          <motion.video
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            src={settings.heroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover object-center"
+          />
+        ) : (
+          <motion.img
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            src={settings?.heroImage || '/uploads/hero-custom.jpg'}
+            alt="Maestro Luxury Denim Collection"
+            className="w-full h-full object-cover object-center"
+          />
+        )}
       </div>
 
       {/* Content — pt-20 deja espacio bajo el menú fijo */}

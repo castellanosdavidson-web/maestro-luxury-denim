@@ -24,6 +24,7 @@ export default function AdminSettings() {
     heroCaption:    "",
     heroValueProp:  "",
     heroImage:      "",
+    heroVideo:      "",
     heroFontSize:   "large",
     heroFontFamily: "editorial",
   });
@@ -164,23 +165,41 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* ── Imagen ── */}
-        <div>
-          <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
-            Imagen de Portada
-          </h2>
-          <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
-            {settings.heroImage && (
-              <img src={settings.heroImage} alt="Hero actual" className="h-32 object-cover mb-4 rounded-sm border border-maestro-bone/10" />
-            )}
-            <Upload size={24} className="text-maestro-bone/40 mb-2" />
-            <input
-              name="heroImage" type="file" accept="image/*"
-              className="text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
-            />
-            <p className="text-[10px] text-maestro-bone/40 mt-3">Si no subes nada, se mantendrá la imagen actual.</p>
+        {/* ── Imagen y Video ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>
+            <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
+              Imagen de Portada
+            </h2>
+            <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
+              {settings.heroImage && (
+                <img src={settings.heroImage} alt="Hero actual" className="h-32 object-cover mb-4 rounded-sm border border-maestro-bone/10" />
+              )}
+              <Upload size={24} className="text-maestro-bone/40 mb-2" />
+              <input
+                name="heroImage" type="file" accept="image/*"
+                className="w-full text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
+              />
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
+              Video de Portada
+            </h2>
+            <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
+              {settings.heroVideo && (
+                <video src={settings.heroVideo} className="h-32 object-cover mb-4 rounded-sm border border-maestro-bone/10" muted autoPlay loop />
+              )}
+              <Upload size={24} className="text-maestro-bone/40 mb-2" />
+              <input
+                name="heroVideo" type="file" accept="video/mp4,video/webm"
+                className="w-full text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
+              />
+            </div>
           </div>
         </div>
+        <p className="text-[10px] text-maestro-bone/40 text-center">Si el video está configurado, reemplazará a la imagen en el diseño "Cinematic".</p>
 
         <button
           type="submit"
