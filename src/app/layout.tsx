@@ -68,7 +68,7 @@ export default function RootLayout({
             <CartSidebar />
           </CartProvider>
         </SmoothScroll>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-9JMFC48JT9"} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-WBGERQEVXC"} />
       </body>
     </html>
   );
