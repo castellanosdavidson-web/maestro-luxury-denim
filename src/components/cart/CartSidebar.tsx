@@ -40,7 +40,7 @@ export default function CartSidebar() {
             <div className="p-6 border-b border-maestro-bone/10 flex justify-between items-center">
               <h2 className="text-xl text-editorial text-maestro-bone uppercase tracking-widest flex items-center gap-3">
                 <ShoppingBag size={20} />
-                Cotización ({totalItems})
+                Mi Bolsa ({totalItems})
               </h2>
               <button onClick={() => setIsCartOpen(false)} className="text-maestro-bone/60 hover:text-maestro-gold transition-colors">
                 <X size={24} />
@@ -52,7 +52,7 @@ export default function CartSidebar() {
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 text-maestro-bone/50">
                   <ShoppingBag size={48} strokeWidth={1} />
-                  <p className="uppercase tracking-widest text-sm">Tu lista de cotización está vacía</p>
+                  <p className="uppercase tracking-widest text-sm">Tu bolsa de compras está vacía</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -97,7 +97,7 @@ export default function CartSidebar() {
             {items.length > 0 && (
               <div className="p-6 border-t border-maestro-bone/10 bg-maestro-dark/50">
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-sm uppercase tracking-widest text-maestro-bone/60">Total Estimado</span>
+                  <span className="text-sm uppercase tracking-widest text-maestro-bone/60">Subtotal</span>
                   <span className="text-xl text-maestro-gold tracking-widest">${totalPrice.toLocaleString("es-CO")}</span>
                 </div>
                 <a
@@ -107,7 +107,7 @@ export default function CartSidebar() {
                   onClick={() => setIsCartOpen(false)}
                   className="w-full py-4 bg-maestro-bone text-maestro-dark uppercase tracking-widest text-sm hover:bg-maestro-gold transition-colors duration-300 flex items-center justify-center font-semibold"
                 >
-                  Enviar Cotización
+                  Finalizar Compra
                 </a>
                 <p className="text-[10px] text-center text-maestro-bone/40 mt-4 uppercase tracking-widest">
                   Te contactaremos para confirmar disponibilidad y envío

@@ -138,10 +138,10 @@ export default function ProductClient({ product }: { product: any }) {
                 onClick={handleAddToCart}
                 className="w-full py-6 mt-8 border border-maestro-gold text-maestro-gold uppercase tracking-[0.3em] text-xs hover:bg-maestro-gold hover:text-maestro-dark transition-colors duration-500 font-semibold relative overflow-hidden group"
               >
-                <span className="relative z-10">Agregar a Cotización</span>
+                <span className="relative z-10">Añadir a la Bolsa</span>
                 <div className="absolute inset-0 bg-maestro-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] -z-0" />
                 <span className="absolute inset-0 flex items-center justify-center text-maestro-dark scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] z-20">
-                  Agregar a Cotización
+                  Añadir a la Bolsa
                 </span>
               </button>
 

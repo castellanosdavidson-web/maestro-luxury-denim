@@ -95,7 +95,7 @@ export default function Hero({ settings }: { settings?: any }) {
               Explorar colección
             </button>
             <button className="px-8 py-4 border-[0.5px] border-maestro-bone/40 text-maestro-bone uppercase tracking-widest text-sm hover:border-maestro-gold hover:text-maestro-gold transition-colors duration-300">
-              Cotizar ahora
+              Comprar ahora
             </button>
           </motion.div>
         </div>

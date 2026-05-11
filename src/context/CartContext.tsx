@@ -77,14 +77,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const generateWhatsAppLink = () => {
     const phone = "573000000000"; // Reemplazar con numero real
-    let message = "Hola MAESTRO, me gustaría cotizar los siguientes productos:%0A%0A";
+    let message = "Hola MAESTRO, me gustaría comprar los siguientes productos:%0A%0A";
     
     items.forEach((item, index) => {
       message += `${index + 1}. *${item.name}* (Ref: ${item.reference})%0A`;
       message += `   Talla: ${item.size} | Color: ${item.color} | Cant: ${item.quantity}%0A`;
     });
     
-    message += `%0ATotal estimado: $${totalPrice.toLocaleString("es-CO")}%0A%0A`;
+    message += `%0ATotal: $${totalPrice.toLocaleString("es-CO")}%0A%0A`;
     message += "Quedo atenta. ¡Gracias!";
     
     return `https://wa.me/${phone}?text=${message}`;
