@@ -3,6 +3,9 @@ import Link from "next/link";
 
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getProducts() {
   try {
     const { data, error } = await supabaseAdmin

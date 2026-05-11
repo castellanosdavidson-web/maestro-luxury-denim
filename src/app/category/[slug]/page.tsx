@@ -14,6 +14,9 @@ const categoryMap: Record<string, string> = {
 
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getProductsByCategory(categoryId: string) {
   try {
     const { data, error } = await supabaseAdmin

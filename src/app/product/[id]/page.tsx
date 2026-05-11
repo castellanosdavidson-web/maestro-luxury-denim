@@ -3,6 +3,9 @@ import ProductClient from "./ProductClient";
 
 import { supabaseAdmin } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getProduct(id: string) {
   try {
     const { data, error } = await supabaseAdmin
