@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/cart/CartSidebar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import Footer from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
@@ -60,6 +61,7 @@ export default function RootLayout({
         <SmoothScroll>
           <CartProvider>
             {children}
+            <Footer />
             <CartSidebar />
           </CartProvider>
         </SmoothScroll>

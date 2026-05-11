@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
@@ -58,15 +58,62 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex space-x-4 xl:space-x-6 items-center text-[10px] xl:text-xs tracking-wider uppercase">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            if (link.name === "Colecciones") {
+              return (
+                <div 
+                  key={link.name}
+                  className="relative group py-6"
+                >
+                  <Link
+                    href={link.href}
+                    className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap peer"
+                  >
+                    {link.name}
+                  </Link>
+                  {/* Megamenu Panel */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out transform group-hover:translate-y-0 translate-y-4 flex">
+                    <div className="w-1/3 bg-maestro-carbon/50 p-8 flex flex-col justify-between border-r border-maestro-bone/5">
+                      <div>
+                        <h3 className="text-editorial text-2xl text-maestro-bone mb-2">Colección</h3>
+                        <p className="text-maestro-bone/60 text-xs font-light tracking-wide leading-relaxed">
+                          Descubre todas las piezas de nuestra última campaña. Denim premium diseñado para empoderar.
+                        </p>
+                      </div>
+                      <Link href="/collections" className="text-[10px] uppercase tracking-widest text-maestro-gold hover:text-maestro-bone flex items-center gap-2 transition-colors">
+                        Ver Colección Completa <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                    <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
+                      {[
+                        { name: "Chaquetas", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", href: "/category/chaquetas" },
+                        { name: "Vestidos", img: "https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600", href: "/category/vestidos" },
+                        { name: "Enterizos", img: "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600", href: "/category/enterizo" }
+                      ].map((item) => (
+                        <Link href={item.href} key={item.name} className="group/item">
+                          <div className="aspect-[3/4] bg-maestro-carbon mb-3 overflow-hidden">
+                            <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-700" />
+                          </div>
+                          <p className="text-[10px] uppercase tracking-widest text-maestro-bone text-center group-hover/item:text-maestro-gold transition-colors">{item.name}</p>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            
+            // Resto de los enlaces
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap"
+              >
+                {link.name}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Actions */}
