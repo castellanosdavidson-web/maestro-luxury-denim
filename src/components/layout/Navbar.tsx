@@ -12,6 +12,8 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { totalItems, setIsCartOpen } = useCart();
   const [mounted, setMounted] = useState(false);
+  const [megamenuItems, setMegamenuItems] = useState<any[]>([]);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -19,6 +21,17 @@ export default function Navbar() {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
+
+    // Fetch dinámico del megamenu
+    fetch('/api/megamenu').then(res => res.json()).then(data => {
+      if (data.items) setMegamenuItems(data.items);
+    });
+
+    // Fetch para logo
+    fetch('/api/settings').then(res => res.json()).then(data => {
+      if (data.logoUrl) setLogoUrl(data.logoUrl);
+    });
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -53,7 +66,11 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-2xl md:text-3xl text-editorial tracking-widest text-maestro-bone hover:text-maestro-gold transition-colors">
-          MAESTRO
+          {logoUrl ? (
+            <img src={logoUrl} alt="MAESTRO" className="h-8 md:h-10 object-contain" />
+          ) : (
+            "MAESTRO"
+          )}
         </Link>
 
         {/* Desktop Nav */}
@@ -85,11 +102,11 @@ export default function Navbar() {
                       </Link>
                     </div>
                     <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
-                      {[
+                      {(megamenuItems.length > 0 ? megamenuItems : [
                         { name: "Chaquetas", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", href: "/category/chaquetas" },
                         { name: "Vestidos", img: "https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600", href: "/category/vestidos" },
                         { name: "Enterizos", img: "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600", href: "/category/enterizo" }
-                      ].map((item) => (
+                      ]).slice(0,3).map((item: any) => (
                         <Link href={item.href} key={item.name} className="group/item">
                           <div className="aspect-[3/4] bg-maestro-carbon mb-3 overflow-hidden">
                             <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-700" />

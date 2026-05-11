@@ -28,6 +28,12 @@ export default function AdminSettings() {
     whatsappNumber: "",
     heroFontSize:   "large",
     heroFontFamily: "editorial",
+    instagramUrl:   "",
+    mailUrl:        "",
+    logoUrl:        "",
+    aboutText:      "",
+    faqText:        "",
+    termsText:      "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -209,6 +215,83 @@ export default function AdminSettings() {
           </div>
         </div>
         <p className="text-[10px] text-maestro-bone/40 text-center">Si el video está configurado, reemplazará a la imagen en el diseño "Cinematic".</p>
+
+        {/* ── Redes Sociales y Logo ── */}
+        <div>
+          <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
+            Marca y Redes Sociales
+          </h2>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Logo Personalizado (Opcional)</label>
+              <div className="border border-dashed border-maestro-bone/20 p-4 flex items-center justify-between">
+                <div className="flex-1">
+                  <input
+                    name="logoFile" type="file" accept="image/png,image/svg+xml"
+                    className="w-full text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
+                  />
+                  <p className="text-[10px] mt-2 text-maestro-bone/40">Si se sube, reemplazará el texto "MAESTRO" en el Footer y Navbar.</p>
+                </div>
+                {settings.logoUrl && (
+                  <div className="ml-4 bg-maestro-carbon p-2 rounded">
+                    <img src={settings.logoUrl} alt="Logo" className="h-8 object-contain" />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link Instagram</label>
+                <input
+                  type="url" name="instagramUrl" value={settings.instagramUrl} onChange={handleChange}
+                  placeholder="https://instagram.com/maestrodenim"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Email de Contacto</label>
+                <input
+                  type="email" name="mailUrl" value={settings.mailUrl} onChange={handleChange}
+                  placeholder="contacto@maestro-denim.com"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Páginas Informativas ── */}
+        <div>
+          <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
+            Páginas Informativas (Footer)
+          </h2>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Nuestra Historia</label>
+              <textarea
+                name="aboutText" value={settings.aboutText} onChange={handleChange} rows={5}
+                placeholder="Escribe la historia de la marca aquí..."
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Preguntas Frecuentes (FAQ)</label>
+              <textarea
+                name="faqText" value={settings.faqText} onChange={handleChange} rows={5}
+                placeholder="P: ¿Cuánto tarda el envío? R: ..."
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Términos Legales y Envíos</label>
+              <textarea
+                name="termsText" value={settings.termsText} onChange={handleChange} rows={5}
+                placeholder="Políticas de devolución, envíos, privacidad..."
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+          </div>
+        </div>
 
         <button
           type="submit"

@@ -22,6 +22,12 @@ export async function GET() {
     heroFontSize:   data.hero_font_size,
     heroFontFamily: data.hero_font_family,
     whatsappNumber: data.whatsapp_number,
+    instagramUrl:   data.instagram_url,
+    mailUrl:        data.mail_url,
+    logoUrl:        data.logo_url,
+    aboutText:      data.about_text,
+    faqText:        data.faq_text,
+    termsText:      data.terms_text,
   });
 }
 
@@ -87,6 +93,40 @@ export async function POST(request: Request) {
       if (!uploadError) {
         const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
         updates.hero_video = urlData.publicUrl;
+      }
+    }
+
+    // Redes Sociales
+    const instagramUrl = formData.get('instagramUrl') as string;
+    if (instagramUrl !== null) updates.instagram_url = instagramUrl;
+
+    const mailUrl = formData.get('mailUrl') as string;
+    if (mailUrl !== null) updates.mail_url = mailUrl;
+
+    const aboutText = formData.get('aboutText') as string;
+    if (aboutText !== null) updates.about_text = aboutText;
+
+    const faqText = formData.get('faqText') as string;
+    if (faqText !== null) updates.faq_text = faqText;
+
+    const termsText = formData.get('termsText') as string;
+    if (termsText !== null) updates.terms_text = termsText;
+
+    // Logo
+    const logoFile = formData.get('logoFile') as File;
+    if (logoFile && logoFile.size > 0) {
+      const bytes = await logoFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const ext = path.extname(logoFile.name);
+      const filename = `logo-${Date.now()}${ext}`;
+
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('uploads')
+        .upload(filename, buffer, { contentType: logoFile.type, upsert: true });
+
+      if (!uploadError) {
+        const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
+        updates.logo_url = urlData.publicUrl;
       }
     }
 
