@@ -95,22 +95,22 @@ export default function AdminProducts() {
             {products.map(p => (
               <tr key={p.id} className="border-b border-maestro-bone/5 hover:bg-maestro-bone/5 transition-colors">
                 <td className="p-4">
-                  {p.images && p.images.length > 0 ? (
-                    <img src={p.images[0]} alt={p.name} className="w-10 h-14 object-cover" />
+                  {p.image ? (
+                    <img src={p.image} alt={p.name} className="w-10 h-14 object-cover" />
                   ) : (
                     <div className="w-10 h-14 bg-maestro-carbon border border-maestro-bone/10" />
                   )}
                 </td>
                 <td className="p-4 text-sm text-maestro-bone">{p.name}</td>
-                <td className="p-4 text-sm text-maestro-bone/60">{p.reference}</td>
-                <td className="p-4 text-sm text-maestro-gold">${p.price.toLocaleString("es-CO")}</td>
+                <td className="p-4 text-sm text-maestro-bone/60">{p.reference || '-'}</td>
+                <td className="p-4 text-sm text-maestro-gold">${Number(p.price).toLocaleString("es-CO")}</td>
                 <td className="p-4 text-sm">
                   <span className={`px-2 py-1 text-[10px] tracking-widest uppercase rounded-sm border ${
                     p.status === 'Activo' 
                       ? 'bg-green-500/10 text-green-400 border-green-500/20' 
                       : 'bg-red-500/10 text-red-400 border-red-500/20'
                   }`}>
-                    {p.status}
+                    {p.status || 'Activo'}
                   </span>
                 </td>
                 <td className="p-4 text-right">
