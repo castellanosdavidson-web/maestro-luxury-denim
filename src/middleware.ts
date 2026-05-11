@@ -1,40 +1,31 @@
-import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Solo proteger rutas /admin (excepto /admin/login)
-  if (!pathname.startsWith('/admin') || pathname === '/admin/login') {
+  // No proteger la página de login ni las APIs de auth
+  if (
+    pathname === '/admin/login' ||
+    pathname.startsWith('/api/auth')
+  ) {
     return NextResponse.next();
   }
 
-  const response = NextResponse.next();
+  // Proteger solo rutas /admin
+  if (!pathname.startsWith('/admin')) {
+    return NextResponse.next();
+  }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
-  );
+  // Verificar cookie de sesión
+  const adminCookie = request.cookies.get('maestro_admin');
 
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
+  if (!adminCookie?.value) {
     const loginUrl = new URL('/admin/login', request.url);
     loginUrl.searchParams.set('redirectTo', pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
