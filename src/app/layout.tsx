@@ -47,9 +47,8 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "8Xylf39k5i_hv_lUPGQD",
   },
 };
 
@@ -68,9 +67,7 @@ export default function RootLayout({
             <CartSidebar />
           </CartProvider>
         </SmoothScroll>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-9JMFC48JT9"} />
       </body>
     </html>
   );
