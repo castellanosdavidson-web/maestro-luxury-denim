@@ -21,6 +21,7 @@ export async function GET() {
     heroVideo:      data.hero_video,
     heroFontSize:   data.hero_font_size,
     heroFontFamily: data.hero_font_family,
+    whatsappNumber: data.whatsapp_number,
   });
 }
 
@@ -49,6 +50,9 @@ export async function POST(request: Request) {
 
     const heroFontFamily = formData.get('heroFontFamily') as string;
     if (heroFontFamily) updates.hero_font_family = heroFontFamily;
+
+    const whatsappNumber = formData.get('whatsappNumber') as string;
+    if (whatsappNumber) updates.whatsapp_number = whatsappNumber;
 
     // Manejo de imagen
     const heroImageFile = formData.get('heroImage') as File;

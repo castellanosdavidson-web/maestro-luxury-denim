@@ -1,0 +1,2 @@
+ALTER TABLE settings 
+ADD COLUMN IF NOT EXISTS whatsapp_number text DEFAULT '573000000000';

@@ -25,6 +25,7 @@ export default function AdminSettings() {
     heroValueProp:  "",
     heroImage:      "",
     heroVideo:      "",
+    whatsappNumber: "",
     heroFontSize:   "large",
     heroFontFamily: "editorial",
   });
@@ -104,6 +105,14 @@ export default function AdminSettings() {
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Propuesta de Valor</label>
               <input
                 type="text" name="heroValueProp" value={settings.heroValueProp} onChange={handleChange}
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 text-maestro-gold">Número de WhatsApp (Ventas)</label>
+              <input
+                type="text" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleChange}
+                placeholder="Ej: 573001234567"
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>

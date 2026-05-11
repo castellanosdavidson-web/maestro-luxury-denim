@@ -32,6 +32,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
+  const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
+
   useEffect(() => {
     setIsMounted(true);
     const saved = localStorage.getItem("maestro_cart");
@@ -40,6 +42,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(JSON.parse(saved));
       } catch (e) {}
     }
+
+    // Fetch dynamic settings (like whatsapp number)
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.whatsappNumber) {
+          setWhatsappNumber(data.whatsappNumber);
+        }
+      })
+      .catch(err => console.error("Error fetching settings:", err));
   }, []);
 
   useEffect(() => {
@@ -76,7 +88,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const generateWhatsAppLink = () => {
-    const phone = "573000000000"; // Reemplazar con numero real
+    const phone = whatsappNumber.replace(/\D/g, ''); // Limpiar el número de espacios o símbolos
     let message = "Hola MAESTRO, me gustaría comprar los siguientes productos:%0A%0A";
     
     items.forEach((item, index) => {
