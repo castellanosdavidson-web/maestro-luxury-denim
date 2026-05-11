@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
+    google: "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
   },
 };
 
@@ -68,7 +68,7 @@ export default function RootLayout({
             <CartSidebar />
           </CartProvider>
         </SmoothScroll>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-WBGERQEVXC"} />
+        <GoogleAnalytics gaId="G-WBGERQEVXC" />
         <GoogleTagManager gtmId="GTM-W46D2X6G" />
       </body>
     </html>
