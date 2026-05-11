@@ -2,6 +2,9 @@ import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import Categories from "@/components/home/Categories";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getSettings() {
   try {
     const res = await fetch(
