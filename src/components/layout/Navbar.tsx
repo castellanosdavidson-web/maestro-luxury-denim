@@ -23,6 +23,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
+    { name: "The Journal", href: "/journal" },
     { name: "Colecciones", href: "/collections" },
     { name: "Blusas y Corset", href: "/category/blusas-y-corset" },
     { name: "Chaquetas", href: "/category/chaquetas" },

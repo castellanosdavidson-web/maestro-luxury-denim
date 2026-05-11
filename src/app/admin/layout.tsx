@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Tag, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, Tag, Settings, LogOut, FileText } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router   = useRouter();
@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Dashboard",     href: "/admin",            icon: LayoutDashboard },
     { name: "Productos",     href: "/admin/products",   icon: Package },
     { name: "Categorías",    href: "/admin/categories", icon: Tag },
+    { name: "The Journal",   href: "/admin/journal",    icon: FileText },
     { name: "Configuración", href: "/admin/settings",   icon: Settings },
   ];
 
