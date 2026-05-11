@@ -4,7 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/cart/CartSidebar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Footer from "@/components/layout/Footer";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "8Xylf39k5i_hv_lUPGQD",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
   },
 };
 
@@ -69,6 +69,7 @@ export default function RootLayout({
           </CartProvider>
         </SmoothScroll>
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-WBGERQEVXC"} />
+        <GoogleTagManager gtmId="GTM-W46D2X6G" />
       </body>
     </html>
   );
