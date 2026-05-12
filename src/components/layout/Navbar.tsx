@@ -67,9 +67,15 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="text-2xl md:text-3xl text-editorial tracking-widest text-maestro-bone hover:text-maestro-gold transition-colors flex items-center">
           {logoUrl ? (
-            <img src={logoUrl} alt="MAESTRO" className="h-14 md:h-20 w-auto object-contain max-w-[260px] md:max-w-[340px]" />
+            <img
+              src={logoUrl}
+              alt="MAESTRO"
+              className="h-14 md:h-20 w-auto object-contain max-w-[260px] md:max-w-[340px] transition-opacity duration-300 opacity-100"
+            />
           ) : (
-            "MAESTRO"
+            <span className={`transition-opacity duration-300 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+              MAESTRO
+            </span>
           )}
         </Link>
 
