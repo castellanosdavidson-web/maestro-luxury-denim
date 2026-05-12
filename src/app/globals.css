@@ -9,13 +9,6 @@
   --color-maestro-silver: #8C8C8C;
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-inter);
-  
-  --animate-marquee: marquee 40s linear infinite;
-  
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
 }
 
 :root {

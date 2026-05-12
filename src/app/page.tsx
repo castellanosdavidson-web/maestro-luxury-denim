@@ -1,8 +1,8 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import FeaturedShowcase from "@/components/home/FeaturedShowcase";
-import StyleMasters from "@/components/home/StyleMasters";
 import Categories from "@/components/home/Categories";
+import MaestrosCarousel from "@/components/home/MaestrosCarousel";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -86,8 +86,8 @@ export default async function Home() {
       <Navbar />
       <Hero settings={settings} />
       <FeaturedShowcase products={products} />
-      <StyleMasters />
       <Categories categories={categories} />
+      <MaestrosCarousel />
     </main>
   );
 }
