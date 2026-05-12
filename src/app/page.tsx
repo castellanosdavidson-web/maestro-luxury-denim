@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import FeaturedShowcase from "@/components/home/FeaturedShowcase";
+import StyleMasters from "@/components/home/StyleMasters";
 import Categories from "@/components/home/Categories";
 
 export const dynamic = 'force-dynamic';
@@ -85,6 +86,7 @@ export default async function Home() {
       <Navbar />
       <Hero settings={settings} />
       <FeaturedShowcase products={products} />
+      <StyleMasters />
       <Categories categories={categories} />
     </main>
   );
