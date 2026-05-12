@@ -72,7 +72,7 @@ export default function Footer() {
         {/* Huge Logo Section */}
         <div className="border-t border-b border-maestro-bone/10 py-16 mb-12 flex flex-col items-center justify-center">
           {settings.logoUrl ? (
-            <img src={settings.logoUrl} alt="MAESTRO" className="h-24 md:h-40 object-contain opacity-50 hover:opacity-100 transition-opacity duration-1000 cursor-default" />
+            <img src={settings.logoUrl} alt="MAESTRO" className="h-32 md:h-56 w-auto max-w-[80vw] object-contain opacity-60 hover:opacity-100 transition-opacity duration-1000 cursor-default" />
           ) : (
             <h2 className="text-[15vw] leading-none text-editorial text-maestro-bone/10 hover:text-maestro-bone/30 transition-colors duration-1000 cursor-default uppercase">
               Maestro
