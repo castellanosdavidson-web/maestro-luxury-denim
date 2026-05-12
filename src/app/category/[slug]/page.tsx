@@ -36,8 +36,10 @@ async function getProductsByCategory(categoryId: string) {
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const categoryName = categoryMap[slug] || slug;
-  const products = await getProductsByCategory(slug);
+  // Normalizar: decodificar URI y convertir espacios a guiones
+  const normalizedSlug = decodeURIComponent(slug).toLowerCase().replace(/\s+/g, '-');
+  const categoryName = categoryMap[normalizedSlug] || normalizedSlug;
+  const products = await getProductsByCategory(normalizedSlug);
 
   return (
     <main className="min-h-screen bg-maestro-dark pt-28 pb-20">

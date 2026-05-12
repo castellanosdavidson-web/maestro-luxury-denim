@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
+// Normaliza cualquier ID o nombre de categoría a un slug con guiones
+const toSlug = (str: string) => str.toLowerCase().replace(/\s+/g, '-');
+
 interface Category {
   id: string;
   name: string;
@@ -69,7 +72,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
               return (
                 <Link
                   key={cat.id}
-                  href={`/category/${cat.id}`}
+                  href={`/category/${toSlug(cat.id)}`}
                   className={`group relative overflow-hidden block ${isLarge ? "md:row-span-1" : ""}`}
                   style={{ height: isLarge ? "520px" : "380px" }}
                   onMouseEnter={() => setHoveredId(cat.id)}
@@ -152,7 +155,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
                 return (
                   <Link
                     key={cat.id}
-                    href={`/category/${cat.id}`}
+                    href={`/category/${toSlug(cat.id)}`}
                     className="group relative flex-none overflow-hidden snap-start"
                     style={{ width: "280px", height: "360px" }}
                     onMouseEnter={() => setHoveredId(cat.id)}
