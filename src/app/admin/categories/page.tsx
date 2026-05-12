@@ -122,8 +122,9 @@ export default function AdminCategories() {
                     if (res.ok) { showToast('Imagen del menú actualizada ✓'); fetchCategories(); }
                   }}
                 />
-            </div>
-          </div>
+              </div>       {/* cierra Imagen Megamenu */}
+            </div>         {/* cierra grid */}
+          </div>           {/* cierra card */}
         ))}
       </div>
 
