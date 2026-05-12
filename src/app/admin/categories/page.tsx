@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Upload, Image as ImageIcon, LayoutGrid } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AdminCategories() {
   const [categories, setCategories]   = useState<any[]>([]);
@@ -81,54 +82,46 @@ export default function AdminCategories() {
               {/* Imagen Principal */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <ImageIcon size={13} className="text-maestro-gold" />
+                  <div className="w-2 h-2 rounded-full bg-maestro-gold" />
                   <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Imagen Principal del Home</p>
                 </div>
-                <div className="relative aspect-video overflow-hidden bg-maestro-carbon border border-maestro-bone/10 mb-3">
-                  {c.image ? (
-                    <img src={c.image} alt={c.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-maestro-bone/20 text-xs">Sin imagen</div>
-                  )}
-                </div>
-                <label className={`flex items-center justify-center gap-2 w-full py-2.5 border text-[10px] tracking-widest uppercase cursor-pointer transition-colors ${isLoading(c.id, 'main') ? 'border-maestro-gold/30 text-maestro-gold/50' : 'border-maestro-bone/20 text-maestro-bone/50 hover:border-maestro-gold hover:text-maestro-gold'}`}>
-                  {isLoading(c.id, 'main') ? (
-                    <><div className="w-3 h-3 border border-maestro-gold border-t-transparent rounded-full animate-spin" /> Subiendo...</>
-                  ) : (
-                    <><Upload size={12} /> Cambiar imagen principal</>
-                  )}
-                  <input type="file" accept="image/*" className="hidden"
-                    onChange={e => { if (e.target.files?.[0]) handleUpload(c.id, e.target.files[0], 'main'); }} />
-                </label>
+                <ImageUploader
+                  currentUrl={c.image || ""}
+                  aspect="16/9"
+                  hint="Aparece en la sección Colecciones del Home"
+                  fieldName={`main_image_${c.id}`}
+                  onChange={async (file) => {
+                    if (!file) return;
+                    const fd = new FormData();
+                    fd.append('id', c.id);
+                    fd.append('image', file);
+                    const res = await fetch('/api/categories', { method: 'POST', body: fd });
+                    if (res.ok) { showToast('Imagen principal actualizada ✓'); fetchCategories(); }
+                  }}
+                />
               </div>
 
               {/* Imagen Megamenu */}
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <LayoutGrid size={13} className="text-maestro-gold" />
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Imagen del Popup (Menú)</p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Imagen Popup del Menú</p>
                 </div>
-                <div className="relative aspect-video overflow-hidden bg-maestro-carbon border border-maestro-bone/10 mb-3">
-                  {c.megamenuImage ? (
-                    <img src={c.megamenuImage} alt={`${c.name} megamenu`} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center h-full text-maestro-bone/20 text-xs gap-1">
-                      <LayoutGrid size={20} className="opacity-30" />
-                      <span>Usa la imagen principal como fallback</span>
-                    </div>
-                  )}
-                </div>
-                <label className={`flex items-center justify-center gap-2 w-full py-2.5 border text-[10px] tracking-widest uppercase cursor-pointer transition-colors ${isLoading(c.id, 'megamenu') ? 'border-maestro-gold/30 text-maestro-gold/50' : 'border-maestro-bone/20 text-maestro-bone/50 hover:border-maestro-gold hover:text-maestro-gold'}`}>
-                  {isLoading(c.id, 'megamenu') ? (
-                    <><div className="w-3 h-3 border border-maestro-gold border-t-transparent rounded-full animate-spin" /> Subiendo...</>
-                  ) : (
-                    <><Upload size={12} /> Cambiar imagen del popup</>
-                  )}
-                  <input type="file" accept="image/*" className="hidden"
-                    onChange={e => { if (e.target.files?.[0]) handleUpload(c.id, e.target.files[0], 'megamenu'); }} />
-                </label>
-                <p className="text-[10px] text-maestro-bone/20 mt-2 text-center">Recomendado: formato vertical 3:4</p>
-              </div>
+                <ImageUploader
+                  currentUrl={c.megamenuImage || ""}
+                  aspect="3/4"
+                  hint="Aparece al pasar el cursor por 'Colecciones' · Formato vertical"
+                  fieldName={`menu_image_${c.id}`}
+                  onChange={async (file) => {
+                    if (!file) return;
+                    const fd = new FormData();
+                    fd.append('id', c.id);
+                    fd.append('image', file);
+                    fd.append('field', 'megamenu');
+                    const res = await fetch('/api/categories', { method: 'PUT', body: fd });
+                    if (res.ok) { showToast('Imagen del menú actualizada ✓'); fetchCategories(); }
+                  }}
+                />
             </div>
           </div>
         ))}

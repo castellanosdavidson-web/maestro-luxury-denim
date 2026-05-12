@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus, Edit2, Trash2, X, Upload } from "lucide-react";
+import { Plus, Edit2, Trash2, X } from "lucide-react";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([]);
@@ -206,12 +207,20 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Imagen Principal {editingProduct && "(Opcional, dejar vacío para no cambiar)"}</label>
-                <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
-                  <Upload size={24} className="text-maestro-bone/40 mb-2" />
-                  <input name="image" type="file" accept="image/*" required={!editingProduct} className="text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold" />
-                </div>
+              <div className="col-span-2">
+                <ImageUploader
+                  label={`Imagen del Producto${editingProduct ? " (opcional — dejar sin cambiar para conservar la actual)" : ""}`}
+                  currentUrl={editingProduct?.image || ""}
+                  initialX={editingProduct?.focal_x ?? 50}
+                  initialY={editingProduct?.focal_y ?? 50}
+                  initialZoom={editingProduct?.zoom ?? 100}
+                  aspect="3/4"
+                  hint="Formato vertical 3:4 recomendado · Min 800×1067px"
+                  fieldName="image"
+                  focalXName="focal_x"
+                  focalYName="focal_y"
+                  zoomName="zoom"
+                />
               </div>
 
               <button 
