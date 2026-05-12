@@ -6,10 +6,12 @@ import { Search, ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
+import SearchOverlay from "./SearchOverlay";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { totalItems, setIsCartOpen } = useCart();
   const [mounted, setMounted] = useState(false);
   const [megamenuItems, setMegamenuItems] = useState<any[]>([]);
@@ -141,7 +143,11 @@ export default function Navbar() {
 
         {/* Actions */}
         <div className="flex space-x-6 items-center">
-          <button className="text-maestro-bone hover:text-maestro-gold transition-colors">
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            aria-label="Buscar"
+            className="text-maestro-bone hover:text-maestro-gold transition-colors"
+          >
             <Search size={20} />
           </button>
           <button 
@@ -189,6 +195,9 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Search Overlay */}
+      <SearchOverlay open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </nav>
   );
 }
