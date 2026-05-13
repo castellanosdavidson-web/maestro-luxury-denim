@@ -37,20 +37,37 @@ async function getSettings() {
 
 async function getCategories() {
   try {
-    const { data, error } = await supabaseAdmin
+    const { data: cats, error } = await supabaseAdmin
       .from('categories')
       .select('*');
 
-    if (error || !data) return [];
+    if (error || !cats) return [];
 
-    return data.map((c: any) => ({
-      id:      c.id,
-      name:    c.name,
-      image:   c.image,
-      colSpan: c.col_span,
-      rowSpan: c.row_span,
-      status:  c.status,
-    }));
+    // Para cada categoría, traer la imagen del último producto activo
+    const enriched = await Promise.all(
+      cats.map(async (c: any) => {
+        const { data: latest } = await supabaseAdmin
+          .from('products')
+          .select('image')
+          .eq('category_id', c.id)
+          .eq('status', 'Activo')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        return {
+          id:                c.id,
+          name:              c.name,
+          image:             latest?.image || c.image,  // último producto → fallback imagen de categoría
+          categoryImage:     c.image,                   // imagen original de la categoría
+          focal_x:           c.focal_x,
+          focal_y:           c.focal_y,
+          status:            c.status,
+        };
+      })
+    );
+
+    return enriched.filter((c: any) => c.status !== 'Inactiva');
   } catch (e) {
     console.error("Error fetching categories:", e);
     return [];
