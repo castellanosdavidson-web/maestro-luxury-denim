@@ -26,6 +26,9 @@ export async function POST(request: Request) {
     const colorsRaw   = (formData.get('colors') as string) || '';
     const sizes       = sizesRaw  ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean)  : [];
     const colors      = colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : [];
+    const focalX      = parseFloat(formData.get('focal_x') as string) || 50;
+    const focalY      = parseFloat(formData.get('focal_y') as string) || 50;
+    const zoom        = parseFloat(formData.get('zoom') as string) || 100;
 
     let imageUrl = '';
     const imageFile = formData.get('image') as File;
@@ -59,6 +62,9 @@ export async function POST(request: Request) {
         sizes,
         colors,
         image: imageUrl,
+        focal_x: focalX,
+        focal_y: focalY,
+        zoom,
       }])
       .select()
       .single();

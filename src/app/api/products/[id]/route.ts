@@ -25,13 +25,16 @@ export async function PUT(
     const formData = await request.formData();
 
     const updates: Record<string, any> = {
-      name: formData.get('name'),
-      reference: formData.get('reference'),
-      price: formData.get('price'),
+      name:        formData.get('name'),
+      reference:   formData.get('reference'),
+      price:       formData.get('price'),
       description: formData.get('description'),
       category_id: formData.get('categoryId'),
-      status: formData.get('status'),
-      updated_at: new Date().toISOString(),
+      status:      formData.get('status'),
+      focal_x:     parseFloat(formData.get('focal_x') as string) || 50,
+      focal_y:     parseFloat(formData.get('focal_y') as string) || 50,
+      zoom:        parseFloat(formData.get('zoom') as string) || 100,
+      updated_at:  new Date().toISOString(),
     };
 
     if (formData.get('sizes')) {
