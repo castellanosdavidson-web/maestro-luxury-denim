@@ -6,39 +6,40 @@ import { useCart } from "@/context/CartContext";
 import { ChevronRight, Ruler } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
+import ProductGallery from "@/components/product/ProductGallery";
 
 export default function ProductClient({ product }: { product: any }) {
   const { addItem } = useCart();
-  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "U");
+  const [selectedSize, setSelectedSize]   = useState(product.sizes?.[0] || "U");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "Default");
 
-  const images = product.image 
-    ? [product.image] 
-    : ["https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=2000&auto=format&fit=crop"];
+  // Combinar imagen principal + galería adicional
+  const mainImage = product.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=2000";
+  const gallery   = Array.isArray(product.gallery) ? product.gallery : [];
+  const allImages = [mainImage, ...gallery].filter(Boolean);
 
   const handleAddToCart = () => {
     addItem({
-      id: product.id,
-      name: product.name,
+      id:        product.id,
+      name:      product.name,
       reference: product.reference,
-      price: Number(product.price),
-      size: selectedSize,
-      color: selectedColor,
-      image: images[0],
-      quantity: 1,
+      price:     Number(product.price),
+      size:      selectedSize,
+      color:     selectedColor,
+      image:     allImages[0],
+      quantity:  1,
     });
   };
 
   return (
     <main className="min-h-screen bg-maestro-dark selection:bg-maestro-gold selection:text-maestro-dark">
       <Navbar />
-      
-      {/* Editorial Layout */}
+
       <div className="flex flex-col lg:flex-row w-full min-h-screen pt-20">
-        
-        {/* Left Side - Massive Imagery */}
-        <div className="w-full lg:w-[60%] flex flex-col p-4 md:p-8 lg:p-12 gap-8">
-          <div className="flex items-center text-[10px] text-maestro-bone/40 uppercase tracking-[0.2em] mb-4">
+
+        {/* Left — Galería */}
+        <div className="w-full lg:w-[60%] p-4 md:p-8 lg:p-12">
+          <div className="flex items-center text-[10px] text-maestro-bone/40 uppercase tracking-[0.2em] mb-6">
             <Link href="/" className="hover:text-maestro-gold transition-colors">Inicio</Link>
             <ChevronRight size={12} className="mx-2" />
             <Link href="/collections" className="hover:text-maestro-gold transition-colors">Colección</Link>
@@ -46,23 +47,13 @@ export default function ProductClient({ product }: { product: any }) {
             <span className="text-maestro-bone">{product.name}</span>
           </div>
 
-          {images.map((img: string, idx: number) => (
-            <motion.div 
-              key={idx}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: idx * 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full h-[70vh] lg:h-[120vh] bg-maestro-carbon overflow-hidden"
-            >
-              <img 
-                src={img} 
-                alt={`${product.name} vista ${idx}`} 
-                className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000 hover:scale-105"
-              />
-            </motion.div>
-          ))}
-          
-          {/* Si quieres agregar más imágenes estáticas de ambiente editorial en un futuro */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ProductGallery images={allImages} productName={product.name} />
+          </motion.div>
         </div>
 
         {/* Right Side - Sticky Product Info */}

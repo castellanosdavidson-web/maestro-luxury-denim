@@ -269,8 +269,87 @@ export default function AdminProducts() {
                 />
               </div>
 
-              <button 
-                type="submit" 
+              {/* ── Galería adicional (solo en edición) ── */}
+              {editingProduct && (
+                <div className="col-span-2 border border-maestro-bone/10 p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] tracking-[0.25em] uppercase text-maestro-bone/50 mb-0.5">Galería adicional</p>
+                      <p className="text-[9px] text-maestro-bone/25">Agrega 2–3 fotos de ángulos distintos para que el cliente vea más detalle</p>
+                    </div>
+                    <span className="text-[9px] text-maestro-bone/30 tracking-widest">
+                      {Array.isArray(editingProduct?.gallery) ? editingProduct.gallery.length : 0} / 6 fotos
+                    </span>
+                  </div>
+
+                  {/* Miniaturas actuales */}
+                  {Array.isArray(editingProduct?.gallery) && editingProduct.gallery.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {editingProduct.gallery.map((url: string, i: number) => (
+                        <div key={i} className="relative group" style={{ width: 72, height: 90 }}>
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              if (!confirm("¿Eliminar esta foto de la galería?")) return;
+                              const res = await fetch(`/api/products/${editingProduct.id}/gallery`, {
+                                method: "DELETE",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ url }),
+                              });
+                              if (res.ok) {
+                                const updated = await res.json();
+                                setEditingProduct({ ...editingProduct, gallery: updated.gallery });
+                              }
+                            }}
+                            className="absolute top-1 right-1 w-5 h-5 bg-black/70 text-white/60 hover:text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Upload nuevas fotos */}
+                  <label className="flex items-center justify-center gap-2 w-full py-3 border border-dashed border-maestro-bone/20 hover:border-maestro-gold text-[10px] tracking-widest uppercase text-maestro-bone/40 hover:text-maestro-gold transition-all cursor-pointer">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    Subir fotos adicionales (máx. 3 a la vez)
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files || []).slice(0, 3);
+                        if (files.length === 0) return;
+                        const fd = new FormData();
+                        for (const f of files) {
+                          // Comprimir antes de subir
+                          if (f.size > 1.5 * 1024 * 1024) {
+                            const compressed = await compressImage(f);
+                            fd.append("gallery", compressed, f.name.replace(/\.[^.]+$/, ".jpg"));
+                          } else {
+                            fd.append("gallery", f, f.name);
+                          }
+                        }
+                        const res = await fetch(`/api/products/${editingProduct.id}/gallery`, { method: "POST", body: fd });
+                        if (res.ok) {
+                          const updated = await res.json();
+                          setEditingProduct({ ...editingProduct, gallery: updated.gallery });
+                          fetchProducts();
+                        } else {
+                          alert("Error subiendo fotos. Ejecuta el SQL de migración en Supabase.");
+                        }
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
+                </div>
+              )}
+
+              <button
+                type="submit"
                 disabled={isLoading}
                 className="w-full py-4 bg-maestro-gold text-maestro-dark uppercase tracking-widest text-sm font-semibold hover:bg-maestro-bone transition-colors disabled:opacity-50"
               >
@@ -283,4 +362,5 @@ export default function AdminProducts() {
     </div>
   );
 }
+
 
