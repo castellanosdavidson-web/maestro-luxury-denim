@@ -237,6 +237,7 @@ export default function AdminProducts() {
 
               {/* ── FORM: datos del producto ── */}
               <form onSubmit={handleSubmit} className="space-y-6" id="product-form">
+                {/* FILA 1: Nombre + Referencia */}
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Nombre</label>
@@ -250,6 +251,30 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
+                {/* FILA 2: Material (campo completo) */}
+                <div>
+                  <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Material</label>
+                  <input name="material" type="text"
+                    placeholder="Ej: 100% Denim Premium, Mezcla de algodón y elastano..."
+                    defaultValue={editingProduct?.material}
+                    className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                </div>
+
+                {/* FILA 3: Talla + Color */}
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Tallas (coma)</label>
+                    <input name="sizes" type="text" placeholder="XS, S, M, L" defaultValue={editingProduct?.sizes?.join(", ")}
+                      className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Colores (coma)</label>
+                    <input name="colors" type="text" placeholder="Vintage Blue, Black" defaultValue={editingProduct?.colors?.join(", ")}
+                      className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
+                  </div>
+                </div>
+
+                {/* FILA 4: Precio + Estado + Categoría */}
                 <div className="grid grid-cols-3 gap-6">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Precio (COP)</label>
@@ -281,23 +306,11 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
+                {/* FILA 5: Descripción */}
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción</label>
                   <textarea required name="description" rows={3} defaultValue={editingProduct?.description}
                     className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Tallas (coma)</label>
-                    <input name="sizes" type="text" placeholder="XS, S, M, L" defaultValue={editingProduct?.sizes?.join(", ")}
-                      className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Colores (coma)</label>
-                    <input name="colors" type="text" placeholder="Vintage Blue, Black" defaultValue={editingProduct?.colors?.join(", ")}
-                      className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
-                  </div>
                 </div>
 
                 <ImageUploader
@@ -319,6 +332,7 @@ export default function AdminProducts() {
                   {isLoading ? "Guardando..." : editingProduct ? "Guardar Cambios" : "Crear Producto"}
                 </button>
               </form>
+
 
               {/* ── GALERÍA: siempre visible si hay un ID ── */}
               {currentId && (

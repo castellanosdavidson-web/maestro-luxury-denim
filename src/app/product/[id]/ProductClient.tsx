@@ -71,9 +71,16 @@ export default function ProductClient({ product }: { product: any }) {
               ${Number(product.price).toLocaleString("es-CO")}
             </p>
             
-            <p className="text-sm text-maestro-bone/60 font-light leading-relaxed mb-12 tracking-wide text-justify">
-              {product.description || "Diseño exclusivo y confección de lujo para un estilo inigualable. Cada detalle ha sido cuidadosamente seleccionado para ofrecer una experiencia premium."}
+            <p className="text-sm text-maestro-bone/60 font-light leading-relaxed mb-8 tracking-wide text-justify">
+              {product.description || "Diseño exclusivo y confección de lujo para un estilo inigualable."}
             </p>
+
+            {product.material && (
+              <div className="mb-10 pb-8 border-b border-maestro-bone/10">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-maestro-gold mb-1">Material</p>
+                <p className="text-sm text-maestro-bone/70 font-light">{product.material}</p>
+              </div>
+            )}
 
             <div className="space-y-10">
               {/* Color Selection */}

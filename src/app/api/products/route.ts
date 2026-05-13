@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     const colorsRaw   = (formData.get('colors') as string) || '';
     const sizes       = sizesRaw  ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean)  : [];
     const colors      = colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : [];
+    const material    = (formData.get('material') as string) || '';
     const focalX      = parseFloat(formData.get('focal_x') as string) || 50;
     const focalY      = parseFloat(formData.get('focal_y') as string) || 50;
     const zoom        = parseFloat(formData.get('zoom') as string) || 100;
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const basePayload = { name, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl };
+    const basePayload = { name, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl, material };
 
     // Intentar insertar con campos de posición
     let { data, error } = await supabaseAdmin

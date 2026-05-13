@@ -31,6 +31,7 @@ export async function PUT(
       description: formData.get('description'),
       category_id: formData.get('categoryId'),
       status:      formData.get('status'),
+      material:    formData.get('material') || '',
     };
 
     if (formData.get('sizes')) {
