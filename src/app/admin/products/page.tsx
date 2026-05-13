@@ -4,6 +4,43 @@ import { useState, useEffect } from "react";
 import { Plus, Edit2, Trash2, X } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 
+/** Comprime una imagen usando Canvas hasta que sea <= maxMB */
+async function compressImage(file: File, maxMB = 2): Promise<Blob> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX_DIM = 1920;
+      let { width, height } = img;
+      if (width > MAX_DIM || height > MAX_DIM) {
+        if (width >= height) { height = Math.round((height / width) * MAX_DIM); width = MAX_DIM; }
+        else                 { width  = Math.round((width / height) * MAX_DIM); height = MAX_DIM; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width  = width;
+      canvas.height = height;
+      canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
+      URL.revokeObjectURL(url);
+
+      // Reduce calidad hasta caber en maxMB
+      let quality = 0.85;
+      const tryCompress = () => {
+        canvas.toBlob((blob) => {
+          if (!blob) { resolve(new Blob([file])); return; }
+          if (blob.size > maxMB * 1024 * 1024 && quality > 0.3) {
+            quality -= 0.1;
+            tryCompress();
+          } else {
+            resolve(blob);
+          }
+        }, 'image/jpeg', quality);
+      };
+      tryCompress();
+    };
+    img.src = url;
+  });
+}
+
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,28 +82,36 @@ export default function AdminProducts() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    
+
     try {
+      const rawForm  = new FormData(e.currentTarget);
+      const imageFile = rawForm.get('image') as File;
       const url    = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
       const method = editingProduct ? 'PUT' : 'POST';
 
-      const res = await fetch(url, { method, body: formData });
-      
+      let finalForm = rawForm;
+
+      // Si hay imagen y supera 1.5 MB, comprimirla antes de enviar
+      if (imageFile && imageFile.size > 1.5 * 1024 * 1024) {
+        const compressed = await compressImage(imageFile);
+        finalForm = new FormData();
+        for (const [key, val] of rawForm.entries()) {
+          if (key !== 'image') finalForm.append(key, val);
+        }
+        finalForm.append('image', compressed, imageFile.name.replace(/\.[^.]+$/, '.jpg'));
+      }
+
+      const res = await fetch(url, { method, body: finalForm });
+
       if (res.ok) {
         setIsModalOpen(false);
         setEditingProduct(null);
         fetchProducts();
       } else {
-        // Mostrar el error real de la API para poder diagnosticar
         const body = await res.json().catch(() => ({}));
-        const msg  = body?.error || `HTTP ${res.status}`;
-        alert(`Error al guardar producto:\n\n${msg}`);
-        console.error('API error:', body);
+        alert(`Error al guardar producto:\n\n${body?.error || `HTTP ${res.status}`}`);
       }
     } catch (e: any) {
-      console.error(e);
       alert(`Error de conexión:\n\n${e?.message || e}`);
     } finally {
       setIsLoading(false);
