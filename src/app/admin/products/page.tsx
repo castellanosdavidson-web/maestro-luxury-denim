@@ -49,24 +49,25 @@ export default function AdminProducts() {
     const formData = new FormData(e.currentTarget);
     
     try {
-      const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
+      const url    = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
       const method = editingProduct ? 'PUT' : 'POST';
 
-      const res = await fetch(url, {
-        method,
-        body: formData,
-      });
+      const res = await fetch(url, { method, body: formData });
       
       if (res.ok) {
         setIsModalOpen(false);
         setEditingProduct(null);
         fetchProducts();
       } else {
-        alert("Error al guardar producto");
+        // Mostrar el error real de la API para poder diagnosticar
+        const body = await res.json().catch(() => ({}));
+        const msg  = body?.error || `HTTP ${res.status}`;
+        alert(`Error al guardar producto:\n\n${msg}`);
+        console.error('API error:', body);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      alert("Error al subir el producto");
+      alert(`Error de conexión:\n\n${e?.message || e}`);
     } finally {
       setIsLoading(false);
     }
