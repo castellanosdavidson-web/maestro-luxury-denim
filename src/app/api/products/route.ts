@@ -50,24 +50,22 @@ export async function POST(request: Request) {
       }
     }
 
-    const { data, error } = await supabaseAdmin
+    const basePayload = { name, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl };
+
+    // Intentar insertar con campos de posición
+    let { data, error } = await supabaseAdmin
       .from('products')
-      .insert([{
-        name,
-        price,
-        description,
-        reference,
-        status,
-        category_id: categoryId,
-        sizes,
-        colors,
-        image: imageUrl,
-        focal_x: focalX,
-        focal_y: focalY,
-        zoom,
-      }])
+      .insert([{ ...basePayload, focal_x: focalX, focal_y: focalY, zoom }])
       .select()
       .single();
+
+    // Si falla por columna inexistente, reintenta sin esos campos
+    if (error && (error.code === '42703' || error.message?.includes('column'))) {
+      console.warn('Retrying POST without focal fields — run SQL migration in Supabase');
+      const retry = await supabaseAdmin.from('products').insert([basePayload]).select().single();
+      data  = retry.data;
+      error = retry.error;
+    }
 
     if (error) {
       console.error('DB insert error:', error);

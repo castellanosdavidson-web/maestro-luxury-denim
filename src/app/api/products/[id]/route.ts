@@ -24,24 +24,20 @@ export async function PUT(
     const { id } = await params;
     const formData = await request.formData();
 
-    const updates: Record<string, any> = {
+    const baseUpdates: Record<string, any> = {
       name:        formData.get('name'),
       reference:   formData.get('reference'),
       price:       formData.get('price'),
       description: formData.get('description'),
       category_id: formData.get('categoryId'),
       status:      formData.get('status'),
-      focal_x:     parseFloat(formData.get('focal_x') as string) || 50,
-      focal_y:     parseFloat(formData.get('focal_y') as string) || 50,
-      zoom:        parseFloat(formData.get('zoom') as string) || 100,
-      updated_at:  new Date().toISOString(),
     };
 
     if (formData.get('sizes')) {
-      updates.sizes = (formData.get('sizes') as string).split(',').map(s => s.trim());
+      baseUpdates.sizes = (formData.get('sizes') as string).split(',').map(s => s.trim());
     }
     if (formData.get('colors')) {
-      updates.colors = (formData.get('colors') as string).split(',').map(c => c.trim());
+      baseUpdates.colors = (formData.get('colors') as string).split(',').map(c => c.trim());
     }
 
     const imageFile = formData.get('image') as File;
@@ -57,19 +53,31 @@ export async function PUT(
 
       if (!uploadError) {
         const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
-        updates.image = urlData.publicUrl;
+        baseUpdates.image = urlData.publicUrl;
       }
     }
 
-    const { error } = await supabaseAdmin
-      .from('products')
-      .update(updates)
-      .eq('id', id);
+    // Intentar con campos de posición
+    const updatesWithFocal = {
+      ...baseUpdates,
+      focal_x: parseFloat(formData.get('focal_x') as string) || 50,
+      focal_y: parseFloat(formData.get('focal_y') as string) || 50,
+      zoom:    parseFloat(formData.get('zoom') as string) || 100,
+    };
+
+    let { error } = await supabaseAdmin.from('products').update(updatesWithFocal).eq('id', id);
+
+    // Si falla por columna inexistente, reintenta sin campos de posición
+    if (error && (error.code === '42703' || error.message?.includes('column'))) {
+      console.warn('Retrying without focal fields — run SQL migration in Supabase');
+      const retry = await supabaseAdmin.from('products').update(baseUpdates).eq('id', id);
+      error = retry.error;
+    }
 
     if (error) throw error;
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error(error);
+    console.error('PUT product error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
