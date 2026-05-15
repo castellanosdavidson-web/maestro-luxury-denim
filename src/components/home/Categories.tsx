@@ -117,18 +117,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
                       style={{ opacity: isHovered ? 1 : 0 }}
                     />
 
-                    {/* ── Número grande watermark ── */}
-                    <div
-                      className="absolute top-5 right-5 font-light leading-none select-none pointer-events-none transition-all duration-500"
-                      style={{
-                        fontSize: widthPct >= 60 ? "7rem" : "5rem",
-                        color: isHovered ? "rgba(201,169,110,0.25)" : "rgba(255,255,255,0.06)",
-                        lineHeight: 1,
-                        fontFamily: "var(--font-editorial, serif)",
-                      }}
-                    >
-                      {String(globalIdx + 1).padStart(2, "0")}
-                    </div>
+
 
                     {/* ── Línea diagonal decorativa ── */}
                     <div
