@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Upload } from "lucide-react";
+import { Upload, Eye, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const FONT_SIZES = [
   { value: "small",  label: "Pequeño" },
@@ -48,7 +50,8 @@ export default function AdminSettings() {
     popupLinkText:    "Ver ahora",
     popupDelay:       "1",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading,   setIsLoading]   = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetch('/api/settings').then(r => r.json()).then(data =>
@@ -67,9 +70,11 @@ export default function AdminSettings() {
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    // Asegurarse de que los selects quedan incluidos en el FormData
+    // Valores que no viajan bien en FormData
     formData.set("heroFontSize",   settings.heroFontSize);
     formData.set("heroFontFamily", settings.heroFontFamily);
+    // Fix: checkbox desmarcado llega como null → forzar el valor siempre
+    formData.set("popupEnabled", settings.popupEnabled ? "on" : "off");
 
     try {
       await fetch('/api/settings', { method: 'POST', body: formData });
@@ -444,28 +449,15 @@ export default function AdminSettings() {
               </div>
             </div>
 
-            {/* Preview */}
-            {(settings.popupTitle || settings.popupImageUrl) && (
-              <div className="border border-maestro-gold/20 p-4 bg-maestro-carbon rounded-sm">
-                <p className="text-[10px] uppercase tracking-widest text-maestro-bone/40 mb-3">Vista previa del Popup</p>
-                <div className="bg-[#0a0a0a] border border-maestro-gold/30 p-6 max-w-xs">
-                  {settings.popupImageUrl && !settings.popupVideoUrl && (
-                    <img src={settings.popupImageUrl} alt="" className="w-full h-32 object-cover mb-4" />
-                  )}
-                  {settings.popupTitle && (
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "#FFF" }}>{settings.popupTitle}</p>
-                  )}
-                  {settings.popupDescription && (
-                    <p className="text-xs text-maestro-bone/50 mt-2">{settings.popupDescription}</p>
-                  )}
-                  {settings.popupLinkText && (
-                    <div className="mt-4 inline-block px-6 py-2 bg-maestro-gold text-maestro-dark text-[9px] uppercase tracking-widest">
-                      {settings.popupLinkText}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            {/* Botón de preview real */}
+            <button
+              type="button"
+              onClick={() => setShowPreview(true)}
+              className="w-full flex items-center justify-center gap-3 py-4 border border-maestro-gold/40 text-maestro-gold text-xs uppercase tracking-widest hover:bg-maestro-gold/10 transition-colors"
+            >
+              <Eye size={14} />
+              Previsualizar Popup (sin guardar)
+            </button>
           </div>
         </div>
 
@@ -477,6 +469,149 @@ export default function AdminSettings() {
           {isLoading ? "Guardando..." : "Guardar Cambios"}
         </button>
       </form>
+
+      {/* ── Preview Modal cinematográfico (fuera del form) ── */}
+      <AnimatePresence>
+        {showPreview && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              onClick={() => setShowPreview(false)}
+              style={{
+                position: "fixed", inset: 0, zIndex: 9999,
+                backgroundColor: "rgba(0,0,0,0.85)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+              }}
+            />
+
+            {/* Wrapper de centrado (sin animación) */}
+            <div style={{
+              position: "fixed", inset: 0, zIndex: 10000,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "24px", pointerEvents: "none",
+            }}>
+              {/* Modal */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.88 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  pointerEvents: "all",
+                  width: "min(92vw, 540px)",
+                  maxHeight: "88vh",
+                  overflowY: "auto",
+                  backgroundColor: "#060606",
+                  border: "1px solid rgba(200,169,107,0.25)",
+                  boxShadow: "0 40px 100px rgba(0,0,0,0.9), 0 8px 32px rgba(0,0,0,0.6)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                {/* Esquinas */}
+                {["tl","tr","bl","br"].map(c => (
+                  <div key={c} style={{
+                    position: "absolute", width: "20px", height: "20px",
+                    borderColor: "rgba(200,169,107,0.5)", borderStyle: "solid", zIndex: 10,
+                    ...(c==="tl"?{top:12,left:12,borderWidth:"1px 0 0 1px"}:
+                        c==="tr"?{top:12,right:12,borderWidth:"1px 1px 0 0"}:
+                        c==="bl"?{bottom:12,left:12,borderWidth:"0 0 1px 1px"}:
+                                 {bottom:12,right:12,borderWidth:"0 1px 1px 0"}),
+                  }}/>
+                ))}
+
+                {/* Badge PREVIEW */}
+                <div style={{
+                  position: "absolute", top: 12, left: "50%", transform: "translateX(-50%)",
+                  backgroundColor: "rgba(200,169,107,0.15)", border: "1px solid rgba(200,169,107,0.4)",
+                  padding: "3px 14px", zIndex: 20,
+                }}>
+                  <span style={{ fontSize: "8px", letterSpacing: "0.3em", color: "#C8A96B", textTransform: "uppercase" }}>Vista previa</span>
+                </div>
+
+                {/* Cerrar */}
+                <button
+                  onClick={() => setShowPreview(false)}
+                  style={{
+                    position: "absolute", top: 12, right: 12, zIndex: 20,
+                    width: 32, height: 32, borderRadius: "50%",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    border: "1px solid rgba(200,169,107,0.3)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    cursor: "pointer", color: "#F5F5F5",
+                  }}
+                >
+                  <X size={14} />
+                </button>
+
+                {/* Media */}
+                {(settings.popupVideoUrl || settings.popupImageUrl) && (
+                  <div style={{ position: "relative", overflow: "hidden" }}>
+                    {settings.popupVideoUrl ? (
+                      <video src={settings.popupVideoUrl} autoPlay muted loop playsInline
+                        style={{ width: "100%", height: 300, objectFit: "cover", display: "block" }} />
+                    ) : (
+                      <motion.img src={settings.popupImageUrl} alt=""
+                        initial={{ scale: 1.08 }} animate={{ scale: 1 }}
+                        transition={{ duration: 6, ease: "linear" }}
+                        style={{ width: "100%", height: 300, objectFit: "cover", display: "block" }} />
+                    )}
+                    <div style={{ position: "absolute", inset: 0,
+                      background: "linear-gradient(to bottom, rgba(6,6,6,0.1), rgba(6,6,6,0.5) 70%, rgba(6,6,6,0.95))" }} />
+                  </div>
+                )}
+
+                {/* Texto */}
+                {(settings.popupTitle || settings.popupDescription) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                    style={{ padding: "28px 32px 32px" }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                      <div style={{ height: 1, width: 28, background: "linear-gradient(to right, #C8A96B, transparent)" }} />
+                      <span style={{ fontSize: 8, letterSpacing: "0.4em", textTransform: "uppercase", color: "#C8A96B" }}>MAESTRO LUXURY DENIM</span>
+                      <div style={{ height: 1, width: 28, background: "linear-gradient(to left, #C8A96B, transparent)" }} />
+                    </div>
+                    {settings.popupTitle && (
+                      <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: "clamp(1.5rem,4vw,2rem)",
+                        color: "#FFF", letterSpacing: "-0.02em", lineHeight: 1.1, marginBottom: 12, fontWeight: 400 }}>
+                        {settings.popupTitle}
+                      </h2>
+                    )}
+                    {settings.popupDescription && (
+                      <p style={{ fontSize: 12, color: "rgba(245,245,245,0.55)", lineHeight: 1.75,
+                        marginBottom: 24, fontWeight: 300 }}>
+                        {settings.popupDescription}
+                      </p>
+                    )}
+                    {settings.popupLinkText && (
+                      <div style={{ display: "inline-block", padding: "15px 40px",
+                        backgroundColor: "#C8A96B", color: "#050505",
+                        fontSize: 9, letterSpacing: "0.35em", textTransform: "uppercase", fontWeight: 700 }}>
+                        {settings.popupLinkText}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Línea gold */}
+                <motion.div
+                  initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                  transition={{ duration: 1.2, delay: 0.5 }}
+                  style={{ height: 1, backgroundColor: "#C8A96B", transformOrigin: "left", opacity: 0.4 }}
+                />
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

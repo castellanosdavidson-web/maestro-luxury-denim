@@ -138,8 +138,9 @@ export async function POST(request: Request) {
     if (termsText !== null) updates.terms_text = termsText;
 
     // ── Popup Promocional ──
-    const popupEnabled = formData.get('popupEnabled');
-    if (popupEnabled !== null) updates.popup_enabled = popupEnabled === 'true' || popupEnabled === 'on';
+    // Siempre guardar el estado del toggle (on/off/true/false → boolean)
+    const popupEnabledVal = formData.get('popupEnabled');
+    updates.popup_enabled = popupEnabledVal === 'on' || popupEnabledVal === 'true';
 
     const popupTitle = formData.get('popupTitle') as string;
     if (popupTitle !== null) updates.popup_title = popupTitle;
