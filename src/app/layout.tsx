@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import PromoPopup from "@/components/PromoPopup";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -96,6 +97,7 @@ export default function RootLayout({
         />
         <GoogleAnalytics gaId="G-WBGERQEVXC" />
         <GoogleTagManager gtmId="GTM-W46D2X6G" />
+        <Analytics />
       </body>
     </html>
   );
