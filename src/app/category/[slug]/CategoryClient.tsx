@@ -62,7 +62,7 @@ function HeroCarousel({
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setCurrent(c => (c + 1) % slides.length);
-    }, 4500);
+    }, 2500);
     return () => clearInterval(timer);
   }, [slides.length]);
 
