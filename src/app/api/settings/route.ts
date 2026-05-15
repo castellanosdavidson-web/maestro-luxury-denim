@@ -21,6 +21,8 @@ export async function GET() {
     heroVideo:      data.hero_video,
     heroFontSize:   data.hero_font_size,
     heroFontFamily: data.hero_font_family,
+    heroMarquee:    data.hero_marquee,
+    heroLinkText:   data.hero_link_text,
     whatsappNumber: data.whatsapp_number,
     instagramUrl:   data.instagram_url,
     facebookUrl:    data.facebook_url,
@@ -58,6 +60,12 @@ export async function POST(request: Request) {
 
     const heroFontFamily = formData.get('heroFontFamily') as string;
     if (heroFontFamily) updates.hero_font_family = heroFontFamily;
+
+    const heroMarquee = formData.get('heroMarquee') as string;
+    if (heroMarquee !== null) updates.hero_marquee = heroMarquee;
+
+    const heroLinkText = formData.get('heroLinkText') as string;
+    if (heroLinkText !== null) updates.hero_link_text = heroLinkText;
 
     const whatsappNumber = formData.get('whatsappNumber') as string;
     if (whatsappNumber) updates.whatsapp_number = whatsappNumber;
