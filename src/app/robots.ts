@@ -4,11 +4,17 @@ export default function robots(): MetadataRoute.Robots {
   const DOMAIN = 'https://maestrodeninmluxury.com';
 
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/admin/', '/api/'], // Evitar que indexen el panel de control o las APIs
-    },
+    rules: [
+      {
+        userAgent: ['facebookexternalhit', 'Facebot'],
+        allow: '/',
+      },
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/admin/', '/api/'],
+      },
+    ],
     sitemap: `${DOMAIN}/sitemap.xml`,
   };
 }
