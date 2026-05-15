@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Aurora from "@/components/Aurora";
 
 // Mapa de tamaños de texto disponibles para el título
 const fontSizeMap: Record<string, string> = {
@@ -34,7 +35,7 @@ export default function Hero({ settings }: { settings?: any }) {
   return (
     <section className="relative h-screen w-full overflow-hidden bg-maestro-dark flex flex-col justify-between">
       
-      {/* ── Background Media (Video/Image) ── */}
+      {/* ── Background Media (Aurora / Video / Image) ── */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-maestro-dark/90 via-maestro-dark/40 to-maestro-dark/60 z-10" />
         <div className="absolute inset-0 bg-gradient-to-r from-maestro-dark/80 via-transparent to-transparent z-10" />
@@ -51,15 +52,29 @@ export default function Hero({ settings }: { settings?: any }) {
             playsInline
             className="w-full h-full object-cover object-center"
           />
-        ) : (
+        ) : settings?.heroImage ? (
           <motion.img
             initial={{ scale: 1.05, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
-            src={settings?.heroImage || '/uploads/hero-custom.jpg'}
+            src={settings?.heroImage}
             alt="Maestro Luxury Denim Collection"
             className="w-full h-full object-cover object-center"
           />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="w-full h-full bg-maestro-dark"
+          >
+            <Aurora
+              colorStops={["#111111", "#c9a96e", "#111111"]}
+              blend={0.5}
+              amplitude={1.2}
+              speed={0.5}
+            />
+          </motion.div>
         )}
       </div>
 
