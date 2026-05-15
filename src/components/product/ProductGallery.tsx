@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, startTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
 interface Props {
-  images: string[];      // todas las imágenes: [main, ...gallery]
+  images: string[];
   productName: string;
 }
 
@@ -16,68 +16,81 @@ export default function ProductGallery({ images, productName }: Props) {
   const [direction, setDirection] = useState(1);
 
   const total = images.length;
+
   const go = useCallback((idx: number, dir: number) => {
-    setDirection(dir);
-    setActive(Math.max(0, Math.min(idx, total - 1)));
+    // startTransition: marca la actualización como no urgente → no bloquea el hilo
+    startTransition(() => {
+      setDirection(dir);
+      setActive(Math.max(0, Math.min(idx, total - 1)));
+    });
   }, [total]);
 
-  // Auto-slideshow: avanza sola cada 3.5s si hay más de 1 imagen
+  // Auto-slideshow
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  useEffect(() => {
+
+  const startTimer = useCallback(() => {
     if (total <= 1) return;
     timerRef.current = setInterval(() => {
-      setActive(prev => {
+      startTransition(() => {
         setDirection(1);
-        return (prev + 1) % total;
+        setActive(prev => (prev + 1) % total);
       });
     }, 3500);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [total]);
 
-  // Pausa el autoplay al hacer hover
-  const pauseAuto = () => { if (timerRef.current) clearInterval(timerRef.current); };
-  const resumeAuto = () => {
-    if (total <= 1) return;
-    timerRef.current = setInterval(() => {
-      setActive(prev => { setDirection(1); return (prev + 1) % total; });
-    }, 3500);
-  };
+  const stopTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
 
-  const lbGo = (idx: number, dir: number) => {
-    setDirection(dir);
-    setLbIdx(Math.max(0, Math.min(idx, total - 1)));
-  };
+  useEffect(() => {
+    startTimer();
+    return stopTimer;
+  }, [startTimer, stopTimer]);
 
-  // Keyboard nav for lightbox
+  const lbGo = useCallback((idx: number, dir: number) => {
+    startTransition(() => {
+      setDirection(dir);
+      setLbIdx(Math.max(0, Math.min(idx, total - 1)));
+    });
+  }, [total]);
+
+  // Keyboard nav — passive donde aplica
   useEffect(() => {
     if (!lightbox) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") lbGo(lightboxIdx + 1,  1);
       if (e.key === "ArrowLeft")  lbGo(lightboxIdx - 1, -1);
-      if (e.key === "Escape")     setLightbox(false);
+      if (e.key === "Escape")     startTransition(() => setLightbox(false));
     };
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("keydown", onKey, { passive: true });
     return () => window.removeEventListener("keydown", onKey);
-  }, [lightbox, lightboxIdx]);
+  }, [lightbox, lightboxIdx, lbGo]);
 
   if (total === 0) return null;
 
   const slideVariants = {
-    enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+    enter:  (dir: number) => ({ opacity: 0, x: dir > 0 ?  40 : -40 }),
     center: { opacity: 1, x: 0 },
-    exit:  (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+    exit:   (dir: number) => ({ opacity: 0, x: dir > 0 ? -40 :  40 }),
   };
 
   return (
     <>
-      {/* ── Main gallery layout ── */}
+      {/* ── Main gallery ── */}
       <div className="flex flex-col gap-3">
 
-        {/* Hero image with nav */}
-        <div className="relative w-full overflow-hidden bg-maestro-carbon group"
-          style={{ aspectRatio: total === 1 ? "3/4" : "4/5" }}
-          onMouseEnter={pauseAuto}
-          onMouseLeave={resumeAuto}
+        {/* Hero image */}
+        <div
+          className="relative w-full overflow-hidden bg-maestro-carbon group"
+          style={{
+            aspectRatio: total === 1 ? "3/4" : "4/5",
+            willChange: "transform",          // hint al compositor de GPU
+          }}
+          onMouseEnter={stopTimer}
+          onMouseLeave={startTimer}
         >
           <AnimatePresence custom={direction} mode="wait">
             <motion.img
@@ -89,33 +102,37 @@ export default function ProductGallery({ images, productName }: Props) {
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 w-full h-full object-cover"
+              style={{ willChange: "opacity, transform" }}
+              loading="eager"
             />
           </AnimatePresence>
 
-          {/* Zoom button */}
+          {/* Zoom */}
           <button
-            onClick={() => { setLbIdx(active); setLightbox(true); }}
+            onClick={() => { setLbIdx(active); startTransition(() => setLightbox(true)); }}
             className="absolute top-4 right-4 w-9 h-9 bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-black/60 transition-all opacity-0 group-hover:opacity-100"
+            aria-label="Ampliar imagen"
           >
             <ZoomIn size={14} />
           </button>
 
           {/* Counter */}
           {total > 1 && (
-            <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase text-white/50 bg-black/30 backdrop-blur-sm px-2 py-1">
+            <div className="absolute bottom-4 left-4 text-[10px] tracking-widest uppercase text-white/50 bg-black/30 backdrop-blur-sm px-2 py-1 pointer-events-none">
               {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </div>
           )}
 
-          {/* Side nav arrows */}
+          {/* Arrows */}
           {total > 1 && (
             <>
               <button
                 onClick={() => go(active - 1, -1)}
                 disabled={active === 0}
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white disabled:opacity-0 transition-all opacity-0 group-hover:opacity-100"
+                aria-label="Imagen anterior"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -123,6 +140,7 @@ export default function ProductGallery({ images, productName }: Props) {
                 onClick={() => go(active + 1, 1)}
                 disabled={active === total - 1}
                 className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white disabled:opacity-0 transition-all opacity-0 group-hover:opacity-100"
+                aria-label="Imagen siguiente"
               >
                 <ChevronRight size={16} />
               </button>
@@ -130,7 +148,7 @@ export default function ProductGallery({ images, productName }: Props) {
           )}
         </div>
 
-        {/* Thumbnail strip */}
+        {/* Thumbnails */}
         {total > 1 && (
           <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
             {images.map((img, i) => (
@@ -143,8 +161,9 @@ export default function ProductGallery({ images, productName }: Props) {
                     : "border border-transparent opacity-40 hover:opacity-70"
                 }`}
                 style={{ width: 64, height: 80 }}
+                aria-label={`Ver imagen ${i + 1}`}
               >
-                <img src={img} alt="" className="w-full h-full object-cover" />
+                <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
               </button>
             ))}
           </div>
@@ -158,20 +177,22 @@ export default function ProductGallery({ images, productName }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             className="fixed inset-0 z-[300] bg-black/95 backdrop-blur-md flex items-center justify-center"
-            onClick={() => setLightbox(false)}
+            onClick={() => startTransition(() => setLightbox(false))}
           >
             {/* Close */}
             <button
-              onClick={() => setLightbox(false)}
+              onClick={() => startTransition(() => setLightbox(false))}
               className="absolute top-6 right-6 w-10 h-10 border border-white/20 flex items-center justify-center text-white/60 hover:text-white transition-colors z-10"
+              aria-label="Cerrar"
             >
               <X size={18} />
             </button>
 
             {/* Counter */}
-            <div className="absolute top-6 left-6 text-[10px] tracking-widest uppercase text-white/40 z-10">
-              {String(lightboxIdx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            <div className="absolute top-6 left-6 text-[10px] tracking-widest uppercase text-white/40 z-10 pointer-events-none">
+              {String(lightboxIdx + 1).padStart(2, "00")} / {String(total).padStart(2, "0")}
             </div>
 
             {/* Image */}
@@ -185,8 +206,9 @@ export default function ProductGallery({ images, productName }: Props) {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="max-h-[85vh] max-w-[90vw] object-contain"
+                style={{ willChange: "opacity, transform" }}
                 onClick={e => e.stopPropagation()}
               />
             </AnimatePresence>
@@ -196,6 +218,7 @@ export default function ProductGallery({ images, productName }: Props) {
               <button
                 onClick={e => { e.stopPropagation(); lbGo(lightboxIdx - 1, -1); }}
                 className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all"
+                aria-label="Anterior"
               >
                 <ChevronLeft size={22} />
               </button>
@@ -204,12 +227,13 @@ export default function ProductGallery({ images, productName }: Props) {
               <button
                 onClick={e => { e.stopPropagation(); lbGo(lightboxIdx + 1, 1); }}
                 className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/50 transition-all"
+                aria-label="Siguiente"
               >
                 <ChevronRight size={22} />
               </button>
             )}
 
-            {/* Thumbnail dots in lightbox */}
+            {/* Dots */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
               {images.map((_, i) => (
                 <button
@@ -218,6 +242,7 @@ export default function ProductGallery({ images, productName }: Props) {
                   className={`rounded-full transition-all duration-300 ${
                     i === lightboxIdx ? "w-6 h-1.5 bg-maestro-gold" : "w-1.5 h-1.5 bg-white/30"
                   }`}
+                  aria-label={`Imagen ${i + 1}`}
                 />
               ))}
             </div>

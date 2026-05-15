@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, startTransition } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 function toLabel(slug: string) {
   return slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
@@ -12,7 +12,18 @@ function toLabel(slug: string) {
 // Tarjeta de producto animada al scroll
 function AnimatedCard({ p, i }: { p: any; i: number }) {
   const ref    = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current as HTMLElement | null;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { rootMargin: "-60px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
   return (
     <motion.div
       ref={ref}
@@ -43,31 +54,49 @@ function AnimatedCard({ p, i }: { p: any; i: number }) {
 
 // ── Carrusel Hero Cinematográfico ──
 function HeroCarousel({
-  slides,
-  categoryName,
-  totalProducts,
+  slides, categoryName, totalProducts,
 }: {
   slides: { image: string; name: string; id: string }[];
   categoryName: string;
   totalProducts: number;
 }) {
   const [current, setCurrent] = useState(0);
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const textY  = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const heroRef  = useRef<HTMLElement>(null);
+  const textRef  = useRef<HTMLDivElement>(null);
 
-  // Auto-advance cada 4.5s
+  // Parallax liviano: RAF + passive scroll (sin framer-motion useScroll)
+  useEffect(() => {
+    const hero = heroRef.current;
+    const text = textRef.current;
+    if (!hero || !text) return;
+    let rafId: number;
+    const onScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const rect = hero.getBoundingClientRect();
+        const progress = Math.max(0, -rect.top / rect.height);
+        text.style.transform = `translateY(${progress * 55}%)`;
+        text.style.opacity   = String(Math.max(0, 1 - progress * 1.3));
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Auto-advance cada 2.5s
   useEffect(() => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrent(c => (c + 1) % slides.length);
+      startTransition(() => setCurrent(c => (c + 1) % slides.length));
     }, 2500);
     return () => clearInterval(timer);
   }, [slides.length]);
 
   return (
-    <section ref={heroRef} className="relative h-[80vh] overflow-hidden">
+    <section ref={heroRef} className="relative h-[80vh] overflow-hidden" style={{ willChange: "transform" }}>
       {/* Imágenes con crossfade */}
       <AnimatePresence mode="sync">
         <motion.div
@@ -95,10 +124,11 @@ function HeroCarousel({
       <div className="absolute inset-0 bg-gradient-to-t from-maestro-dark via-maestro-dark/40 to-black/20 z-10" />
       <div className="absolute inset-0 bg-gradient-to-r from-maestro-dark/50 via-transparent to-transparent z-10" />
 
-      {/* Contenido con parallax */}
-      <motion.div
-        style={{ y: textY, opacity }}
+      {/* Contenido con parallax liviano (via ref, sin re-renders) */}
+      <div
+        ref={textRef}
         className="absolute inset-0 flex flex-col justify-end pb-16 px-6 md:px-16 z-20"
+        style={{ willChange: "transform, opacity" }}
       >
         {/* Breadcrumb */}
         <div className="flex items-center text-[10px] text-white/40 uppercase tracking-[0.3em] mb-6">
@@ -162,7 +192,7 @@ function HeroCarousel({
             ))}
           </div>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 }

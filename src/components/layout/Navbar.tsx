@@ -19,10 +19,15 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
+    let rafId: number;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // RAF: ejecutar sólo una vez por frame, no bloquear el hilo principal
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 50);
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Fetch dinámico del megamenu
     fetch('/api/megamenu').then(res => res.json()).then(data => {
@@ -34,7 +39,10 @@ export default function Navbar() {
       if (data.logoUrl) setLogoUrl(data.logoUrl);
     });
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Bloquear scroll del body cuando el menú mobile está abierto
