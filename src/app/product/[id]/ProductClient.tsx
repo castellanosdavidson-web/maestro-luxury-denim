@@ -90,7 +90,7 @@ export default function ProductClient({
       <Navbar />
 
       {/* ── Bread + Split Layout ── */}
-      <div className="flex flex-col lg:flex-row w-full min-h-screen pt-20">
+      <div className="flex flex-col lg:flex-row w-full min-h-screen pt-20 pb-0">
 
         {/* Left — Galería */}
         <div className="w-full lg:w-[60%] p-4 md:p-8 lg:p-12">
@@ -120,8 +120,11 @@ export default function ProductClient({
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md w-full mx-auto"
           >
-            {/* Fix #1: Nombre del producto siempre visible y prominente */}
-            <h1 className="text-4xl lg:text-5xl text-editorial text-maestro-bone mb-2 leading-none uppercase">
+            {/* Fix #1: Nombre siempre visible, fuente explícita sin depender de CSS var */}
+            <h1
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
+              className="text-4xl lg:text-5xl text-white mb-2 leading-none uppercase"
+            >
               {product.name}
             </h1>
             <p className="text-xs text-maestro-bone/40 tracking-[0.3em] uppercase mb-8">
@@ -238,7 +241,7 @@ export default function ProductClient({
               <div>
                 <p className="text-[9px] tracking-[0.45em] uppercase text-maestro-gold mb-3">Editorial</p>
                 <h2 className="text-4xl md:text-5xl font-light text-white leading-none">
-                  Completa tu Look
+                  Completa tu Outfit
                 </h2>
               </div>
               <Link

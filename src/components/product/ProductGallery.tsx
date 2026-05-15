@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 
@@ -20,6 +20,28 @@ export default function ProductGallery({ images, productName }: Props) {
     setDirection(dir);
     setActive(Math.max(0, Math.min(idx, total - 1)));
   }, [total]);
+
+  // Auto-slideshow: avanza sola cada 3.5s si hay más de 1 imagen
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  useEffect(() => {
+    if (total <= 1) return;
+    timerRef.current = setInterval(() => {
+      setActive(prev => {
+        setDirection(1);
+        return (prev + 1) % total;
+      });
+    }, 3500);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [total]);
+
+  // Pausa el autoplay al hacer hover
+  const pauseAuto = () => { if (timerRef.current) clearInterval(timerRef.current); };
+  const resumeAuto = () => {
+    if (total <= 1) return;
+    timerRef.current = setInterval(() => {
+      setActive(prev => { setDirection(1); return (prev + 1) % total; });
+    }, 3500);
+  };
 
   const lbGo = (idx: number, dir: number) => {
     setDirection(dir);
@@ -53,7 +75,10 @@ export default function ProductGallery({ images, productName }: Props) {
 
         {/* Hero image with nav */}
         <div className="relative w-full overflow-hidden bg-maestro-carbon group"
-          style={{ aspectRatio: total === 1 ? "3/4" : "4/5" }}>
+          style={{ aspectRatio: total === 1 ? "3/4" : "4/5" }}
+          onMouseEnter={pauseAuto}
+          onMouseLeave={resumeAuto}
+        >
           <AnimatePresence custom={direction} mode="wait">
             <motion.img
               key={active}

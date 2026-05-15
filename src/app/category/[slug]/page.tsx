@@ -12,7 +12,7 @@ const categoryMap: Record<string, string> = {
   "enterizo":        "Enterizo",
 };
 
-export const dynamic = 'force-dynamic';
+export const dynamic  = 'force-dynamic';
 export const revalidate = 0;
 
 async function getProductsByCategory(categoryId: string) {
@@ -38,14 +38,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const categoryName   = categoryMap[normalizedSlug] || normalizedSlug;
   const products       = await getProductsByCategory(normalizedSlug);
 
-  // Usar la imagen del primer producto como hero
-  const heroImage = products[0]?.image || undefined;
+  // Últimos 3 productos como slides del carrusel hero
+  const heroSlides = products.slice(0, 3).map((p: any) => ({
+    id:    p.id,
+    name:  p.name,
+    image: p.image || "",
+  }));
 
   return (
     <CategoryClient
       categoryName={categoryName}
       products={products}
-      heroImage={heroImage}
+      heroSlides={heroSlides}
     />
   );
 }
