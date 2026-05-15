@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { gtagViewItem } from "@/lib/analytics";
 import { ChevronRight, Ruler, ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
@@ -54,6 +55,17 @@ export default function ProductClient({ product, related = [] }: { product: any;
       image: allImages[0], quantity: 1,
     });
   };
+
+  // GA4: view_item al montar la página del producto
+  useEffect(() => {
+    gtagViewItem({
+      id:       product.id,
+      name:     product.name || product.reference,
+      category: product.category_id,
+      price:    Number(product.price),
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id]);
 
   const relatedRef    = useRef(null);
   const relatedInView = useInView(relatedRef, { once: true, margin: "-60px" });

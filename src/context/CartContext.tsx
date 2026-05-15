@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { gtagAddToCart, gtagViewCart } from "@/lib/analytics";
 
 export type CartItem = {
   id: string;
@@ -71,6 +72,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         );
       }
       return [...prev, newItem];
+    });
+    // GA4: add_to_cart
+    gtagAddToCart({
+      id:       newItem.id,
+      name:     newItem.name,
+      price:    newItem.price,
+      quantity: newItem.quantity,
+      size:     newItem.size,
+      color:    newItem.color,
     });
     setIsCartOpen(true);
   };

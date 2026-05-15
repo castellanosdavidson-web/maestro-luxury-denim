@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { gtagBeginCheckout } from "@/lib/analytics";
 import { useEffect, useState } from "react";
 
 export default function CartSidebar() {
@@ -104,7 +105,11 @@ export default function CartSidebar() {
                   href={generateWhatsAppLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => setIsCartOpen(false)}
+                  onClick={() => {
+                    // GA4: begin_checkout
+                    gtagBeginCheckout(items, totalPrice);
+                    setIsCartOpen(false);
+                  }}
                   className="w-full py-4 bg-maestro-bone text-maestro-dark uppercase tracking-widest text-sm hover:bg-maestro-gold transition-colors duration-300 flex items-center justify-center font-semibold"
                 >
                   Finalizar Compra
