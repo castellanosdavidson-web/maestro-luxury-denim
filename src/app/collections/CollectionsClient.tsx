@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowUpDown, X } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 interface Product {
   id: string;
@@ -15,7 +16,7 @@ interface Product {
   status: string;
 }
 
-const PAGE_SIZE = 14; // múltiplo del patrón de 7
+const PAGE_SIZE = 14;
 
 const SORT_OPTIONS = [
   { label: "Más recientes",  value: "newest" },
@@ -28,24 +29,15 @@ function toLabel(slug: string) {
   return slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
 
-/**
- * Patrón de layout editorial que se repite cada 7 productos:
- *
- * [  HERO grande  ] [ sm ] [ sm ]
- * [ med ] [ med ] [ med ]
- * [ sm ] [ sm ] [  HERO grande  ]
- * … (se repite)
- */
 function getLayout(index: number) {
   const pos = index % 7;
-  // Posiciones 0-6 dentro de un bloque:
-  if (pos === 0) return { col: "md:col-span-2", size: "hero"   }; // grande
-  if (pos === 1) return { col: "md:col-span-1", size: "small"  }; // pequeña arriba-dcha
-  if (pos === 2) return { col: "md:col-span-1", size: "small"  }; // pequeña abajo-dcha
-  if (pos === 3) return { col: "md:col-span-1", size: "medium" }; // fila de 3 medias
+  if (pos === 0) return { col: "md:col-span-2", size: "hero" };
+  if (pos === 1) return { col: "md:col-span-1", size: "small" };
+  if (pos === 2) return { col: "md:col-span-1", size: "small" };
+  if (pos === 3) return { col: "md:col-span-1", size: "medium" };
   if (pos === 4) return { col: "md:col-span-1", size: "medium" };
   if (pos === 5) return { col: "md:col-span-1", size: "medium" };
-  if (pos === 6) return { col: "md:col-span-2", size: "hero"   }; // grande al final del bloque
+  if (pos === 6) return { col: "md:col-span-2", size: "hero" };
   return { col: "md:col-span-1", size: "medium" };
 }
 
@@ -55,50 +47,153 @@ function heightClass(size: string) {
   return                        "h-[60vw] md:h-[45vh]";
 }
 
+// ── Tarjeta con animación al hacer scroll ──
+function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { col, size } = getLayout(i);
+  const hClass  = heightClass(size);
+  const isHero  = size === "hero";
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay: (i % 7) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      className={col}
+    >
+      <Link href={`/product/${p.id}`} className="group relative overflow-hidden block">
+        {/* Image */}
+        <div className={`relative w-full overflow-hidden bg-maestro-carbon ${hClass}`}>
+          <img
+            src={p.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=800"}
+            alt={p.name}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+          />
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          {/* Info on hover */}
+          <div className={`absolute inset-0 flex flex-col justify-end p-4 md:p-6 transition-all duration-500 opacity-0 group-hover:opacity-100`}>
+            <p className="text-[9px] uppercase tracking-[0.2em] text-maestro-gold/80 mb-1">{toLabel(p.category_id)}</p>
+            <h3 className={`font-light text-white leading-tight ${isHero ? "text-xl md:text-3xl" : "text-sm md:text-base"}`}>
+              {p.name}
+            </h3>
+            <p className="text-white/60 text-xs md:text-sm mt-1 tracking-wide">
+              ${Number(p.price).toLocaleString("es-CO")}
+            </p>
+          </div>
+
+          {/* Watermark number on hero */}
+          {isHero && (
+            <div className="absolute top-4 right-5 text-[60px] md:text-[100px] font-light leading-none text-white/5 select-none pointer-events-none">
+              {String(i + 1).padStart(2, "0")}
+            </div>
+          )}
+        </div>
+
+        {/* Below-image info — always visible on small cards */}
+        {!isHero && (
+          <div className="pt-3 pb-1">
+            <p className="text-[9px] uppercase tracking-[0.15em] text-maestro-bone/30 mb-0.5">{toLabel(p.category_id)}</p>
+            <h3 className="text-xs md:text-sm text-maestro-bone group-hover:text-maestro-gold transition-colors leading-snug">
+              {p.name}
+            </h3>
+            <p className="text-[11px] text-maestro-bone/50 mt-0.5">
+              ${Number(p.price).toLocaleString("es-CO")}
+            </p>
+          </div>
+        )}
+      </Link>
+    </motion.div>
+  );
+}
+
 export default function CollectionsClient({ products }: { products: Product[] }) {
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(products.map(p => p.category_id))).filter(Boolean);
-    return cats.sort();
-  }, [products]);
+  const categories = Array.from(new Set(products.map(p => p.category_id))).filter(Boolean).sort();
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [sort, setSort]   = useState("newest");
   const [showSort, setShowSort] = useState(false);
   const [page, setPage]   = useState(1);
 
-  const filtered = useMemo(() => {
+  const filtered = (() => {
     let list = activeCategory ? products.filter(p => p.category_id === activeCategory) : products;
     if (sort === "price_asc")  list = [...list].sort((a, b) => a.price - b.price);
     if (sort === "price_desc") list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "name_asc")   list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     return list;
-  }, [products, activeCategory, sort]);
+  })();
 
   const paginated = filtered.slice(0, page * PAGE_SIZE);
   const hasMore   = paginated.length < filtered.length;
+
+  // Header animation refs
+  const headerRef    = useRef(null);
+  const headerInView = useInView(headerRef, { once: true });
 
   return (
     <main className="min-h-screen bg-maestro-dark pb-32">
       <Navbar />
 
-      {/* ── Header ── */}
-      <div className="pt-32 pb-10 border-b border-maestro-bone/10">
+      {/* ── Header con animación de entrada ── */}
+      <div
+        ref={headerRef}
+        className="pt-32 pb-10 border-b border-maestro-bone/10 overflow-hidden"
+      >
         <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-end gap-4">
           <div>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-maestro-gold mb-3">MAESTRO Denim</p>
-            <h1 className="text-5xl md:text-7xl font-light text-maestro-bone leading-none">Colección</h1>
-            <h2 className="text-5xl md:text-7xl font-light text-maestro-bone/20 leading-none italic">Completa</h2>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={headerInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="text-[10px] tracking-[0.4em] uppercase text-maestro-gold mb-3"
+            >
+              MAESTRO Denim
+            </motion.p>
+            <div className="overflow-hidden">
+              <motion.h1
+                initial={{ y: "100%" }}
+                animate={headerInView ? { y: "0%" } : {}}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="text-5xl md:text-7xl font-light text-maestro-bone leading-none"
+              >
+                Colección
+              </motion.h1>
+            </div>
+            <div className="overflow-hidden">
+              <motion.h2
+                initial={{ y: "100%" }}
+                animate={headerInView ? { y: "0%" } : {}}
+                transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="text-5xl md:text-7xl font-light text-maestro-bone/20 leading-none italic"
+              >
+                Completa
+              </motion.h2>
+            </div>
           </div>
-          <p className="text-[10px] tracking-[0.3em] uppercase text-maestro-bone/40">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={headerInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-[10px] tracking-[0.3em] uppercase text-maestro-bone/40"
+          >
             {filtered.length} piezas
-          </p>
+          </motion.p>
         </div>
       </div>
 
       <div className="container mx-auto px-6 md:px-12 pt-10">
 
         {/* ── Filters ── */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 pb-6 border-b border-maestro-bone/5">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 pb-6 border-b border-maestro-bone/5"
+        >
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => { setActiveCategory(null); setPage(1); }}
@@ -133,7 +228,7 @@ export default function CollectionsClient({ products }: { products: Product[] })
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {activeCategory && (
           <div className="flex items-center gap-3 mb-8">
@@ -145,68 +240,16 @@ export default function CollectionsClient({ products }: { products: Product[] })
           </div>
         )}
 
-        {/* ── Editorial Grid ── */}
+        {/* ── Grid Editorial con animaciones al scroll ── */}
         {paginated.length === 0 ? (
           <p className="text-center text-maestro-bone/40 py-24 text-sm tracking-widest uppercase">
             No hay productos en esta categoría
           </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 auto-rows-auto">
-            {paginated.map((p, i) => {
-              const { col, size } = getLayout(i);
-              const hClass = heightClass(size);
-              const isHero = size === "hero";
-              return (
-                <Link
-                  key={p.id}
-                  href={`/product/${p.id}`}
-                  className={`group relative overflow-hidden block ${col}`}
-                >
-                  {/* Image */}
-                  <div className={`relative w-full overflow-hidden bg-maestro-carbon ${hClass}`}>
-                    <img
-                      src={p.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=800"}
-                      alt={p.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                    />
-
-                    {/* Gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Info on hover — for hero cards show inline */}
-                    <div className={`absolute inset-0 flex flex-col justify-end p-4 md:p-6 transition-all duration-500 ${isHero ? "opacity-0 group-hover:opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
-                      <p className="text-[9px] uppercase tracking-[0.2em] text-maestro-gold/80 mb-1">{toLabel(p.category_id)}</p>
-                      <h3 className={`font-light text-white leading-tight ${isHero ? "text-xl md:text-3xl" : "text-sm md:text-base"}`}>
-                        {p.name}
-                      </h3>
-                      <p className="text-white/60 text-xs md:text-sm mt-1 tracking-wide">
-                        ${Number(p.price).toLocaleString("es-CO")}
-                      </p>
-                    </div>
-
-                    {/* Reference number watermark on hero */}
-                    {isHero && (
-                      <div className="absolute top-4 right-5 text-[60px] md:text-[100px] font-light leading-none text-white/5 select-none pointer-events-none">
-                        {String(i + 1).padStart(2, "0")}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Below-image info — always visible on small cards */}
-                  {!isHero && (
-                    <div className="pt-3 pb-1">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-maestro-bone/30 mb-0.5">{toLabel(p.category_id)}</p>
-                      <h3 className="text-xs md:text-sm text-maestro-bone group-hover:text-maestro-gold transition-colors leading-snug">
-                        {p.name}
-                      </h3>
-                      <p className="text-[11px] text-maestro-bone/50 mt-0.5">
-                        ${Number(p.price).toLocaleString("es-CO")}
-                      </p>
-                    </div>
-                  )}
-                </Link>
-              );
-            })}
+            {paginated.map((p, i) => (
+              <AnimatedProductCard key={p.id} p={p} i={i} />
+            ))}
           </div>
         )}
 
