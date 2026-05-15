@@ -38,10 +38,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const categoryName   = categoryMap[normalizedSlug] || normalizedSlug;
   const products       = await getProductsByCategory(normalizedSlug);
 
-  // Últimos 3 productos como slides del carrusel hero
-  const heroSlides = products.slice(0, 3).map((p: any) => ({
+  // Últimos 5 de la lista (los más antiguos) para no repetir con los primeros del grid
+  // products ya viene ordenado: newest first → los últimos de la lista son los más antiguos
+  const heroSlides = products.slice(-5).map((p: any) => ({
     id:    p.id,
-    name:  p.name,
+    name:  p.name || p.reference,
     image: p.image || "",
   }));
 

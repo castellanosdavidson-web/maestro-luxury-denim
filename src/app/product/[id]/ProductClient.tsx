@@ -12,11 +12,10 @@ function toLabel(slug: string) {
   return slug?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) || "";
 }
 
-// ── Scroll-reveal card para los productos relacionados ──
+/** Tarjeta scroll-reveal para recomendados */
 function RelatedCard({ product, index }: { product: any; index: number }) {
-  const ref   = useRef(null);
+  const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-
   return (
     <motion.div
       ref={ref}
@@ -27,233 +26,241 @@ function RelatedCard({ product, index }: { product: any; index: number }) {
       <Link href={`/product/${product.id}`} className="group block">
         <div className="relative overflow-hidden aspect-[3/4] bg-maestro-carbon mb-4">
           {product.image ? (
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full bg-maestro-carbon" />
-          )}
-          {/* Gold line reveal on hover */}
+            <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105" />
+          ) : <div className="w-full h-full bg-maestro-carbon" />}
           <div className="absolute bottom-0 left-0 w-0 h-[2px] bg-maestro-gold group-hover:w-full transition-all duration-500" />
         </div>
-        <p className="text-[8px] uppercase tracking-[0.3em] text-maestro-gold/70 mb-1">
-          {toLabel(product.category_id)}
-        </p>
-        <h3 className="text-sm text-maestro-bone font-light leading-snug group-hover:text-maestro-gold transition-colors">
-          {product.name}
-        </h3>
-        <p className="text-xs text-maestro-bone/50 mt-1">
-          ${Number(product.price).toLocaleString("es-CO")}
-        </p>
+        <p className="text-[8px] uppercase tracking-[0.3em] text-maestro-gold/70 mb-1">{toLabel(product.category_id)}</p>
+        <h3 className="text-sm text-white font-light leading-snug group-hover:text-maestro-gold transition-colors">{product.name}</h3>
+        <p className="text-xs text-white/40 mt-1">${Number(product.price).toLocaleString("es-CO")}</p>
       </Link>
     </motion.div>
   );
 }
 
-export default function ProductClient({
-  product,
-  related = [],
-}: {
-  product: any;
-  related?: any[];
-}) {
+export default function ProductClient({ product, related = [] }: { product: any; related?: any[] }) {
   const { addItem } = useCart();
   const [selectedSize,  setSelectedSize]  = useState(product.sizes?.[0]  || "U");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "Default");
 
-  // Combinar imagen principal + galería adicional
   const mainImage = product.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6?q=80&w=2000";
   const gallery   = Array.isArray(product.gallery) ? product.gallery : [];
   const allImages = [mainImage, ...gallery].filter(Boolean);
 
   const handleAddToCart = () => {
     addItem({
-      id:        product.id,
-      name:      product.name,
-      reference: product.reference,
-      price:     Number(product.price),
-      size:      selectedSize,
-      color:     selectedColor,
-      image:     allImages[0],
-      quantity:  1,
+      id: product.id, name: product.name, reference: product.reference,
+      price: Number(product.price), size: selectedSize, color: selectedColor,
+      image: allImages[0], quantity: 1,
     });
   };
 
-  // Ref para la sección de recomendados
-  const relatedRef   = useRef(null);
+  const relatedRef    = useRef(null);
   const relatedInView = useInView(relatedRef, { once: true, margin: "-60px" });
 
+  // Nombre del producto: nunca vacío
+  const productName = (product.name && product.name.trim() !== "") ? product.name : product.reference;
+
   return (
-    <main className="min-h-screen bg-maestro-dark selection:bg-maestro-gold selection:text-maestro-dark">
+    <main className="min-h-screen bg-[#050505]" style={{ fontFamily: "var(--font-inter, Inter, sans-serif)" }}>
       <Navbar />
 
-      {/* ── Bread + Split Layout ── */}
-      <div className="flex flex-col lg:flex-row w-full min-h-screen pt-20 pb-0">
+      {/* ── Layout principal ── */}
+      <div className="flex flex-col lg:flex-row w-full min-h-screen" style={{ paddingTop: "80px" }}>
 
-        {/* Left — Galería */}
-        <div className="w-full lg:w-[60%] p-4 md:p-8 lg:p-12">
-          <div className="flex items-center text-[10px] text-maestro-bone/40 uppercase tracking-[0.2em] mb-6">
-            <Link href="/" className="hover:text-maestro-gold transition-colors">Inicio</Link>
-            <ChevronRight size={12} className="mx-2" />
-            <Link href="/collections" className="hover:text-maestro-gold transition-colors">Colección</Link>
-            <ChevronRight size={12} className="mx-2" />
-            {/* Fix #1: Mostrar name correctamente */}
-            <span className="text-maestro-bone">{product.name || product.reference}</span>
+        {/* LEFT — Galería */}
+        <div className="w-full lg:w-[58%] p-4 md:p-8 lg:p-10">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 mb-6"
+            style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245,245,245,0.4)" }}>
+            <Link href="/" style={{ color: "rgba(245,245,245,0.4)" }} className="hover:text-maestro-gold transition-colors">Inicio</Link>
+            <ChevronRight size={10} />
+            <Link href="/collections" style={{ color: "rgba(245,245,245,0.4)" }} className="hover:text-maestro-gold transition-colors">Colección</Link>
+            <ChevronRight size={10} />
+            <span style={{ color: "#F5F5F5" }}>{productName}</span>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <ProductGallery images={allImages} productName={product.name} />
-          </motion.div>
-        </div>
-
-        {/* Right Side — Sticky Info */}
-        <div className="w-full lg:w-[40%] bg-maestro-dark p-8 lg:p-16 lg:sticky lg:top-0 h-auto lg:h-screen lg:overflow-y-auto no-scrollbar flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-md w-full mx-auto"
-          >
-            {/* Fix #1: Nombre siempre visible, fuente explícita sin depender de CSS var */}
-            <h1
-              style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "-0.02em" }}
-              className="text-4xl lg:text-5xl text-white mb-2 leading-none uppercase"
-            >
-              {product.name}
+          {/* Nombre — MOBILE ONLY (arriba de la galería) */}
+          <div className="lg:hidden mb-6">
+            <h1 style={{
+              fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif",
+              fontSize: "clamp(1.8rem, 6vw, 2.5rem)",
+              color: "#FFFFFF",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+              textTransform: "uppercase",
+              display: "block",
+              marginBottom: "6px",
+            }}>
+              {productName}
             </h1>
-            <p className="text-xs text-maestro-bone/40 tracking-[0.3em] uppercase mb-8">
+            <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.35)" }}>
               Ref. {product.reference}
             </p>
+          </div>
 
-            <p className="text-2xl text-maestro-bone tracking-widest mb-10 border-b border-maestro-bone/10 pb-8">
+          <ProductGallery images={allImages} productName={productName} />
+        </div>
+
+        {/* RIGHT — Panel de info (desktop: sticky, scroll interno) */}
+        <div
+          className="w-full lg:w-[42%] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto no-scrollbar"
+          style={{ backgroundColor: "#050505", padding: "clamp(2rem, 4vw, 4rem)" }}
+        >
+          <div style={{ maxWidth: "420px", width: "100%", margin: "0 auto" }}>
+
+            {/* Nombre — DESKTOP ONLY */}
+            <div className="hidden lg:block">
+              <h1 style={{
+                fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif",
+                fontSize: "clamp(2rem, 3.5vw, 3rem)",
+                color: "#FFFFFF",
+                letterSpacing: "-0.02em",
+                lineHeight: 1.05,
+                textTransform: "uppercase",
+                display: "block",
+                marginBottom: "8px",
+              }}>
+                {productName}
+              </h1>
+              <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.35)", marginBottom: "32px" }}>
+                Ref. {product.reference}
+              </p>
+            </div>
+
+            {/* Precio */}
+            <p style={{
+              fontSize: "1.5rem", color: "#F5F5F5", letterSpacing: "0.1em",
+              marginBottom: "32px", paddingBottom: "28px",
+              borderBottom: "1px solid rgba(245,245,245,0.08)"
+            }}>
               ${Number(product.price).toLocaleString("es-CO")}
             </p>
 
-            <p className="text-sm text-maestro-bone/60 font-light leading-relaxed mb-8 tracking-wide text-justify">
+            {/* Descripción */}
+            <p style={{
+              fontSize: "13px", color: "rgba(245,245,245,0.55)", fontWeight: 300,
+              lineHeight: 1.8, marginBottom: "32px", textAlign: "justify"
+            }}>
               {product.description || "Diseño exclusivo y confección de lujo para un estilo inigualable."}
             </p>
 
+            {/* Material */}
             {product.material && (
-              <div className="mb-10 pb-8 border-b border-maestro-bone/10">
-                <p className="text-[9px] uppercase tracking-[0.3em] text-maestro-gold mb-1">Material</p>
-                <p className="text-sm text-maestro-bone/70 font-light">{product.material}</p>
+              <div style={{ marginBottom: "32px", paddingBottom: "28px", borderBottom: "1px solid rgba(245,245,245,0.08)" }}>
+                <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "#C8A96B", marginBottom: "4px" }}>Material</p>
+                <p style={{ fontSize: "13px", color: "rgba(245,245,245,0.65)", fontWeight: 300 }}>{product.material}</p>
               </div>
             )}
 
-            <div className="space-y-10">
-              {/* Color */}
-              <div>
-                <div className="flex justify-between items-center mb-4 border-b border-maestro-bone/10 pb-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone">Color</span>
-                  <span className="text-[10px] text-maestro-bone/50 uppercase tracking-widest">{selectedColor}</span>
+            {/* Color */}
+            {product.colors?.length > 0 && (
+              <div style={{ marginBottom: "32px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid rgba(245,245,245,0.08)" }}>
+                  <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#F5F5F5" }}>Color</span>
+                  <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245,245,245,0.4)" }}>{selectedColor}</span>
                 </div>
-                <div className="flex gap-3 flex-wrap">
-                  {product.colors?.map((color: string) => (
-                    <button
-                      key={color}
-                      onClick={() => setSelectedColor(color)}
-                      className={`px-8 py-3 text-[10px] tracking-[0.2em] uppercase transition-all duration-300 ${
-                        selectedColor === color
-                          ? 'border border-maestro-gold text-maestro-gold'
-                          : 'border border-transparent text-maestro-bone/60 hover:text-maestro-bone hover:border-maestro-bone/30'
-                      }`}
-                    >
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {product.colors.map((color: string) => (
+                    <button key={color} onClick={() => setSelectedColor(color)}
+                      style={{
+                        padding: "12px 24px", fontSize: "10px", letterSpacing: "0.2em",
+                        textTransform: "uppercase", cursor: "pointer", transition: "all 0.3s",
+                        backgroundColor: "transparent",
+                        border: selectedColor === color ? "1px solid #C8A96B" : "1px solid transparent",
+                        color: selectedColor === color ? "#C8A96B" : "rgba(245,245,245,0.5)",
+                      }}>
                       {color}
                     </button>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* Talla */}
-              <div>
-                <div className="flex justify-between items-center mb-4 border-b border-maestro-bone/10 pb-2">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone">Talla</span>
-                  <button className="text-[10px] text-maestro-bone/50 uppercase hover:text-maestro-gold flex items-center gap-2 transition-colors tracking-widest">
+            {/* Talla */}
+            {product.sizes?.length > 0 && (
+              <div style={{ marginBottom: "32px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", paddingBottom: "8px", borderBottom: "1px solid rgba(245,245,245,0.08)" }}>
+                  <span style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#F5F5F5" }}>Talla</span>
+                  <span style={{ fontSize: "10px", color: "rgba(245,245,245,0.35)", display: "flex", alignItems: "center", gap: "6px" }}>
                     <Ruler size={10} /> Guía
-                  </button>
+                  </span>
                 </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {product.sizes?.map((size: string) => (
-                    <button
-                      key={size}
-                      onClick={() => setSelectedSize(size)}
-                      className={`py-4 text-[10px] tracking-[0.2em] uppercase transition-all duration-300 ${
-                        selectedSize === size
-                          ? 'bg-maestro-bone text-maestro-dark font-semibold'
-                          : 'border border-maestro-bone/20 text-maestro-bone hover:border-maestro-bone/50 hover:bg-maestro-bone/5'
-                      }`}
-                    >
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "8px" }}>
+                  {product.sizes.map((size: string) => (
+                    <button key={size} onClick={() => setSelectedSize(size)}
+                      style={{
+                        padding: "16px 8px", fontSize: "10px", letterSpacing: "0.2em",
+                        textTransform: "uppercase", cursor: "pointer", transition: "all 0.3s",
+                        backgroundColor: selectedSize === size ? "#F5F5F5" : "transparent",
+                        border: selectedSize === size ? "none" : "1px solid rgba(245,245,245,0.2)",
+                        color: selectedSize === size ? "#050505" : "#F5F5F5",
+                        fontWeight: selectedSize === size ? 600 : 400,
+                      }}>
                       {size}
                     </button>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* CTA */}
-              <button
-                onClick={handleAddToCart}
-                className="w-full py-6 mt-8 border border-maestro-gold text-maestro-gold uppercase tracking-[0.3em] text-xs hover:bg-maestro-gold hover:text-maestro-dark transition-colors duration-500 font-semibold relative overflow-hidden group"
-              >
-                <span className="relative z-10">Añadir a la Bolsa</span>
-                <div className="absolute inset-0 bg-maestro-gold scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] -z-0" />
-                <span className="absolute inset-0 flex items-center justify-center text-maestro-dark scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-[0.22,1,0.36,1] z-20">
-                  Añadir a la Bolsa
-                </span>
-              </button>
+            {/* CTA Principal */}
+            <button onClick={handleAddToCart} className="group w-full relative overflow-hidden"
+              style={{
+                padding: "22px", marginTop: "16px", marginBottom: "40px",
+                border: "1px solid #C8A96B", backgroundColor: "transparent",
+                color: "#C8A96B", fontSize: "11px", letterSpacing: "0.3em",
+                textTransform: "uppercase", cursor: "pointer", fontWeight: 600,
+                transition: "color 0.5s",
+              }}>
+              <span className="relative z-10 group-hover:text-[#050505] transition-colors duration-500">
+                Añadir a la Bolsa
+              </span>
+              <div className="absolute inset-0 bg-[#C8A96B] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" style={{ zIndex: 0 }} />
+            </button>
 
-              {/* Especificaciones */}
-              {product.details?.length > 0 && (
-                <div className="pt-8">
-                  <h3 className="text-[10px] uppercase tracking-[0.2em] text-maestro-gold mb-6">Especificaciones</h3>
-                  <ul className="space-y-4">
-                    {product.details.map((detail: string, idx: number) => (
-                      <li key={idx} className="text-xs text-maestro-bone/60 font-light flex items-start leading-relaxed">
-                        <span className="text-maestro-gold mr-3 mt-1 text-[8px]">✦</span>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </motion.div>
+            {/* Especificaciones */}
+            {product.details?.length > 0 && (
+              <div>
+                <p style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "#C8A96B", marginBottom: "20px" }}>Especificaciones</p>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                  {product.details.map((detail: string, idx: number) => (
+                    <li key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontSize: "12px", color: "rgba(245,245,245,0.5)", marginBottom: "12px", lineHeight: 1.6 }}>
+                      <span style={{ color: "#C8A96B", fontSize: "8px", marginTop: "4px" }}>✦</span>
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* ── Fix #2: Completa tu Look — Productos Relacionados ── */}
+      {/* ── Completa tu Outfit ── */}
       {related.length > 0 && (
-        <section className="w-full bg-black py-24 px-6 md:px-12 lg:px-20">
+        <section style={{ backgroundColor: "#000000", padding: "96px clamp(24px, 5vw, 80px)" }}>
           <motion.div
             ref={relatedRef}
             initial={{ opacity: 0, y: 30 }}
             animate={relatedInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-6xl mx-auto"
+            style={{ maxWidth: "1200px", margin: "0 auto" }}
           >
-            {/* Header */}
-            <div className="flex items-end justify-between mb-12">
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "48px" }}>
               <div>
-                <p className="text-[9px] tracking-[0.45em] uppercase text-maestro-gold mb-3">Editorial</p>
-                <h2 className="text-4xl md:text-5xl font-light text-white leading-none">
+                <p style={{ fontSize: "9px", letterSpacing: "0.45em", textTransform: "uppercase", color: "#C8A96B", marginBottom: "12px" }}>Editorial</p>
+                <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "clamp(2rem, 4vw, 3rem)", color: "#FFFFFF", fontWeight: 300, lineHeight: 1 }}>
                   Completa tu Outfit
                 </h2>
               </div>
-              <Link
-                href="/collections"
-                className="hidden md:flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase text-white/30 hover:text-maestro-gold transition-colors group"
-              >
-                Ver todo <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+              <Link href="/collections" className="hidden md:flex items-center gap-2 group"
+                style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", textDecoration: "none" }}>
+                <span className="group-hover:text-maestro-gold transition-colors">Ver todo</span>
+                <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
-
-            {/* Grid de recomendados con scroll-reveal */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "32px" }}>
               {related.map((p: any, i: number) => (
                 <RelatedCard key={p.id} product={p} index={i} />
               ))}
@@ -263,11 +270,14 @@ export default function ProductClient({
       )}
 
       {/* Mobile sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden px-4 pb-4 pt-3 bg-gradient-to-t from-black to-transparent">
-        <button
-          onClick={handleAddToCart}
-          className="w-full py-5 bg-maestro-gold text-maestro-dark uppercase tracking-[0.3em] text-xs font-bold"
-        >
+      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
+        style={{ padding: "12px 16px 16px", background: "linear-gradient(to top, #000 80%, transparent)" }}>
+        <button onClick={handleAddToCart}
+          style={{
+            width: "100%", padding: "18px", backgroundColor: "#C8A96B",
+            color: "#050505", fontSize: "11px", letterSpacing: "0.3em",
+            textTransform: "uppercase", fontWeight: 700, border: "none", cursor: "pointer",
+          }}>
           Añadir a la Bolsa — ${Number(product.price).toLocaleString("es-CO")}
         </button>
       </div>
