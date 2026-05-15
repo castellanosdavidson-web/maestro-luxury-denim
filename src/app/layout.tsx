@@ -8,6 +8,7 @@ import PromoPopup from "@/components/PromoPopup";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -74,6 +75,7 @@ export default function RootLayout({
             <Footer />
             <CartSidebar />
             <PromoPopup />
+            <FloatingWhatsApp />
           </CartProvider>
         </SmoothScroll>
         {/* Organization Schema.org — señal de autoridad para Google */}
