@@ -37,6 +37,24 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Bloquear scroll del body cuando el menú mobile está abierto
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
     { name: "Colecciones", href: "/collections" },
     { name: "Blusas y Corset", href: "/category/blusas-y-corset" },
@@ -171,26 +189,73 @@ export default function Navbar() {
             initial={{ opacity: 0, x: "-100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "-100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 bg-maestro-dark z-50 flex flex-col p-6"
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              backgroundColor: "#050505",
+              zIndex: 200,
+              display: "flex",
+              flexDirection: "column",
+              padding: "24px",
+              overflowY: "auto",
+              WebkitOverflowScrolling: "touch",
+            }}
           >
-            <div className="flex justify-between items-center mb-12">
-              <span className="text-2xl text-editorial tracking-widest">MAESTRO</span>
-              <button onClick={() => setIsMobileMenuOpen(false)}>
-                <X size={28} className="text-maestro-bone hover:text-maestro-gold" />
+            {/* Header del menú */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "48px" }}>
+              <span style={{
+                fontSize: "1.5rem",
+                fontFamily: "'Playfair Display', Georgia, serif",
+                letterSpacing: "0.15em",
+                color: "#F5F5F5",
+              }}>
+                MAESTRO
+              </span>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#F5F5F5", padding: "8px" }}
+              >
+                <X size={28} />
               </button>
             </div>
-            <div className="flex flex-col space-y-8 text-xl tracking-widest uppercase text-editorial">
-              {navLinks.map((link) => (
-                <Link
+
+            {/* Links */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+              {navLinks.map((link, idx) => (
+                <motion.div
                   key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-maestro-bone hover:text-maestro-gold transition-colors"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + idx * 0.05, duration: 0.4 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      display: "block",
+                      fontSize: "1.25rem",
+                      letterSpacing: "0.15em",
+                      textTransform: "uppercase",
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      color: "#F5F5F5",
+                      textDecoration: "none",
+                      padding: "4px 0",
+                      borderBottom: "1px solid rgba(245,245,245,0.06)",
+                      paddingBottom: "16px",
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
+            </div>
+
+            {/* Footer del menú */}
+            <div style={{ marginTop: "auto", paddingTop: "48px" }}>
+              <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.25)" }}>
+                MAESTRO © Luxury Denim
+              </p>
             </div>
           </motion.div>
         )}
