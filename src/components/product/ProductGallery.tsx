@@ -35,7 +35,7 @@ export default function ProductGallery({ images, productName }: Props) {
         setDirection(1);
         setActive(prev => (prev + 1) % total);
       });
-    }, 3500);
+    }, 6000);
   }, [total]);
 
   const stopTimer = useCallback(() => {
