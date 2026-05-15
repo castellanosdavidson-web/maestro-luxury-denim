@@ -86,12 +86,7 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
             </p>
           </div>
 
-          {/* Watermark number on hero */}
-          {isHero && (
-            <div className="absolute top-4 right-5 text-[60px] md:text-[100px] font-light leading-none text-white/5 select-none pointer-events-none">
-              {String(i + 1).padStart(2, "0")}
-            </div>
-          )}
+
         </div>
 
         {/* Below-image info — always visible on small cards */}
