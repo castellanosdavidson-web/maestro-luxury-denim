@@ -107,10 +107,7 @@ function HeroCarousel({
           <span className="text-white">{categoryName}</span>
         </div>
 
-        {/* Número watermark */}
-        <div className="absolute top-28 right-8 md:right-16 text-[120px] md:text-[200px] font-light text-white/[0.04] select-none leading-none pointer-events-none">
-          {String(totalProducts).padStart(2, "0")}
-        </div>
+
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
