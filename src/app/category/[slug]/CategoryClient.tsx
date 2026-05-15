@@ -207,7 +207,18 @@ export default function CategoryClient({
   heroSlides: { image: string; name: string; id: string }[];
 }) {
   const gridRef    = useRef(null);
-  const gridInView = useInView(gridRef, { once: true, margin: "-40px" });
+  const [gridInView, setGridInView] = useState(false);
+
+  useEffect(() => {
+    const el = gridRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setGridInView(true); obs.disconnect(); } },
+      { threshold: 0.05 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <main className="min-h-screen bg-maestro-dark">
