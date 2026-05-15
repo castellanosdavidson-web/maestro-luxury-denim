@@ -22,17 +22,17 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MAESTRO | Luxury Denim",
-  description: "Diseñado para mujeres que imponen estilo. Denim premium y de lujo, edición limitada.",
-  keywords: ["denim", "luxury streetwear", "jeans premium", "maestro denim", "moda femenina", "ropa de lujo colombia", "streetwear mujer"],
+  title: "MAESTRO | Luxury Denim Colombia",
+  description: "Denim premium de lujo diseñado para mujeres que imponen estilo. Jeans, chaquetas, blusas y más. Edición limitada. Envíos a toda Colombia.",
+  keywords: ["denim premium colombia", "jeans de lujo", "maestro denim", "ropa mujer colombia", "chaquetas denim", "jeans premium mujer", "moda de lujo bogota"],
   openGraph: {
     title: "MAESTRO | Luxury Denim",
     description: "Diseñado para mujeres que imponen estilo. Denim premium, edición limitada.",
-    url: "https://maestro-denim.com", // Cambiar por el dominio final
+    url: "https://maestrodeninmluxury.com",
     siteName: "MAESTRO Denim",
     images: [
       {
-        url: "/uploads/hero-custom.jpg", // Asegúrate de tener una imagen por defecto o logo aquí
+        url: "https://maestrodeninmluxury.com/og-default.jpg",
         width: 1200,
         height: 630,
         alt: "MAESTRO Luxury Denim",
@@ -55,6 +55,9 @@ export const metadata: Metadata = {
   verification: {
     google: "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
   },
+  alternates: {
+    canonical: "https://maestrodeninmluxury.com",
+  },
 };
 
 export default function RootLayout({
@@ -73,6 +76,24 @@ export default function RootLayout({
             <PromoPopup />
           </CartProvider>
         </SmoothScroll>
+        {/* Organization Schema.org — señal de autoridad para Google */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ClothingStore",
+            "name": "MAESTRO Luxury Denim",
+            "url": "https://maestrodeninmluxury.com",
+            "logo": "https://maestrodeninmluxury.com/logo.png",
+            "description": "Denim premium de lujo diseñado para mujeres que imponen estilo. Edición limitada.",
+            "address": { "@type": "PostalAddress", "addressCountry": "CO" },
+            "sameAs": [
+              "https://www.instagram.com/maestrodeninmluxury",
+              "https://www.tiktok.com/@maestrodeninmluxury",
+            ],
+            "priceRange": "$$$",
+          }) }}
+        />
         <GoogleAnalytics gaId="G-WBGERQEVXC" />
         <GoogleTagManager gtmId="GTM-W46D2X6G" />
       </body>

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const DOMAIN = 'https://maestro-denim.com'; // O el dominio de producción en Vercel
+  const DOMAIN = 'https://maestrodeninmluxury.com';
 
   return {
     rules: {

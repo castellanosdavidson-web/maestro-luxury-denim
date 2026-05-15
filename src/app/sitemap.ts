@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { supabaseAdmin } from '@/lib/supabase';
 
-const DOMAIN = 'https://maestro-denim.com'; // O el dominio de producción en Vercel
+const DOMAIN = 'https://maestrodeninmluxury.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Rutas estáticas principales
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${DOMAIN}/collections`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${DOMAIN}/journal`,
@@ -24,6 +24,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    // Páginas de categoría
+    ...[
+      'pantalones', 'chaquetas', 'gabardinas', 'blusas-y-corset',
+      'chalecos', 'faldas', 'vestidos', 'enterizo',
+    ].map(cat => ({
+      url: `${DOMAIN}/category/${cat}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
   ];
 
   // Obtener productos activos
