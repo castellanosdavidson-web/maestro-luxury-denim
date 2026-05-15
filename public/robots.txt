@@ -1,0 +1,14 @@
+# Permisos para el robot de Facebook (Necesario para validación de WhatsApp API)
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Facebot
+Allow: /
+
+# Permisos generales para otros buscadores
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: https://maestrodeninmluxury.com/sitemap.xml
