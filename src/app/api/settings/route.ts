@@ -13,25 +13,34 @@ export async function GET() {
 
   // Convertir snake_case a camelCase para el frontend
   return NextResponse.json({
-    heroTitle:      data.hero_title,
-    heroSubtitle:   data.hero_subtitle,
-    heroCaption:    data.hero_caption,
-    heroValueProp:  data.hero_value_prop,
-    heroImage:      data.hero_image,
-    heroVideo:      data.hero_video,
-    heroFontSize:   data.hero_font_size,
-    heroFontFamily: data.hero_font_family,
-    heroMarquee:    data.hero_marquee,
-    heroLinkText:   data.hero_link_text,
-    whatsappNumber: data.whatsapp_number,
-    instagramUrl:   data.instagram_url,
-    facebookUrl:    data.facebook_url,
-    tiktokUrl:      data.tiktok_url,
-    mailUrl:        data.mail_url,
-    logoUrl:        data.logo_url,
-    aboutText:      data.about_text,
-    faqText:        data.faq_text,
-    termsText:      data.terms_text,
+    heroTitle:        data.hero_title,
+    heroSubtitle:     data.hero_subtitle,
+    heroCaption:      data.hero_caption,
+    heroValueProp:    data.hero_value_prop,
+    heroImage:        data.hero_image,
+    heroVideo:        data.hero_video,
+    heroFontSize:     data.hero_font_size,
+    heroFontFamily:   data.hero_font_family,
+    heroMarquee:      data.hero_marquee,
+    heroLinkText:     data.hero_link_text,
+    whatsappNumber:   data.whatsapp_number,
+    instagramUrl:     data.instagram_url,
+    facebookUrl:      data.facebook_url,
+    tiktokUrl:        data.tiktok_url,
+    mailUrl:          data.mail_url,
+    logoUrl:          data.logo_url,
+    aboutText:        data.about_text,
+    faqText:          data.faq_text,
+    termsText:        data.terms_text,
+    // Popup
+    popupEnabled:     data.popup_enabled     ?? false,
+    popupImageUrl:    data.popup_image_url   ?? "",
+    popupVideoUrl:    data.popup_video_url   ?? "",
+    popupTitle:       data.popup_title       ?? "",
+    popupDescription: data.popup_description ?? "",
+    popupLinkUrl:     data.popup_link_url    ?? "",
+    popupLinkText:    data.popup_link_text   ?? "Ver ahora",
+    popupDelay:       data.popup_delay       ?? 1,
   });
 }
 
@@ -127,6 +136,57 @@ export async function POST(request: Request) {
 
     const termsText = formData.get('termsText') as string;
     if (termsText !== null) updates.terms_text = termsText;
+
+    // ── Popup Promocional ──
+    const popupEnabled = formData.get('popupEnabled');
+    if (popupEnabled !== null) updates.popup_enabled = popupEnabled === 'true' || popupEnabled === 'on';
+
+    const popupTitle = formData.get('popupTitle') as string;
+    if (popupTitle !== null) updates.popup_title = popupTitle;
+
+    const popupDescription = formData.get('popupDescription') as string;
+    if (popupDescription !== null) updates.popup_description = popupDescription;
+
+    const popupLinkUrl = formData.get('popupLinkUrl') as string;
+    if (popupLinkUrl !== null) updates.popup_link_url = popupLinkUrl;
+
+    const popupLinkText = formData.get('popupLinkText') as string;
+    if (popupLinkText !== null) updates.popup_link_text = popupLinkText;
+
+    const popupDelay = formData.get('popupDelay') as string;
+    if (popupDelay !== null) updates.popup_delay = Number(popupDelay) || 1;
+
+    // Imagen del popup
+    const popupImageFile = formData.get('popupImageFile') as File;
+    if (popupImageFile && popupImageFile.size > 0) {
+      const bytes = await popupImageFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const ext = path.extname(popupImageFile.name);
+      const filename = `popup-img-${Date.now()}${ext}`;
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('uploads')
+        .upload(filename, buffer, { contentType: popupImageFile.type, upsert: true });
+      if (!uploadError) {
+        const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
+        updates.popup_image_url = urlData.publicUrl;
+      }
+    }
+
+    // Video del popup
+    const popupVideoFile = formData.get('popupVideoFile') as File;
+    if (popupVideoFile && popupVideoFile.size > 0) {
+      const bytes = await popupVideoFile.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const ext = path.extname(popupVideoFile.name);
+      const filename = `popup-vid-${Date.now()}${ext}`;
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('uploads')
+        .upload(filename, buffer, { contentType: popupVideoFile.type, upsert: true });
+      if (!uploadError) {
+        const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
+        updates.popup_video_url = urlData.publicUrl;
+      }
+    }
 
     // Logo
     const logoFile = formData.get('logoFile') as File;

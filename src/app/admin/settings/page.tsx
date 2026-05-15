@@ -19,25 +19,34 @@ const FONT_FAMILIES = [
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
-    heroTitle:      "",
-    heroSubtitle:   "",
-    heroCaption:    "",
-    heroValueProp:  "",
-    heroImage:      "",
-    heroVideo:      "",
-    heroMarquee:    "",
-    heroLinkText:   "",
-    whatsappNumber: "",
-    heroFontSize:   "large",
-    heroFontFamily: "editorial",
-    instagramUrl:   "",
-    facebookUrl:    "",
-    tiktokUrl:      "",
-    mailUrl:        "",
-    logoUrl:        "",
-    aboutText:      "",
-    faqText:        "",
-    termsText:      "",
+    heroTitle:        "",
+    heroSubtitle:     "",
+    heroCaption:      "",
+    heroValueProp:    "",
+    heroImage:        "",
+    heroVideo:        "",
+    heroMarquee:      "",
+    heroLinkText:     "",
+    whatsappNumber:   "",
+    heroFontSize:     "large",
+    heroFontFamily:   "editorial",
+    instagramUrl:     "",
+    facebookUrl:      "",
+    tiktokUrl:        "",
+    mailUrl:          "",
+    logoUrl:          "",
+    aboutText:        "",
+    faqText:          "",
+    termsText:        "",
+    // Popup
+    popupEnabled:     false as boolean,
+    popupImageUrl:    "",
+    popupVideoUrl:    "",
+    popupTitle:       "",
+    popupDescription: "",
+    popupLinkUrl:     "",
+    popupLinkText:    "Ver ahora",
+    popupDelay:       "1",
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -326,6 +335,137 @@ export default function AdminSettings() {
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
+          </div>
+        </div>
+
+        {/* ── Popup Promocional ── */}
+        <div>
+          <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
+            Popup / Promo Modal
+          </h2>
+
+          {/* Toggle activo */}
+          <div className="flex items-center justify-between p-4 bg-maestro-carbon border border-maestro-bone/10 mb-6">
+            <div>
+              <p className="text-sm text-maestro-bone">Activar Popup</p>
+              <p className="text-[11px] text-maestro-bone/40 mt-1">Cuando esté activo, aparecerá automáticamente al entrar al sitio.</p>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                name="popupEnabled"
+                checked={settings.popupEnabled}
+                onChange={e => setSettings(prev => ({ ...prev, popupEnabled: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-maestro-graphite peer-checked:bg-maestro-gold rounded-full peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+            </label>
+          </div>
+
+          <div className="space-y-6">
+            {/* Delay */}
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Demora antes de aparecer (segundos)</label>
+              <input
+                type="number" name="popupDelay" min="0" max="30"
+                value={settings.popupDelay}
+                onChange={handleChange}
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+
+            {/* Título */}
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título del Popup</label>
+              <input
+                type="text" name="popupTitle" value={settings.popupTitle} onChange={handleChange}
+                placeholder="Ej: Nueva Colección 2025"
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+
+            {/* Descripción */}
+            <div>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción / Mensaje</label>
+              <textarea
+                name="popupDescription" value={settings.popupDescription} onChange={handleChange} rows={3}
+                placeholder="Ej: Descubre las últimas piezas de la temporada. Edición limitada."
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+              />
+            </div>
+
+            {/* CTA */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Texto del Botón (CTA)</label>
+                <input
+                  type="text" name="popupLinkText" value={settings.popupLinkText} onChange={handleChange}
+                  placeholder="Ej: Ver Colección"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link del Botón</label>
+                <input
+                  type="text" name="popupLinkUrl" value={settings.popupLinkUrl} onChange={handleChange}
+                  placeholder="Ej: /collections o /category/chaquetas"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Imagen y Video */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Imagen del Popup</label>
+                <div className="border border-dashed border-maestro-bone/20 p-4 flex flex-col items-center text-center">
+                  {settings.popupImageUrl && (
+                    <img src={settings.popupImageUrl} alt="Popup img" className="h-24 object-cover mb-3 rounded-sm border border-maestro-bone/10" />
+                  )}
+                  <input
+                    name="popupImageFile" type="file" accept="image/*"
+                    className="w-full text-xs text-maestro-bone/60 file:mr-2 file:py-1 file:px-3 file:rounded-sm file:border-0 file:text-xs file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
+                  />
+                  <p className="text-[10px] mt-2 text-maestro-bone/30">Se mostrará si no hay video.</p>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Video del Popup</label>
+                <div className="border border-dashed border-maestro-bone/20 p-4 flex flex-col items-center text-center">
+                  {settings.popupVideoUrl && (
+                    <video src={settings.popupVideoUrl} muted autoPlay loop className="h-24 object-cover mb-3 rounded-sm border border-maestro-bone/10" />
+                  )}
+                  <input
+                    name="popupVideoFile" type="file" accept="video/mp4,video/webm"
+                    className="w-full text-xs text-maestro-bone/60 file:mr-2 file:py-1 file:px-3 file:rounded-sm file:border-0 file:text-xs file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
+                  />
+                  <p className="text-[10px] mt-2 text-maestro-bone/30">El video tiene prioridad sobre la imagen.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Preview */}
+            {(settings.popupTitle || settings.popupImageUrl) && (
+              <div className="border border-maestro-gold/20 p-4 bg-maestro-carbon rounded-sm">
+                <p className="text-[10px] uppercase tracking-widest text-maestro-bone/40 mb-3">Vista previa del Popup</p>
+                <div className="bg-[#0a0a0a] border border-maestro-gold/30 p-6 max-w-xs">
+                  {settings.popupImageUrl && !settings.popupVideoUrl && (
+                    <img src={settings.popupImageUrl} alt="" className="w-full h-32 object-cover mb-4" />
+                  )}
+                  {settings.popupTitle && (
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "1.1rem", color: "#FFF" }}>{settings.popupTitle}</p>
+                  )}
+                  {settings.popupDescription && (
+                    <p className="text-xs text-maestro-bone/50 mt-2">{settings.popupDescription}</p>
+                  )}
+                  {settings.popupLinkText && (
+                    <div className="mt-4 inline-block px-6 py-2 bg-maestro-gold text-maestro-dark text-[9px] uppercase tracking-widest">
+                      {settings.popupLinkText}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

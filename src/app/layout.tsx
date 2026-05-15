@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import CartSidebar from "@/components/cart/CartSidebar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Footer from "@/components/layout/Footer";
+import PromoPopup from "@/components/PromoPopup";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -69,6 +70,7 @@ export default function RootLayout({
             {children}
             <Footer />
             <CartSidebar />
+            <PromoPopup />
           </CartProvider>
         </SmoothScroll>
         <GoogleAnalytics gaId="G-WBGERQEVXC" />

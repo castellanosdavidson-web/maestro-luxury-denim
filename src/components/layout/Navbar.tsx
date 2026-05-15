@@ -204,14 +204,24 @@ export default function Navbar() {
           >
             {/* Header del menú */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "48px" }}>
-              <span style={{
-                fontSize: "1.5rem",
-                fontFamily: "'Playfair Display', Georgia, serif",
-                letterSpacing: "0.15em",
-                color: "#F5F5F5",
-              }}>
-                MAESTRO
-              </span>
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt="MAESTRO"
+                    style={{ height: "52px", width: "auto", objectFit: "contain", maxWidth: "200px" }}
+                  />
+                ) : (
+                  <span style={{
+                    fontSize: "1.5rem",
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    letterSpacing: "0.15em",
+                    color: "#F5F5F5",
+                  }}>
+                    MAESTRO
+                  </span>
+                )}
+              </Link>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={{ background: "none", border: "none", cursor: "pointer", color: "#F5F5F5", padding: "8px" }}
