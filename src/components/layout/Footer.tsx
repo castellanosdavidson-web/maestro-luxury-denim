@@ -64,6 +64,7 @@ export default function Footer() {
               <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40 mb-2">Soporte</h4>
               <Link href="/faq" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">FAQ</Link>
               <Link href="/terms" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Envíos & Retornos</Link>
+              <Link href="/privacy" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Política de Privacidad</Link>
               <Link href="/terms" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Términos Legales</Link>
             </div>
           </div>
