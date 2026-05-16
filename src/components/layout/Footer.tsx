@@ -45,27 +45,27 @@ export default function Footer() {
           <div className="lg:col-span-6 grid grid-cols-2 md:grid-cols-3 gap-10">
             {/* Column 1 */}
             <div className="flex flex-col space-y-4">
-              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40 mb-2">Colecciones</h4>
-              <Link href="/collections" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Ver Todo</Link>
-              <Link href="/category/chaquetas" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Chaquetas</Link>
-              <Link href="/category/pantalones" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Pantalones</Link>
-              <Link href="/category/vestidos" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Vestidos</Link>
+              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/70 mb-2">Colecciones</h4>
+              <Link href="/collections" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Ver Todo</Link>
+              <Link href="/category/chaquetas" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Chaquetas</Link>
+              <Link href="/category/pantalones" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Pantalones</Link>
+              <Link href="/category/vestidos" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Vestidos</Link>
             </div>
             
             {/* Column 2 */}
             <div className="flex flex-col space-y-4">
-              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40 mb-2">Descubre</h4>
-              <Link href="/journal" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">The Journal</Link>
-              <Link href="/about" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Nuestra Historia</Link>
+              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/70 mb-2">Descubre</h4>
+              <Link href="/journal" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">The Journal</Link>
+              <Link href="/about" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Nuestra Historia</Link>
             </div>
 
             {/* Column 3 */}
             <div className="flex flex-col space-y-4">
-              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40 mb-2">Soporte</h4>
-              <Link href="/faq" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">FAQ</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Envíos & Retornos</Link>
-              <Link href="/privacy" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Política de Privacidad</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase hover:text-maestro-gold transition-colors">Términos Legales</Link>
+              <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/70 mb-2">Soporte</h4>
+              <Link href="/faq" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">FAQ</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Envíos & Retornos</Link>
+              <Link href="/privacy" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Política de Privacidad</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Términos Legales</Link>
             </div>
           </div>
         </div>

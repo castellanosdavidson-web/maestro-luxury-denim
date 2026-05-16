@@ -3,12 +3,18 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X } from "lucide-react";
-import { useCart } from "@/context/CartContext";
 
 export default function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const { generateWhatsAppLink } = useCart();
+  const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
+
+  useEffect(() => {
+    // Obtener el número de WhatsApp desde ajustes
+    fetch('/api/settings').then(r => r.json()).then(data => {
+      if (data.whatsappNumber) setWhatsappNumber(data.whatsappNumber.replace(/\D/g, ''));
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     // Aparece después de 3 segundos para no ser intrusivo
@@ -25,8 +31,8 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const handleChat = () => {
-    const link = generateWhatsAppLink();
-    window.open(link, "_blank");
+    const message = encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de MAESTRO Luxury Denim 🖤");
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
   return (
