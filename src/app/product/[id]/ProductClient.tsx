@@ -116,7 +116,7 @@ export default function ProductClient({ product, related = [] }: { product: any;
 
         {/* RIGHT — Panel de info (desktop: sticky, scroll interno) */}
         <div
-          className="w-full lg:w-[42%] lg:sticky lg:top-[80px] lg:h-[calc(100vh-80px)] lg:overflow-y-auto no-scrollbar"
+          className="w-full lg:w-[42%] lg:sticky lg:top-[80px] lg:h-[calc(100vh-80px)] lg:overflow-y-auto"
           style={{ 
             backgroundColor: "#050505", 
             paddingTop: "clamp(2rem, 4vw, 4rem)",
@@ -124,6 +124,7 @@ export default function ProductClient({ product, related = [] }: { product: any;
             paddingRight: "clamp(2rem, 4vw, 4rem)",
             paddingBottom: "140px"
           }}
+          data-lenis-prevent="true"
         >
           <div style={{ maxWidth: "420px", width: "100%", margin: "0 auto" }}>
 
