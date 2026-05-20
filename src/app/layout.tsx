@@ -56,8 +56,9 @@ export const metadata: Metadata = {
   verification: {
     google: "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
   },
+  metadataBase: new URL("https://maestrodeninmluxury.com"),
   alternates: {
-    canonical: "https://maestrodeninmluxury.com",
+    canonical: "/",
   },
 };
 
