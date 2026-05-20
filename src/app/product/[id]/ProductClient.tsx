@@ -116,8 +116,14 @@ export default function ProductClient({ product, related = [] }: { product: any;
 
         {/* RIGHT — Panel de info (desktop: sticky, scroll interno) */}
         <div
-          className="w-full lg:w-[42%] lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto no-scrollbar"
-          style={{ backgroundColor: "#050505", padding: "clamp(2rem, 4vw, 4rem)" }}
+          className="w-full lg:w-[42%] lg:sticky lg:top-[80px] lg:h-[calc(100vh-80px)] lg:overflow-y-auto no-scrollbar"
+          style={{ 
+            backgroundColor: "#050505", 
+            paddingTop: "clamp(2rem, 4vw, 4rem)",
+            paddingLeft: "clamp(2rem, 4vw, 4rem)",
+            paddingRight: "clamp(2rem, 4vw, 4rem)",
+            paddingBottom: "140px"
+          }}
         >
           <div style={{ maxWidth: "420px", width: "100%", margin: "0 auto" }}>
 
