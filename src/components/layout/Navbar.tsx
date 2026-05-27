@@ -117,7 +117,7 @@ export default function Navbar() {
           isScrolled ? "bg-maestro-dark/90 backdrop-blur-md py-4 border-b border-maestro-bone/5" : "bg-transparent py-6"
         )}
       >
-        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+        <div className="container mx-auto px-6 md:px-12 relative flex justify-between items-center">
         {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-maestro-bone hover:text-maestro-gold transition-colors"
@@ -142,7 +142,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden lg:flex space-x-4 xl:space-x-6 items-center text-[10px] xl:text-xs tracking-wider uppercase">
+        <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 space-x-6 xl:space-x-8 items-center text-[10px] xl:text-[11px] tracking-wider uppercase">
           
           {/* Colecciones (Megamenu) */}
           <div className="relative group py-6">
@@ -191,7 +191,7 @@ export default function Navbar() {
                 <Link 
                   key={cat.id} 
                   href={`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} 
-                  className="px-6 py-2.5 text-[10px] tracking-widest uppercase text-maestro-bone/70 hover:text-maestro-gold hover:bg-maestro-bone/5 transition-colors"
+                  className="px-6 py-3 text-[10px] tracking-widest uppercase text-maestro-bone/70 hover:text-maestro-dark hover:bg-maestro-gold transition-all duration-300 font-medium"
                 >
                   {cat.name}
                 </Link>
