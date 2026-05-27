@@ -49,21 +49,27 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: form });
+      
+      if (res.status === 413) {
+        alert("La imagen es demasiado pesada. El tamaño máximo es 4.5MB.");
+        return;
+      }
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        alert(`Error al subir: ${errorText.substring(0, 50)}`);
+        return;
+      }
+
       const data = await res.json();
 
-      if (res.ok && data.url) {
+      if (data.url) {
         const isVideo = file.type.startsWith('video/');
         const snippet = isVideo 
           ? `\n\n<video src="${data.url}" controls loop class="w-full"></video>\n\n`
           : `\n\n![${file.name}](${data.url})\n\n`;
 
-        if (contentRef.current) {
-          // Si estamos usando Quill u otro editor, la mejor forma de inyectar
-          // es agregando la etiqueta HTML al contenido actual.
-          setFormData(prev => ({ ...prev, content: prev.content + snippet }));
-        } else {
-          setFormData(prev => ({ ...prev, content: prev.content + snippet }));
-        }
+        setFormData(prev => ({ ...prev, content: prev.content + snippet }));
       } else {
         alert(data.error || 'Error al subir archivo');
       }
@@ -89,8 +95,19 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
       if (res.ok) {
         router.push("/admin/journal");
       } else {
-        const errorData = await res.json();
-        alert(`Error al guardar: ${errorData.error || 'Desconocido'}`);
+        if (res.status === 413) {
+          alert("Error: La imagen que intentas subir es demasiado pesada. Vercel permite un máximo de 4.5MB. Por favor, comprime tu imagen antes de subirla.");
+          return;
+        }
+        
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await res.json();
+          alert(`Error al guardar: ${errorData.error || 'Desconocido'}`);
+        } else {
+          const errorText = await res.text();
+          alert(`Error del servidor (${res.status}): ${errorText.substring(0, 50)}...`);
+        }
       }
     } catch (err: any) {
       console.error(err);
