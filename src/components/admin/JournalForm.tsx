@@ -202,7 +202,9 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                   modules={{
                     toolbar: [
                       [{ 'header': [1, 2, 3, false] }],
+                      [{ 'size': ['small', false, 'large', 'huge'] }],
                       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                      [{ 'align': [] }],
                       [{'list': 'ordered'}, {'list': 'bullet'}],
                       ['link', 'clean']
                     ],

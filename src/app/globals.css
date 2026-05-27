@@ -195,6 +195,12 @@ body {
   overflow-wrap: break-word; /* allows long links to break */
 }
 
+/* Soporte para alineación del editor visual */
+.ql-editor-content .ql-align-center { text-align: center !important; }
+.ql-editor-content .ql-align-right { text-align: right !important; }
+.ql-editor-content .ql-align-justify { text-align: justify !important; }
+.ql-editor-content .ql-size-small { font-size: 0.75em !important; }
+
 @media (min-width: 768px) {
   .ql-editor-content {
     font-size: 1rem; /* 16px */
