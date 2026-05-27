@@ -3,7 +3,8 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const formData = await req.formData();
 
   const name        = formData.get("name") as string;
@@ -29,7 +30,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   const { data, error } = await supabaseAdmin
     .from("partners")
     .update({ name, website_url, logo_url, status })
-    .eq("id", params.id)
+    .eq("id", id)
     .select()
     .single();
 
@@ -37,11 +38,12 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   return NextResponse.json(data);
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const { error } = await supabaseAdmin
     .from("partners")
     .delete()
-    .eq("id", params.id);
+    .eq("id", id);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
