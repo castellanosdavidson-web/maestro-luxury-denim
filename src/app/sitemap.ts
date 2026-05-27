@@ -40,13 +40,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const { data: products } = await supabaseAdmin
       .from('products')
-      .select('id, updated_at')
+      .select('id, slug, category_id, updated_at')
       .eq('status', 'Activo');
 
     if (products) {
       products.forEach((product) => {
         routes.push({
-          url: `${DOMAIN}/product/${product.id}`,
+          url: `${DOMAIN}/${product.category_id}/${product.slug}`,
           lastModified: new Date(product.updated_at || new Date()),
           changeFrequency: 'daily',
           priority: 0.9,

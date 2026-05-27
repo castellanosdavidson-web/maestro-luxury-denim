@@ -31,7 +31,7 @@ function AnimatedCard({ p, i }: { p: any; i: number }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: (i % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Link href={`/product/${p.id}`} className="group block cursor-pointer">
+      <Link href={`/${p.category_id}/${p.slug}`} className="group block cursor-pointer">
         <div className="relative overflow-hidden aspect-[3/4] bg-maestro-carbon mb-4">
           <img
             src={p.image || ""}

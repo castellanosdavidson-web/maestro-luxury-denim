@@ -74,7 +74,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
             {products.map((product) => (
               <Link
                 key={product.id}
-                href={dragging ? "#" : `/product/${product.id}`}
+                href={dragging ? "#" : `/${product.category_id}/${product.slug}`}
                 onClick={e => dragging && e.preventDefault()}
                 className="group relative w-full flex-shrink-0 overflow-hidden bg-maestro-dark"
                 style={{ height: "65vw", minHeight: 260, maxHeight: 480 }}
@@ -158,7 +158,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
             {products.map((product) => (
               <Link
                 key={product.id}
-                href={`/product/${product.id}`}
+                href={`/${product.category_id}/${product.slug}`}
                 className="group relative w-[35vw] lg:w-[25vw] h-[70vh] flex-shrink-0 cursor-pointer overflow-hidden bg-maestro-dark"
               >
                 <img

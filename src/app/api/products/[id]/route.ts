@@ -24,8 +24,10 @@ export async function PUT(
     const { id } = await params;
     const formData = await request.formData();
 
+    const nameStr = formData.get('name') as string;
     const baseUpdates: Record<string, any> = {
-      name:        formData.get('name'),
+      name:        nameStr,
+      slug:        nameStr ? nameStr.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + id.substring(0,4) : undefined,
       reference:   formData.get('reference'),
       price:       formData.get('price'),
       description: formData.get('description'),

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import ProductClient from "./ProductClient";
 import { supabaseAdmin } from "@/lib/supabase";
 
@@ -8,12 +8,12 @@ export const revalidate = 0;
 
 const DOMAIN = "https://maestrodeninmluxury.com";
 
-async function getProduct(id: string) {
+async function getProduct(slug: string) {
   try {
     const { data, error } = await supabaseAdmin
       .from('products')
       .select('*')
-      .eq('id', id)
+      .eq('slug', slug)
       .single();
     if (error || !data) return null;
     return data;
@@ -27,7 +27,7 @@ async function getRelatedProducts(categoryId: string, currentId: string) {
   try {
     const { data, error } = await supabaseAdmin
       .from('products')
-      .select('id, name, price, image, category_id, reference')
+      .select('id, slug, name, price, image, category_id, reference')
       .eq('status', 'Activo')
       .neq('id', currentId)
       .order('created_at', { ascending: false })
@@ -61,15 +61,15 @@ async function getRelatedProducts(categoryId: string, currentId: string) {
 
 // ── Metadata dinámica por producto ──────────────────────────
 export async function generateMetadata(
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ category: string, slug: string }> }
 ): Promise<Metadata> {
-  const { id } = await params;
-  const product = await getProduct(id);
-  if (!product) return { title: "Producto | MAESTRO" };
+  const { category, slug } = await params;
+  const product = await getProduct(slug);
+  
+  if (!product || product.category_id !== category) return { title: "Producto | MAESTRO" };
 
   const name      = product.name || product.reference;
   const price     = Number(product.price).toLocaleString("es-CO");
-  const category  = (product.category_id || "").replace(/-/g, " ");
   const desc      = product.description
     || `${name} — Denim premium de lujo. Ref: ${product.reference}. Tallas disponibles: ${(product.sizes || []).join(", ")}.`;
   const image     = product.image || `${DOMAIN}/og-default.jpg`;
@@ -79,12 +79,12 @@ export async function generateMetadata(
     description: desc,
     keywords:    [
       name, "denim premium", "jeans de lujo", "moda mujer Colombia",
-      category, "maestro denim", product.reference,
+      category.replace(/-/g, " "), "maestro denim", product.reference,
     ].filter(Boolean),
     openGraph: {
       title:       `${name} — $${price} COP | MAESTRO`,
       description: desc,
-      url:         `${DOMAIN}/product/${id}`,
+      url:         `${DOMAIN}/${category}/${slug}`,
       siteName:    "MAESTRO Luxury Denim",
       images:      [{ url: image, width: 1200, height: 1500, alt: name }],
       locale:      "es_CO",
@@ -97,13 +97,13 @@ export async function generateMetadata(
       images:      [image],
     },
     alternates: {
-      canonical: `${DOMAIN}/product/${id}`,
+      canonical: `${DOMAIN}/${category}/${slug}`,
     },
   };
 }
 
 // ── JSON-LD Schema.org para Google Shopping / Rich Results ──
-function ProductJsonLd({ product }: { product: any }) {
+function ProductJsonLd({ product, category, slug }: { product: any, category: string, slug: string }) {
   const name    = product.name || product.reference;
   const price   = Number(product.price);
   const image   = product.image || `${DOMAIN}/og-default.jpg`;
@@ -123,7 +123,7 @@ function ProductJsonLd({ product }: { product: any }) {
     },
     offers: {
       "@type":         "Offer",
-      url:             `${DOMAIN}/product/${product.id}`,
+      url:             `${DOMAIN}/${category}/${slug}`,
       priceCurrency:   "COP",
       price:           price,
       priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
@@ -145,17 +145,28 @@ function ProductJsonLd({ product }: { product: any }) {
   );
 }
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id }    = await params;
-  const product   = await getProduct(id);
+export default async function ProductPage({ params }: { params: Promise<{ category: string, slug: string }> }) {
+  const { category, slug } = await params;
+  
+  // Lista de categorías válidas para no interferir con otras páginas del sistema
+  const validCategories = [
+    'chaquetas', 'gabardinas', 'chalecos', 'blusas-y-corset', 
+    'faldas', 'vestidos', 'pantalones', 'enterizo', 'ediciones-especiales'
+  ];
+  
+  if (!validCategories.includes(category)) {
+    return notFound();
+  }
 
-  if (!product) return notFound();
+  const product = await getProduct(slug);
+
+  if (!product || product.category_id !== category) return notFound();
 
   const related = await getRelatedProducts(product.category_id, product.id);
 
   return (
     <>
-      <ProductJsonLd product={product} />
+      <ProductJsonLd product={product} category={category} slug={slug} />
       <ProductClient product={product} related={related} />
     </>
   );

@@ -24,7 +24,7 @@ function RelatedCard({ product, index }: { product: any; index: number }) {
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Link href={`/product/${product.id}`} className="group block">
+      <Link href={`/${product.category_id}/${product.slug}`} className="group block">
         <div className="relative overflow-hidden aspect-[3/4] bg-maestro-carbon mb-4">
           {product.image ? (
             <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105" />
@@ -87,7 +87,7 @@ export default function ProductClient({ product, related = [] }: { product: any;
             style={{ fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245,245,245,0.4)" }}>
             <Link href="/" style={{ color: "rgba(245,245,245,0.4)" }} className="hover:text-maestro-gold transition-colors">Inicio</Link>
             <ChevronRight size={10} />
-            <Link href="/collections" style={{ color: "rgba(245,245,245,0.4)" }} className="hover:text-maestro-gold transition-colors">Colección</Link>
+            <Link href={`/category/${product.category_id}`} style={{ color: "rgba(245,245,245,0.4)" }} className="hover:text-maestro-gold transition-colors">{toLabel(product.category_id)}</Link>
             <ChevronRight size={10} />
             <span style={{ color: "#F5F5F5" }}>{productName}</span>
           </div>

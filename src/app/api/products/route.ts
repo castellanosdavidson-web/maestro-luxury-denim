@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
 
     const name        = formData.get('name') as string;
+    const slug        = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substr(2, 4);
     const price       = parseFloat(formData.get('price') as string) || 0;
     const description = (formData.get('description') as string) || '';
     const reference   = (formData.get('reference') as string) || '';
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const basePayload = { name, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl, material };
+    const basePayload = { name, slug, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl, material };
 
     // Intentar insertar con campos de posición
     let { data, error } = await supabaseAdmin

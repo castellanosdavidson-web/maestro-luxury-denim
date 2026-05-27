@@ -64,7 +64,7 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
       transition={{ duration: 0.6, delay: (i % 4) * 0.05, ease: [0.22, 1, 0.36, 1] }}
       className={col}
     >
-      <Link href={`/product/${p.id}`} className="group block">
+      <Link href={`/${p.category_id}/${p.slug}`} className="group block">
         <div className={`relative w-full overflow-hidden bg-maestro-carbon ${hClass}`}>
           <img
             src={p.image || "/og-default.jpg"}
