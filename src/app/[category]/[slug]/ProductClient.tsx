@@ -8,6 +8,7 @@ import { ChevronRight, Ruler, ArrowRight } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
 import ProductGallery from "@/components/product/ProductGallery";
+import ShareButtons from "@/components/ui/ShareButtons";
 
 function toLabel(slug: string) {
   return slug?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) || "";
@@ -252,6 +253,11 @@ export default function ProductClient({ product, related = [] }: { product: any;
                 </ul>
               </div>
             )}
+
+            {/* Compartir Producto */}
+            <div className="-mx-4 md:mx-0">
+              <ShareButtons title={productName} text={product.description} label="Compartir:" />
+            </div>
           </div>
         </div>
       </div>

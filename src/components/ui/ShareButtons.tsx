@@ -16,7 +16,7 @@ const TwitterIcon = ({ size = 20, className = "" }: { size?: number, className?:
 );
 import { motion } from "framer-motion";
 
-export default function ShareButtons({ title, text }: { title: string, text?: string }) {
+export default function ShareButtons({ title, text, label = "Compartir Artículo:" }: { title: string, text?: string, label?: string }) {
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -42,7 +42,7 @@ export default function ShareButtons({ title, text }: { title: string, text?: st
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 py-8 border-t border-b border-maestro-bone/10 my-16">
-      <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone/50 md:mr-4 w-full md:w-auto text-center">Compartir Artículo:</span>
+      <span className="text-[10px] uppercase tracking-[0.2em] text-maestro-bone/50 md:mr-4 w-full md:w-auto text-center">{label}</span>
       
       <a 
         href={shareLinks.whatsapp} 
