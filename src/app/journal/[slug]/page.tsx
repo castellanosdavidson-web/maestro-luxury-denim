@@ -147,7 +147,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         )}
 
         {/* HTML Renderer with Custom Components & Animations */}
-        <div className="max-w-3xl mx-auto ql-editor-content">
+        <div className="max-w-4xl mx-auto ql-editor-content">
           {parse(post.content || "", {
             replace: (domNode: any) => {
               if (domNode.type === 'tag') {
@@ -156,23 +156,23 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
                   if (hasMedia) return <>{domToReact(domNode.children)}</>;
                   return (
                     <FadeIn>
-                      <p className="text-maestro-bone/80 font-light leading-loose text-justify text-sm md:text-base mb-8">
+                      <p>
                         {domToReact(domNode.children)}
                       </p>
                     </FadeIn>
                   );
                 }
                 if (domNode.name === 'h1') {
-                  return <FadeIn><h1 className="text-4xl md:text-5xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center">{domToReact(domNode.children)}</h1></FadeIn>;
+                  return <FadeIn><h1>{domToReact(domNode.children)}</h1></FadeIn>;
                 }
                 if (domNode.name === 'h2') {
-                  return <FadeIn><h2 className="text-3xl md:text-4xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center">{domToReact(domNode.children)}</h2></FadeIn>;
+                  return <FadeIn><h2>{domToReact(domNode.children)}</h2></FadeIn>;
                 }
                 if (domNode.name === 'h3') {
-                  return <FadeIn><h3 className="text-xl md:text-2xl text-editorial text-maestro-gold mt-12 mb-6 uppercase tracking-widest">{domToReact(domNode.children)}</h3></FadeIn>;
+                  return <FadeIn><h3>{domToReact(domNode.children)}</h3></FadeIn>;
                 }
                 if (domNode.name === 'blockquote') {
-                  return <FadeIn><blockquote className="my-16 md:my-24 py-8 md:py-12 border-t border-b border-maestro-bone/10 text-center text-3xl md:text-5xl text-editorial text-maestro-gold leading-tight italic">{domToReact(domNode.children)}</blockquote></FadeIn>;
+                  return <FadeIn><blockquote>{domToReact(domNode.children)}</blockquote></FadeIn>;
                 }
                 if (domNode.name === 'img') {
                   return (
