@@ -9,6 +9,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import FloatingWhatsApp from "@/components/layout/FloatingWhatsApp";
+import PartnersCarousel from "@/components/layout/PartnersCarousel";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -73,6 +74,7 @@ export default function RootLayout({
         <SmoothScroll>
           <CartProvider>
             {children}
+            <PartnersCarousel />
             <Footer />
             <CartSidebar />
             <PromoPopup />

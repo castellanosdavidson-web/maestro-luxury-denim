@@ -46,6 +46,7 @@ export default function Navbar() {
   const { totalItems, setIsCartOpen } = useCart();
   const [mounted, setMounted] = useState(false);
   const [megamenuItems, setMegamenuItems] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -63,6 +64,11 @@ export default function Navbar() {
     // Fetch dinámico del megamenu
     fetch('/api/megamenu').then(res => res.json()).then(data => {
       if (data.items) setMegamenuItems(data.items);
+    });
+
+    // Fetch dinámico de todas las categorías
+    fetch('/api/categories').then(res => res.json()).then(data => {
+      if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || !c.status));
     });
 
     // Fetch para logo
@@ -96,14 +102,10 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Colecciones", href: "/collections" },
-    { name: "Blusas y Corset", href: "/category/blusas-y-corset" },
-    { name: "Chaquetas", href: "/category/chaquetas" },
-    { name: "Gabardinas", href: "/category/gabardinas" },
-    { name: "Chalecos", href: "/category/chalecos" },
-    { name: "Faldas", href: "/category/faldas" },
-    { name: "Vestidos", href: "/category/vestidos" },
-    { name: "Pantalones", href: "/category/pantalones" },
-    { name: "Enterizo", href: "/category/enterizo" },
+    ...categories.map(c => ({ 
+      name: c.name, 
+      href: `/category/${c.name.toLowerCase().replace(/\s+/g, '-')}` 
+    })),
     { name: "The Journal", href: "/journal" },
   ];
 
@@ -141,62 +143,69 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex space-x-4 xl:space-x-6 items-center text-[10px] xl:text-xs tracking-wider uppercase">
-          {navLinks.map((link) => {
-            if (link.name === "Colecciones") {
-              return (
-                <div 
-                  key={link.name}
-                  className="relative group py-6"
-                >
-                  <Link
-                    href={link.href}
-                    className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap peer"
-                  >
-                    {link.name}
-                  </Link>
-                  {/* Megamenu Panel */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out transform group-hover:translate-y-0 translate-y-4 flex">
-                    <div className="w-1/3 bg-maestro-carbon/50 p-8 flex flex-col justify-between border-r border-maestro-bone/5">
-                      <div>
-                        <h3 className="text-editorial text-2xl text-maestro-bone mb-2">Colección</h3>
-                        <p className="text-maestro-bone/60 text-xs font-light tracking-wide leading-relaxed">
-                          Descubre todas las piezas de nuestra última campaña. Denim premium diseñado para empoderar.
-                        </p>
-                      </div>
-                      <Link href="/collections" className="text-[10px] uppercase tracking-widest text-maestro-gold hover:text-maestro-bone flex items-center gap-2 transition-colors">
-                        Ver Colección Completa <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                    <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
-                      {(megamenuItems.length > 0 ? megamenuItems : [
-                        { name: "Chaquetas", imgs: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600"], href: "/category/chaquetas" },
-                        { name: "Vestidos", imgs: ["https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600"], href: "/category/vestidos" },
-                        { name: "Enterizos", imgs: ["https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600"], href: "/category/enterizo" }
-                      ]).slice(0,3).map((item: any) => (
-                        <Link href={item.href} key={item.name} className="group/item flex flex-col">
-                          <div className="aspect-[3/4] mb-3 overflow-hidden relative">
-                            <MegamenuImageRotate imgs={item.imgs || (item.img ? [item.img] : [])} alt={item.name} />
-                          </div>
-                          <p className="text-[10px] uppercase tracking-widest text-maestro-bone text-center group-hover/item:text-maestro-gold transition-colors mt-auto">{item.name}</p>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+          
+          {/* Colecciones (Megamenu) */}
+          <div className="relative group py-6">
+            <Link
+              href="/collections"
+              className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap peer"
+            >
+              Colecciones
+            </Link>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out transform group-hover:translate-y-0 translate-y-4 flex">
+              <div className="w-1/3 bg-maestro-carbon/50 p-8 flex flex-col justify-between border-r border-maestro-bone/5">
+                <div>
+                  <h3 className="text-editorial text-2xl text-maestro-bone mb-2">Colección</h3>
+                  <p className="text-maestro-bone/60 text-xs font-light tracking-wide leading-relaxed">
+                    Descubre todas las piezas de nuestra última campaña. Denim premium diseñado para empoderar.
+                  </p>
                 </div>
-              );
-            }
-            
-            // Resto de los enlaces
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap"
-              >
-                {link.name}
-              </Link>
-            );
-          })}
+                <Link href="/collections" className="text-[10px] uppercase tracking-widest text-maestro-gold hover:text-maestro-bone flex items-center gap-2 transition-colors">
+                  Ver Colección Completa <ArrowRight size={14} />
+                </Link>
+              </div>
+              <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
+                {(megamenuItems.length > 0 ? megamenuItems : [
+                  { name: "Chaquetas", imgs: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600"], href: "/category/chaquetas" },
+                  { name: "Vestidos", imgs: ["https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600"], href: "/category/vestidos" },
+                  { name: "Enterizos", imgs: ["https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600"], href: "/category/enterizo" }
+                ]).slice(0,3).map((item: any) => (
+                  <Link href={item.href} key={item.name} className="group/item flex flex-col">
+                    <div className="aspect-[3/4] mb-3 overflow-hidden relative">
+                      <MegamenuImageRotate imgs={item.imgs || (item.img ? [item.img] : [])} alt={item.name} />
+                    </div>
+                    <p className="text-[10px] uppercase tracking-widest text-maestro-bone text-center group-hover/item:text-maestro-gold transition-colors mt-auto">{item.name}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Tienda (Dropdown) */}
+          <div className="relative group py-6">
+            <span className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 cursor-pointer whitespace-nowrap peer">
+              Tienda
+            </span>
+            <div className="absolute top-full left-0 w-56 bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform group-hover:translate-y-0 translate-y-4 flex flex-col py-4">
+              {categories.map(cat => (
+                <Link 
+                  key={cat.id} 
+                  href={`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} 
+                  className="px-6 py-2.5 text-[10px] tracking-widest uppercase text-maestro-bone/70 hover:text-maestro-gold hover:bg-maestro-bone/5 transition-colors"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Journal */}
+          <Link
+            href="/journal"
+            className="text-maestro-bone/80 hover:text-maestro-gold transition-colors duration-300 whitespace-nowrap"
+          >
+            The Journal
+          </Link>
         </div>
 
         {/* Actions */}

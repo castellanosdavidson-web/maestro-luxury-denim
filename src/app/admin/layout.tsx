@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { LayoutDashboard, Package, Tag, Settings, LogOut, FileText, Star } from "lucide-react";
+import { LayoutDashboard, Package, Tag, Settings, LogOut, FileText, Star, Handshake } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router   = useRouter();
@@ -14,6 +14,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Categorías",         href: "/admin/categories",      icon: Tag },
     { name: "The Journal",        href: "/admin/journal",         icon: FileText },
     { name: "Maestros del Estilo",href: "/admin/success-cases",   icon: Star },
+    { name: "Alianzas",           href: "/admin/partners",        icon: Handshake },
     { name: "Configuración",      href: "/admin/settings",        icon: Settings },
   ];
 
