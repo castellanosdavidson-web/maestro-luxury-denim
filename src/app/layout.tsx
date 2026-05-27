@@ -97,7 +97,7 @@ export default function RootLayout({
             "priceRange": "$$$",
           }) }}
         />
-        <GoogleAnalytics gaId="G-WBGERQEVXC" />
+        <GoogleAnalytics gaId="G-9JMFC48JT9" />
         <GoogleTagManager gtmId="GTM-W46D2X6G" />
       </body>
     </html>
