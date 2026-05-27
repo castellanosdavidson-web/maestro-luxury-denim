@@ -31,7 +31,7 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const handleChat = () => {
-    const message = encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de MAESTRO Luxury Denim");
+    const message = encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury");
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
   };
 
