@@ -7,7 +7,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+const Editor = dynamic(() => import("./Editor"), { ssr: false });
 
 export default function JournalForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
@@ -193,16 +193,16 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 Puedes copiar y pegar imágenes directamente en el texto, o usar el botón para insertar en la posición del cursor.
               </p>
               <div className="bg-maestro-bone/5 border border-maestro-bone/20 text-maestro-bone">
-                <ReactQuill 
+                <Editor 
                   {...{ ref: quillRef }}
                   theme="snow" 
                   value={formData.content} 
-                  onChange={(val) => setFormData({ ...formData, content: val })}
+                  onChange={(val: string) => setFormData({ ...formData, content: val })}
                   className="h-80 mb-12 text-maestro-bone"
                   modules={{
                     toolbar: [
                       [{ 'header': [1, 2, 3, false] }],
-                      [{ 'size': ['small', false, 'large', 'huge'] }],
+                      [{ 'size': ['10px', '11px', '12px', '12.5px', '13px', '14px', '15px', '16px', '18px', '20px', '24px', '30px', '36px'] }],
                       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                       [{ 'align': [] }],
                       [{'list': 'ordered'}, {'list': 'bullet'}],

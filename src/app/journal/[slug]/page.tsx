@@ -151,29 +151,6 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
           {parse(post.content || "", {
             replace: (domNode: any) => {
               if (domNode.type === 'tag') {
-                if (domNode.name === 'p') {
-                  const hasMedia = domNode.children?.some((child: any) => child.name === 'img' || child.name === 'video' || child.name === 'iframe');
-                  if (hasMedia) return <>{domToReact(domNode.children)}</>;
-                  return (
-                    <FadeIn>
-                      <p>
-                        {domToReact(domNode.children)}
-                      </p>
-                    </FadeIn>
-                  );
-                }
-                if (domNode.name === 'h1') {
-                  return <FadeIn><h1>{domToReact(domNode.children)}</h1></FadeIn>;
-                }
-                if (domNode.name === 'h2') {
-                  return <FadeIn><h2>{domToReact(domNode.children)}</h2></FadeIn>;
-                }
-                if (domNode.name === 'h3') {
-                  return <FadeIn><h3>{domToReact(domNode.children)}</h3></FadeIn>;
-                }
-                if (domNode.name === 'blockquote') {
-                  return <FadeIn><blockquote>{domToReact(domNode.children)}</blockquote></FadeIn>;
-                }
                 if (domNode.name === 'img') {
                   return (
                     <FadeIn>

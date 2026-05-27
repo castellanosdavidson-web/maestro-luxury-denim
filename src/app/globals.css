@@ -192,7 +192,9 @@ body {
   line-height: 1.8; /* improved readability */
   text-align: left;
   font-size: 0.9375rem; /* 15px */
-  overflow-wrap: break-word; /* allows long links to break */
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  hyphens: none !important;
 }
 
 /* Soporte para alineación del editor visual */
