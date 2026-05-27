@@ -177,7 +177,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
                 if (domNode.name === 'img') {
                   return (
                     <FadeIn>
-                      <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative">
+                      <span className="block my-16 w-full relative overflow-hidden rounded-md">
                         <img src={domNode.attribs?.src} alt={domNode.attribs?.alt || ''} className="w-full h-auto object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000" />
                       </span>
                     </FadeIn>
@@ -186,7 +186,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
                 if (domNode.name === 'video') {
                   return (
                     <FadeIn>
-                      <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative bg-maestro-carbon">
+                      <span className="block my-16 w-full relative bg-maestro-carbon overflow-hidden rounded-md">
                         <video src={domNode.attribs?.src} controls loop className="w-full h-auto" />
                       </span>
                     </FadeIn>
