@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LayoutGrid } from "lucide-react";
+import { LayoutGrid, Plus } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AdminCategories() {
@@ -18,7 +18,26 @@ export default function AdminCategories() {
   const fetchCategories = async () => {
     const res  = await fetch('/api/categories');
     const data = await res.json();
-    setCategories(data);
+    setCategories(Array.isArray(data) ? data : []);
+  };
+
+  const handleCreateCategory = async () => {
+    const name = window.prompt("Nombre de la nueva categoría (ej: Ediciones Especiales):");
+    if (!name) return;
+
+    const res = await fetch('/api/categories/new', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name })
+    });
+
+    if (res.ok) {
+      showToast('Categoría creada con éxito ✓');
+      fetchCategories();
+    } else {
+      const data = await res.json();
+      showToast(`Error al crear: ${data.error || 'Desconocido'}`);
+    }
   };
 
   return (
@@ -29,11 +48,21 @@ export default function AdminCategories() {
         </div>
       )}
 
-      <h1 className="text-3xl text-editorial text-maestro-bone mb-3">Gestión de Categorías</h1>
-      <p className="text-maestro-bone/40 text-sm mb-8">
-        Cada categoría tiene <strong className="text-maestro-bone/70">dos imágenes</strong>: la imagen principal
-        (que aparece en el Home) y la imagen del popup del menú al pasar el cursor por &quot;Colecciones&quot;.
-      </p>
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h1 className="text-3xl text-editorial text-maestro-bone mb-3">Gestión de Categorías</h1>
+          <p className="text-maestro-bone/40 text-sm">
+            Cada categoría tiene <strong className="text-maestro-bone/70">dos imágenes</strong>: la imagen principal
+            (que aparece en el Home) y la imagen del popup del menú al pasar el cursor por &quot;Colecciones&quot;.
+          </p>
+        </div>
+        <button
+          onClick={handleCreateCategory}
+          className="flex items-center gap-2 bg-maestro-gold text-black px-5 py-2.5 text-xs tracking-widest uppercase hover:bg-white transition-colors flex-shrink-0"
+        >
+          <Plus size={14} /> Nueva Categoría
+        </button>
+      </div>
 
       <div className="space-y-4">
         {categories.map(c => (
