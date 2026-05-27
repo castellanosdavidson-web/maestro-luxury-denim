@@ -108,13 +108,14 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
-      className={clsx(
-        "fixed top-0 w-full z-50 transition-all duration-500",
-        isScrolled ? "bg-maestro-dark/90 backdrop-blur-md py-4 border-b border-maestro-bone/5" : "bg-transparent py-6"
-      )}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
+    <>
+      <nav
+        className={clsx(
+          "fixed top-0 w-full z-50 transition-all duration-500",
+          isScrolled ? "bg-maestro-dark/90 backdrop-blur-md py-4 border-b border-maestro-bone/5" : "bg-transparent py-6"
+        )}
+      >
+        <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
         {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-maestro-bone hover:text-maestro-gold transition-colors"
@@ -310,8 +311,10 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
+      </nav>
+
       {/* Search Overlay */}
       <SearchOverlay open={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-    </nav>
+    </>
   );
 }
