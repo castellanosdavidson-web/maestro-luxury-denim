@@ -15,10 +15,12 @@ const InstagramIcon = ({ size = 24, className = "" }: { size?: number, className
 export default function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
+  const [instagramUrl, setInstagramUrl] = useState("https://www.instagram.com/maestrodenimluxury");
 
   useEffect(() => {
-    // Si necesitas fetchear configuraciones, aquí se haría.
+    fetch('/api/settings').then(r => r.json()).then(data => {
+      if (data.instagramUrl) setInstagramUrl(data.instagramUrl);
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const handleChat = () => {
-    window.open("https://www.instagram.com/maestrodeninmluxury", "_blank");
+    window.open(instagramUrl, "_blank");
   };
 
   return (

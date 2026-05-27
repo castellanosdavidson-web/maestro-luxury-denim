@@ -56,6 +56,7 @@ export default function Navbar() {
   const [megamenuItems, setMegamenuItems] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [instagramUrl, setInstagramUrl] = useState("https://www.instagram.com/maestrodenimluxury");
 
   useEffect(() => {
     setMounted(true);
@@ -79,9 +80,10 @@ export default function Navbar() {
       if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || c.status === "Activa" || !c.status));
     });
 
-    // Fetch para logo
+    // Fetch para logo y redes
     fetch('/api/settings').then(res => res.json()).then(data => {
       if (data.logoUrl) setLogoUrl(data.logoUrl);
+      if (data.instagramUrl) setInstagramUrl(data.instagramUrl);
     });
 
     return () => {
@@ -220,7 +222,7 @@ export default function Navbar() {
         <div className="flex space-x-5 items-center">
           {/* Social Links for visibility */}
           <a 
-            href="https://www.instagram.com/maestrodeninmluxury" 
+            href={instagramUrl} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="hidden md:block text-maestro-bone hover:text-maestro-gold transition-colors"
@@ -334,7 +336,7 @@ export default function Navbar() {
             {/* Footer del menú */}
             <div style={{ marginTop: "auto", paddingTop: "48px" }}>
               <div style={{ display: "flex", gap: "24px", marginBottom: "24px" }}>
-                <a href="https://www.instagram.com/maestrodeninmluxury" target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
                   <InstagramIcon size={24} />
                 </a>
               </div>
