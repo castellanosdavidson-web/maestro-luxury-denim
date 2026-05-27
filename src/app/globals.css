@@ -316,3 +316,16 @@ body {
 .ql-editor.ql-blank::before {
   color: rgba(245, 245, 245, 0.4) !important;
 }
+.ql-snow .ql-picker-options {
+  background-color: #111111 !important; /* maestro-carbon */
+  border: 1px solid rgba(245, 245, 245, 0.2) !important;
+}
+.ql-snow .ql-picker-item {
+  color: rgba(245, 245, 245, 0.7) !important;
+}
+.ql-snow .ql-picker-item:hover, .ql-snow .ql-picker-item.ql-selected {
+  color: #D4AF37 !important; /* maestro-gold */
+}
+.ql-snow .ql-picker-label:hover {
+  color: #D4AF37 !important;
+}
