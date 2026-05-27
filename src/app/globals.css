@@ -191,7 +191,7 @@ body {
   font-weight: 300; /* font-light */
   line-height: 2.2; /* leading-loose */
   text-align: left;
-  font-size: 1rem;
+  font-size: 0.9375rem; /* 15px */
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -199,7 +199,7 @@ body {
 
 @media (min-width: 768px) {
   .ql-editor-content {
-    font-size: 1.125rem; /* md:text-lg */
+    font-size: 1rem; /* 16px */
   }
 }
 
