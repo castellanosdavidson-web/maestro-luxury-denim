@@ -8,6 +8,7 @@ import { motion, useInView } from "framer-motion";
 
 interface Product {
   id: string;
+  slug: string;
   name: string;
   reference: string;
   price: number;

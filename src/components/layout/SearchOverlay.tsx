@@ -6,6 +6,7 @@ import { Search, X, ArrowRight, Loader2 } from "lucide-react";
 
 interface Product {
   id: string;
+  slug: string;
   name: string;
   reference: string;
   price: number;
