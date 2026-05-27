@@ -194,7 +194,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
               </p>
               <div className="bg-maestro-bone/5 border border-maestro-bone/20 text-maestro-bone">
                 <ReactQuill 
-                  ref={quillRef}
+                  {...{ ref: quillRef }}
                   theme="snow" 
                   value={formData.content} 
                   onChange={(val) => setFormData({ ...formData, content: val })}
