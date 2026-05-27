@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 
   const { data, error } = await supabaseAdmin
     .from("products")
-    .select("id, name, reference, price, image, category_id, status")
+    .select("id, slug, name, reference, price, image, category_id, status")
     .eq("status", "Activo")
     .or(`name.ilike.${term},reference.ilike.${term},category_id.ilike.${term},description.ilike.${term}`)
     .order("created_at", { ascending: false })
