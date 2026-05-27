@@ -80,14 +80,14 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
             <div>
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 flex justify-between">
-                <span>Contenido Principal</span>
-                <span className="text-[10px] text-maestro-bone/40">Soporta múltiples párrafos</span>
+                <span>Contenido Principal (Markdown)</span>
+                <span className="text-[10px] text-maestro-bone/40">Soporta: **negrita**, &gt; Citas Gigantes, ![alt](url) para fotos</span>
               </label>
               <textarea
-                name="content" rows={12} required
+                name="content" rows={15} required
                 value={formData.content} onChange={handleChange}
-                placeholder="Escribe la historia o artículo aquí..."
-                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none font-light leading-relaxed"
+                placeholder="Escribe la historia o artículo aquí usando Markdown..."
+                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-4 text-sm text-maestro-bone focus:border-maestro-gold outline-none font-mono font-light leading-relaxed resize-y"
               />
             </div>
           </div>
