@@ -145,9 +145,10 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
                 <h3 className="text-xl md:text-2xl text-editorial text-maestro-gold mt-12 mb-6 uppercase tracking-widest" {...props} />
               ),
               blockquote: ({ node, ...props }) => (
-                <blockquote className="my-16 md:my-24 py-8 md:py-12 border-t border-b border-maestro-bone/10 text-center">
-                  <p className="text-3xl md:text-5xl text-editorial text-maestro-gold leading-tight italic" {...props} />
-                </blockquote>
+                <blockquote 
+                  className="my-16 md:my-24 py-8 md:py-12 border-t border-b border-maestro-bone/10 text-center text-3xl md:text-5xl text-editorial text-maestro-gold leading-tight italic" 
+                  {...props} 
+                />
               ),
               img: ({ node, ...props }) => (
                 <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative">
