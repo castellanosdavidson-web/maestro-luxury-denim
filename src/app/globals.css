@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -171,4 +172,29 @@ body {
   html {
     font-family: var(--font-inter, Inter, sans-serif);
   }
+}
+
+/* React Quill Dark Mode Overrides */
+.ql-toolbar.ql-snow {
+  border-color: rgba(245, 245, 245, 0.2) !important;
+  background-color: rgba(245, 245, 245, 0.05) !important;
+}
+.ql-container.ql-snow {
+  border-color: rgba(245, 245, 245, 0.2) !important;
+}
+.ql-snow .ql-stroke {
+  stroke: rgba(245, 245, 245, 0.8) !important;
+}
+.ql-snow .ql-fill {
+  fill: rgba(245, 245, 245, 0.8) !important;
+}
+.ql-snow .ql-picker {
+  color: rgba(245, 245, 245, 0.8) !important;
+}
+.ql-editor {
+  font-family: var(--font-inter, sans-serif);
+  color: #F5F5F5 !important;
+}
+.ql-editor.ql-blank::before {
+  color: rgba(245, 245, 245, 0.4) !important;
 }

@@ -4,6 +4,10 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Upload, ArrowLeft, ImagePlus } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function JournalForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
@@ -54,22 +58,9 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
           : `\n\n![${file.name}](${data.url})\n\n`;
 
         if (contentRef.current) {
-          const start = contentRef.current.selectionStart;
-          const end = contentRef.current.selectionEnd;
-          const currentContent = formData.content;
-
-          const newContent = currentContent.substring(0, start) + snippet + currentContent.substring(end);
-          setFormData(prev => ({ ...prev, content: newContent }));
-
-          if (fileInputRef.current) fileInputRef.current.value = '';
-
-          setTimeout(() => {
-            if (contentRef.current) {
-              contentRef.current.focus();
-              contentRef.current.selectionStart = start + snippet.length;
-              contentRef.current.selectionEnd = start + snippet.length;
-            }
-          }, 50);
+          // Si estamos usando Quill u otro editor, la mejor forma de inyectar
+          // es agregando la etiqueta HTML al contenido actual.
+          setFormData(prev => ({ ...prev, content: prev.content + snippet }));
         } else {
           setFormData(prev => ({ ...prev, content: prev.content + snippet }));
         }
@@ -169,15 +160,24 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 </div>
               </div>
               <p className="text-[10px] text-maestro-bone/40 mb-3">
-                Soporta: **negrita**, &gt; Citas Gigantes. Las imágenes y videos que subas se insertarán donde esté tu cursor.
+                Usa la barra de herramientas para tamaños y enlaces. Tus imágenes o videos se insertarán al final del texto.
               </p>
-              <textarea
-                ref={contentRef}
-                name="content" rows={15} required
-                value={formData.content} onChange={handleChange}
-                placeholder="Escribe la historia o artículo aquí..."
-                className="w-full bg-maestro-carbon border border-maestro-bone/20 p-4 text-sm text-maestro-bone focus:border-maestro-gold outline-none font-mono font-light leading-relaxed resize-y"
-              />
+              <div className="bg-maestro-bone/5 border border-maestro-bone/20 text-maestro-bone">
+                <ReactQuill 
+                  theme="snow" 
+                  value={formData.content} 
+                  onChange={(val) => setFormData({ ...formData, content: val })}
+                  className="h-80 mb-12 text-maestro-bone"
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                      [{'list': 'ordered'}, {'list': 'bullet'}],
+                      ['link', 'clean']
+                    ],
+                  }}
+                />
+              </div>
             </div>
 
             {/* SEO Section */}
