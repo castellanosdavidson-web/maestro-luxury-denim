@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { Metadata, ResolvingMetadata } from "next";
 
 export const dynamic = 'force-dynamic';
@@ -20,11 +21,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${post.title} | MAESTRO Journal`,
-    description: post.excerpt,
+    title: post.seo_title || `${post.title} | MAESTRO Journal`,
+    description: post.seo_description || post.excerpt,
+    keywords: post.seo_keywords || "",
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: post.seo_title || post.title,
+      description: post.seo_description || post.excerpt,
       type: "article",
       publishedTime: post.created_at,
       images: [
@@ -131,6 +133,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         {/* Markdown Renderer with Custom Components */}
         <div className="max-w-3xl mx-auto">
           <ReactMarkdown
+            rehypePlugins={[rehypeRaw]}
             components={{
               p: ({ node, ...props }) => (
                 <p className="text-maestro-bone/80 font-light leading-loose text-justify text-sm md:text-base mb-8" {...props} />

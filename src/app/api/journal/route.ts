@@ -23,10 +23,18 @@ export async function POST(request: Request) {
     const content = formData.get('content') as string;
     const status = formData.get('status') as string;
     
+    // SEO fields
+    const seo_title = formData.get('seo_title') as string;
+    const seo_description = formData.get('seo_description') as string;
+    const seo_keywords = formData.get('seo_keywords') as string;
+    
     // Generar slug desde el título
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-    const newPost: any = { title, slug, excerpt, content, status };
+    const newPost: any = { 
+      title, slug, excerpt, content, status,
+      seo_title, seo_description, seo_keywords
+    };
 
     const coverImage = formData.get('cover_image') as File;
     if (coverImage && coverImage.size > 0) {

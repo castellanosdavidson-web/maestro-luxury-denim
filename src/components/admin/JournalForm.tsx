@@ -14,6 +14,9 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
     content: initialData?.content || "",
     status: initialData?.status || "Borrador",
     cover_image_url: initialData?.cover_image || "",
+    seo_title: initialData?.seo_title || "",
+    seo_description: initialData?.seo_description || "",
+    seo_keywords: initialData?.seo_keywords || "",
   });
 
   const handleChange = (e: any) => {
@@ -80,8 +83,11 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
             <div>
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 flex justify-between">
-                <span>Contenido Principal (Markdown)</span>
-                <span className="text-[10px] text-maestro-bone/40">Soporta: **negrita**, &gt; Citas Gigantes, ![alt](url) para fotos</span>
+                <span>Contenido Principal (Markdown & HTML)</span>
+                <span className="text-[10px] text-maestro-bone/40 text-right max-w-xs">
+                  Soporta: **negrita**, &gt; Citas Gigantes, ![alt](url) para fotos.<br/>
+                  Para videos usa: <code>&lt;video src="URL" controls loop class="w-full"&gt;&lt;/video&gt;</code>
+                </span>
               </label>
               <textarea
                 name="content" rows={15} required
@@ -89,6 +95,41 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 placeholder="Escribe la historia o artículo aquí usando Markdown..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-4 text-sm text-maestro-bone focus:border-maestro-gold outline-none font-mono font-light leading-relaxed resize-y"
               />
+            </div>
+
+            {/* SEO Section */}
+            <div className="pt-8 border-t border-maestro-bone/10 space-y-6">
+              <h3 className="text-lg text-editorial text-maestro-gold mb-4">Optimización SEO</h3>
+              
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título SEO (Recomendado: 50-60 caracteres)</label>
+                <input
+                  type="text" name="seo_title"
+                  value={formData.seo_title} onChange={handleChange}
+                  placeholder="Ej: Tendencias en Denim Premium 2026 | MAESTRO"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción SEO (Recomendado: 150-160 caracteres)</label>
+                <textarea
+                  name="seo_description" rows={2}
+                  value={formData.seo_description} onChange={handleChange}
+                  placeholder="Descripción que aparecerá en los resultados de Google..."
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Palabras Clave (Separadas por comas)</label>
+                <input
+                  type="text" name="seo_keywords"
+                  value={formData.seo_keywords} onChange={handleChange}
+                  placeholder="denim lujo, jeans premium colombia, tendencias moda"
+                  className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
+                />
+              </div>
             </div>
           </div>
 

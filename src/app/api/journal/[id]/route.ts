@@ -13,6 +13,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       excerpt: formData.get('excerpt') as string,
       content: formData.get('content') as string,
       status: formData.get('status') as string,
+      seo_title: formData.get('seo_title') as string,
+      seo_description: formData.get('seo_description') as string,
+      seo_keywords: formData.get('seo_keywords') as string,
     };
     
     // Si cambia el título, podríamos regenerar el slug o dejarlo fijo. Por simplicidad lo mantenemos o actualizamos:
