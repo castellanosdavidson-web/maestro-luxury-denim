@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Instagram, X } from "lucide-react";
+import { X } from "lucide-react";
+
+const InstagramIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+  </svg>
+);
 
 export default function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false);
@@ -77,7 +85,7 @@ export default function FloatingWhatsApp() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-maestro-gold/10 to-transparent group-hover:opacity-100 transition-opacity" />
                 
                 {/* Icono de Instagram */}
-                <Instagram size={24} className="text-maestro-gold group-hover:scale-110 transition-transform duration-500" />
+                <InstagramIcon size={24} className="text-maestro-gold group-hover:scale-110 transition-transform duration-500" />
                 
                 {/* Brillo de lujo */}
                 <div className="absolute top-[-100%] left-[-100%] w-[50%] h-[200%] bg-white/10 rotate-[35deg] group-hover:left-[150%] transition-all duration-[1000ms] ease-in-out" />
