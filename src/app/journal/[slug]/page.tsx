@@ -147,7 +147,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         )}
 
         {/* HTML Renderer with Custom Components & Animations */}
-        <div className="max-w-4xl mx-auto ql-editor-content">
+        <div className="max-w-3xl mx-auto ql-editor-content">
           {parse(post.content || "", {
             replace: (domNode: any) => {
               if (domNode.type === 'tag') {

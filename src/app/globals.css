@@ -203,6 +203,12 @@ body {
 .ql-editor-content .ql-align-justify { text-align: justify !important; }
 .ql-editor-content .ql-size-small { font-size: 0.75em !important; }
 
+/* Soporte dinámico para mostrar las etiquetas de tamaños numéricos en el menú desplegable */
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value]::before {
+  content: attr(data-value) !important;
+}
+
 @media (min-width: 768px) {
   .ql-editor-content {
     font-size: 1rem; /* 16px */
