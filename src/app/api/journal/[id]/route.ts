@@ -18,9 +18,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       seo_keywords: formData.get('seo_keywords') as string,
     };
     
-    // Si cambia el título, podríamos regenerar el slug o dejarlo fijo. Por simplicidad lo mantenemos o actualizamos:
+    // Si cambia el título, podríamos regenerar el slug
     if (updates.title) {
-      updates.slug = updates.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      updates.slug = updates.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + id.substring(0,4);
     }
 
     const coverImage = formData.get('cover_image') as File;
@@ -40,12 +40,26 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       }
     }
 
-    const { data, error } = await supabaseAdmin
+    let { data, error } = await supabaseAdmin
       .from('journal')
       .update(updates)
       .eq('id', id)
       .select()
       .single();
+
+    // Fallback
+    if (error && (error.code === '42703' || error.message?.includes('column'))) {
+      const fallbackUpdates: any = { 
+        title: updates.title, slug: updates.slug, 
+        excerpt: updates.excerpt, content: updates.content, 
+        status: updates.status 
+      };
+      if (updates.cover_image) fallbackUpdates.cover_image = updates.cover_image;
+      
+      const retry = await supabaseAdmin.from('journal').update(fallbackUpdates).eq('id', id).select().single();
+      data = retry.data;
+      error = retry.error;
+    }
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json(data);

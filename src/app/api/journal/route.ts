@@ -28,8 +28,8 @@ export async function POST(request: Request) {
     const seo_description = formData.get('seo_description') as string;
     const seo_keywords = formData.get('seo_keywords') as string;
     
-    // Generar slug desde el título
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    // Generar slug único
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
 
     const newPost: any = { 
       title, slug, excerpt, content, status,
@@ -53,7 +53,18 @@ export async function POST(request: Request) {
       }
     }
 
-    const { data, error } = await supabaseAdmin.from('journal').insert([newPost]).select().single();
+    let { data, error } = await supabaseAdmin.from('journal').insert([newPost]).select().single();
+    
+    // Fallback si faltan columnas SEO
+    if (error && (error.code === '42703' || error.message?.includes('column'))) {
+      const fallbackPost: any = { title, slug, excerpt, content, status };
+      if (newPost.cover_image) fallbackPost.cover_image = newPost.cover_image;
+      
+      const retry = await supabaseAdmin.from('journal').insert([fallbackPost]).select().single();
+      data = retry.data;
+      error = retry.error;
+    }
+
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json(data);
   } catch (err: any) {

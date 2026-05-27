@@ -9,6 +9,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [mediaUploading, setMediaUploading] = useState(false);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,6 +26,13 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleCoverChange = (e: any) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setCoverPreview(URL.createObjectURL(file));
+    }
   };
 
   const handleMediaUpload = async (e: any) => {
@@ -90,11 +98,12 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
       if (res.ok) {
         router.push("/admin/journal");
       } else {
-        alert("Error al guardar");
+        const errorData = await res.json();
+        alert(`Error al guardar: ${errorData.error || 'Desconocido'}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert("Error en el servidor");
+      alert(`Error en el servidor: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -224,12 +233,13 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
             <div>
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Imagen de Portada</label>
               <div className="border border-dashed border-maestro-bone/20 p-6 flex flex-col items-center justify-center text-center">
-                {formData.cover_image_url && (
-                  <img src={formData.cover_image_url} alt="Cover" className="w-full h-32 object-cover mb-4 border border-maestro-bone/10" />
+                {(coverPreview || formData.cover_image_url) && (
+                  <img src={coverPreview || formData.cover_image_url} alt="Cover" className="w-full h-32 object-cover mb-4 border border-maestro-bone/10" />
                 )}
                 <Upload size={24} className="text-maestro-bone/40 mb-2" />
                 <input
                   name="cover_image" type="file" accept="image/*"
+                  onChange={handleCoverChange}
                   className="w-full text-[10px] text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
                 />
               </div>
