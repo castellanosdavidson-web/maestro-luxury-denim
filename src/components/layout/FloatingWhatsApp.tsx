@@ -19,9 +19,9 @@ export default function FloatingWhatsApp() {
   useEffect(() => {
     // Aparece después de 3 segundos para no ser intrusivo
     const timer = setTimeout(() => setIsVisible(true), 3000);
-    // Tooltip desaparece después de 8 segundos
+    // Tooltip desaparece después de 25 segundos para dar más tiempo a leer
     const tooltipTimer = setTimeout(() => setShowTooltip(true), 5000);
-    const tooltipHide = setTimeout(() => setShowTooltip(false), 12000);
+    const tooltipHide = setTimeout(() => setShowTooltip(false), 25000);
 
     return () => {
       clearTimeout(timer);
@@ -46,17 +46,17 @@ export default function FloatingWhatsApp() {
                 initial={{ opacity: 0, scale: 0.9, x: 20 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.9, x: 20 }}
-                className="bg-white/10 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl max-w-[200px] pointer-events-auto mb-2"
+                className="bg-[#1A1A1A] border border-white/10 p-5 rounded-2xl shadow-2xl max-w-[240px] pointer-events-auto mb-2 relative"
               >
-                <div className="relative">
-                  <button 
-                    onClick={() => setShowTooltip(false)}
-                    className="absolute -top-6 -right-2 p-1 text-white/30 hover:text-white"
-                  >
-                    <X size={12} />
-                  </button>
-                  <p className="text-[10px] tracking-widest uppercase text-maestro-gold mb-1 font-bold">Asesor Maestro</p>
-                  <p className="text-[11px] text-white/80 leading-relaxed font-light">
+                <button 
+                  onClick={() => setShowTooltip(false)}
+                  className="absolute top-2 right-2 p-1.5 text-white/40 hover:text-white transition-colors"
+                >
+                  <X size={14} />
+                </button>
+                <div className="pr-2">
+                  <p className="text-[10px] tracking-widest uppercase text-maestro-gold mb-1.5 font-bold">Asesor Maestro</p>
+                  <p className="text-xs text-white/80 leading-relaxed font-light">
                     ¿Necesitas ayuda con tu talla o pedido? Chatea con nosotros.
                   </p>
                 </div>
