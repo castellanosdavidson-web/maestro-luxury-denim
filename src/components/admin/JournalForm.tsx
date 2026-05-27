@@ -87,6 +87,8 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
+    form.append("content", formData.content);
+    
     const method = initialData ? "PUT" : "POST";
     const url = initialData ? `/api/journal/${initialData.id}` : "/api/journal";
 
