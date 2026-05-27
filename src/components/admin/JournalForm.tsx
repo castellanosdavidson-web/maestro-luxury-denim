@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Upload, ArrowLeft } from "lucide-react";
+import { Upload, ArrowLeft, ImagePlus } from "lucide-react";
 import Link from "next/link";
 
 export default function JournalForm({ initialData }: { initialData?: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     excerpt: initialData?.excerpt || "",
@@ -22,6 +26,56 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const handleMediaUpload = async (e: any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setMediaUploading(true);
+    const form = new FormData();
+    form.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: form });
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        const isVideo = file.type.startsWith('video/');
+        const snippet = isVideo 
+          ? `\n\n<video src="${data.url}" controls loop class="w-full"></video>\n\n`
+          : `\n\n![${file.name}](${data.url})\n\n`;
+
+        if (contentRef.current) {
+          const start = contentRef.current.selectionStart;
+          const end = contentRef.current.selectionEnd;
+          const currentContent = formData.content;
+
+          const newContent = currentContent.substring(0, start) + snippet + currentContent.substring(end);
+          setFormData(prev => ({ ...prev, content: newContent }));
+
+          if (fileInputRef.current) fileInputRef.current.value = '';
+
+          setTimeout(() => {
+            if (contentRef.current) {
+              contentRef.current.focus();
+              contentRef.current.selectionStart = start + snippet.length;
+              contentRef.current.selectionEnd = start + snippet.length;
+            }
+          }, 50);
+        } else {
+          setFormData(prev => ({ ...prev, content: prev.content + snippet }));
+        }
+      } else {
+        alert(data.error || 'Error al subir archivo');
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error en el servidor al subir archivo");
+    } finally {
+      setMediaUploading(false);
+    }
+  };
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -82,17 +136,37 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
             </div>
 
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 flex justify-between">
-                <span>Contenido Principal (Markdown & HTML)</span>
-                <span className="text-[10px] text-maestro-bone/40 text-right max-w-xs">
-                  Soporta: **negrita**, &gt; Citas Gigantes, ![alt](url) para fotos.<br/>
-                  Para videos usa: <code>&lt;video src="URL" controls loop class="w-full"&gt;&lt;/video&gt;</code>
-                </span>
-              </label>
+              <div className="flex items-end justify-between mb-2">
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60">
+                  Contenido Principal (Markdown & HTML)
+                </label>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="file" 
+                    accept="image/*,video/*" 
+                    className="hidden" 
+                    ref={fileInputRef} 
+                    onChange={handleMediaUpload} 
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={mediaUploading}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-maestro-carbon border border-maestro-bone/20 hover:border-maestro-gold hover:text-maestro-gold transition-colors text-[9px] tracking-widest uppercase disabled:opacity-50"
+                  >
+                    <ImagePlus size={12} />
+                    {mediaUploading ? 'Subiendo...' : 'Insertar Imagen / Video'}
+                  </button>
+                </div>
+              </div>
+              <p className="text-[10px] text-maestro-bone/40 mb-3">
+                Soporta: **negrita**, &gt; Citas Gigantes. Las imágenes y videos que subas se insertarán donde esté tu cursor.
+              </p>
               <textarea
+                ref={contentRef}
                 name="content" rows={15} required
                 value={formData.content} onChange={handleChange}
-                placeholder="Escribe la historia o artículo aquí usando Markdown..."
+                placeholder="Escribe la historia o artículo aquí..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-4 text-sm text-maestro-bone focus:border-maestro-gold outline-none font-mono font-light leading-relaxed resize-y"
               />
             </div>
