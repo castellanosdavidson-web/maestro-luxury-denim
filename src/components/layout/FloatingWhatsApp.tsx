@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X } from "lucide-react";
+import { Instagram, X } from "lucide-react";
 
 export default function FloatingWhatsApp() {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,10 +10,7 @@ export default function FloatingWhatsApp() {
   const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
 
   useEffect(() => {
-    // Obtener el número de WhatsApp desde ajustes
-    fetch('/api/settings').then(r => r.json()).then(data => {
-      if (data.whatsappNumber) setWhatsappNumber(data.whatsappNumber.replace(/\D/g, ''));
-    }).catch(() => {});
+    // Si necesitas fetchear configuraciones, aquí se haría.
   }, []);
 
   useEffect(() => {
@@ -31,8 +28,7 @@ export default function FloatingWhatsApp() {
   }, []);
 
   const handleChat = () => {
-    const message = encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury");
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
+    window.open("https://www.instagram.com/maestrodeninmluxury", "_blank");
   };
 
   return (
@@ -55,9 +51,9 @@ export default function FloatingWhatsApp() {
                   <X size={14} />
                 </button>
                 <div className="pr-2">
-                  <p className="text-[10px] tracking-widest uppercase text-maestro-gold mb-1.5 font-bold">Asesor Maestro</p>
+                  <p className="text-[10px] tracking-widest uppercase text-maestro-gold mb-1.5 font-bold">Únete a nuestra comunidad</p>
                   <p className="text-xs text-white/80 leading-relaxed font-light">
-                    ¿Necesitas ayuda con tu talla o pedido? Chatea con nosotros.
+                    Síguenos en Instagram para ver contenido exclusivo y nuevas colecciones.
                   </p>
                 </div>
               </motion.div>
@@ -80,8 +76,8 @@ export default function FloatingWhatsApp() {
                 {/* Fondo con Gradiente Dinámico */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-maestro-gold/10 to-transparent group-hover:opacity-100 transition-opacity" />
                 
-                {/* Icono de Chat */}
-                <MessageCircle size={24} className="text-maestro-gold group-hover:scale-110 transition-transform duration-500" />
+                {/* Icono de Instagram */}
+                <Instagram size={24} className="text-maestro-gold group-hover:scale-110 transition-transform duration-500" />
                 
                 {/* Brillo de lujo */}
                 <div className="absolute top-[-100%] left-[-100%] w-[50%] h-[200%] bg-white/10 rotate-[35deg] group-hover:left-[150%] transition-all duration-[1000ms] ease-in-out" />

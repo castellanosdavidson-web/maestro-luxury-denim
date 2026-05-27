@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
+import { Search, ShoppingBag, Menu, X, ArrowRight, Instagram } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
@@ -209,7 +209,20 @@ export default function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex space-x-6 items-center">
+        <div className="flex space-x-5 items-center">
+          {/* Social Links for visibility */}
+          <a 
+            href="https://www.instagram.com/maestrodeninmluxury" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hidden md:block text-maestro-bone hover:text-maestro-gold transition-colors"
+            title="Síguenos en Instagram"
+          >
+            <Instagram size={20} />
+          </a>
+          
+          <div className="hidden md:block w-px h-4 bg-maestro-bone/20 mx-1"></div>
+
           <button
             onClick={() => setIsSearchOpen(true)}
             aria-label="Buscar"
@@ -312,6 +325,11 @@ export default function Navbar() {
 
             {/* Footer del menú */}
             <div style={{ marginTop: "auto", paddingTop: "48px" }}>
+              <div style={{ display: "flex", gap: "24px", marginBottom: "24px" }}>
+                <a href="https://www.instagram.com/maestrodeninmluxury" target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
+                  <Instagram size={24} />
+                </a>
+              </div>
               <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.25)" }}>
                 MAESTRO © Luxury Denim
               </p>
