@@ -4,11 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, ShoppingBag, Menu, X, ArrowRight } from "lucide-react";
 
-const InstagramIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+const WhatsAppIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
   </svg>
 );
 import { motion, AnimatePresence } from "framer-motion";
@@ -56,7 +54,7 @@ export default function Navbar() {
   const [megamenuItems, setMegamenuItems] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const [instagramUrl, setInstagramUrl] = useState("https://www.instagram.com/maestrodenimluxury");
+  const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
 
   useEffect(() => {
     setMounted(true);
@@ -83,7 +81,7 @@ export default function Navbar() {
     // Fetch para logo y redes
     fetch('/api/settings').then(res => res.json()).then(data => {
       if (data.logoUrl) setLogoUrl(data.logoUrl);
-      if (data.instagramUrl) setInstagramUrl(data.instagramUrl);
+      if (data.whatsappNumber) setWhatsappNumber(data.whatsappNumber.replace(/\D/g, ''));
     });
 
     return () => {
@@ -222,13 +220,13 @@ export default function Navbar() {
         <div className="flex space-x-5 items-center">
           {/* Social Links for visibility */}
           <a 
-            href={instagramUrl} 
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury")}`} 
             target="_blank" 
             rel="noopener noreferrer" 
             className="hidden md:block text-maestro-bone hover:text-maestro-gold transition-colors"
-            title="Síguenos en Instagram"
+            title="Chatea con nosotros en WhatsApp"
           >
-            <InstagramIcon size={20} />
+            <WhatsAppIcon size={20} />
           </a>
           
           <div className="hidden md:block w-px h-4 bg-maestro-bone/20 mx-1"></div>
@@ -336,8 +334,8 @@ export default function Navbar() {
             {/* Footer del menú */}
             <div style={{ marginTop: "auto", paddingTop: "48px" }}>
               <div style={{ display: "flex", gap: "24px", marginBottom: "24px" }}>
-                <a href={instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
-                  <InstagramIcon size={24} />
+                <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury")}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
+                  <WhatsAppIcon size={24} />
                 </a>
               </div>
               <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.25)" }}>
