@@ -3,57 +3,46 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    // Traer todas las categorías con sus imágenes de megamenu
     const { data: categories } = await supabaseAdmin
       .from('categories')
       .select('id, name, image, megamenu_image')
       .order('name');
 
-    const megamenuItems: { name: string; img: string; href: string }[] = [];
+    const megamenuItems: { name: string; imgs: string[]; href: string }[] = [];
 
     if (categories) {
       for (const cat of categories) {
-        // Si la categoría tiene imagen específica para el megamenu, usarla directamente
-        if (cat.megamenu_image) {
+        // Fetch up to 5 recent products for the rotation
+        const { data: products } = await supabaseAdmin
+          .from('products')
+          .select('image')
+          .eq('category_id', cat.id)
+          .eq('status', 'Activo')
+          .order('created_at', { ascending: false })
+          .limit(5);
+
+        let imgs = products?.map(p => p.image).filter(Boolean) || [];
+
+        // Fallbacks if no products exist
+        if (imgs.length === 0) {
+          if (cat.megamenu_image) imgs.push(cat.megamenu_image);
+          else if (cat.image) imgs.push(cat.image);
+        }
+
+        if (imgs.length > 0) {
           megamenuItems.push({
             name: cat.name,
-            img:  cat.megamenu_image,
-            href: `/category/${cat.name.toLowerCase()}`,
+            imgs: imgs,
+            href: `/category/${cat.name.toLowerCase().replace(/ /g, '-')}`,
           });
-        } else {
-          // Fallback: imagen del producto más reciente de esa categoría
-          const { data: product } = await supabaseAdmin
-            .from('products')
-            .select('image')
-            .eq('category_id', cat.id)
-            .eq('status', 'Activo')
-            .order('created_at', { ascending: false })
-            .limit(1)
-            .single();
-
-          if (product?.image) {
-            megamenuItems.push({
-              name: cat.name,
-              img:  product.image,
-              href: `/category/${cat.name.toLowerCase()}`,
-            });
-          } else if (cat.image) {
-            // Último fallback: imagen principal de la categoría
-            megamenuItems.push({
-              name: cat.name,
-              img:  cat.image,
-              href: `/category/${cat.name.toLowerCase()}`,
-            });
-          }
         }
       }
     }
 
-    // Si no hay nada en BD, usar placeholders de Unsplash
     const defaultItems = [
-      { name: "Chaquetas", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", href: "/category/chaquetas" },
-      { name: "Vestidos",  img: "https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600", href: "/category/vestidos" },
-      { name: "Enterizos", img: "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600", href: "/category/enterizo" },
+      { name: "Chaquetas", imgs: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600"], href: "/category/chaquetas" },
+      { name: "Vestidos",  imgs: ["https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600"], href: "/category/vestidos" },
+      { name: "Enterizos", imgs: ["https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600"], href: "/category/enterizo" },
     ];
 
     const finalItems = megamenuItems.length >= 2

@@ -8,6 +8,37 @@ import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
 import SearchOverlay from "./SearchOverlay";
 
+function MegamenuImageRotate({ imgs, alt }: { imgs: string[], alt: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!imgs || imgs.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % imgs.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [imgs]);
+
+  if (!imgs || imgs.length === 0) return null;
+
+  return (
+    <div className="relative w-full h-full overflow-hidden bg-maestro-carbon">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={imgs[currentIndex]}
+          alt={alt}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-1000"
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -137,15 +168,15 @@ export default function Navbar() {
                     </div>
                     <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
                       {(megamenuItems.length > 0 ? megamenuItems : [
-                        { name: "Chaquetas", img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600", href: "/category/chaquetas" },
-                        { name: "Vestidos", img: "https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600", href: "/category/vestidos" },
-                        { name: "Enterizos", img: "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600", href: "/category/enterizo" }
+                        { name: "Chaquetas", imgs: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600"], href: "/category/chaquetas" },
+                        { name: "Vestidos", imgs: ["https://images.unsplash.com/photo-1549062572-544a64fb0c56?q=80&w=600"], href: "/category/vestidos" },
+                        { name: "Enterizos", imgs: ["https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?q=80&w=600"], href: "/category/enterizo" }
                       ]).slice(0,3).map((item: any) => (
-                        <Link href={item.href} key={item.name} className="group/item">
-                          <div className="aspect-[3/4] bg-maestro-carbon mb-3 overflow-hidden">
-                            <img src={item.img} alt={item.name} className="w-full h-full object-cover grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-700" />
+                        <Link href={item.href} key={item.name} className="group/item flex flex-col">
+                          <div className="aspect-[3/4] mb-3 overflow-hidden relative">
+                            <MegamenuImageRotate imgs={item.imgs || (item.img ? [item.img] : [])} alt={item.name} />
                           </div>
-                          <p className="text-[10px] uppercase tracking-widest text-maestro-bone text-center group-hover/item:text-maestro-gold transition-colors">{item.name}</p>
+                          <p className="text-[10px] uppercase tracking-widest text-maestro-bone text-center group-hover/item:text-maestro-gold transition-colors mt-auto">{item.name}</p>
                         </Link>
                       ))}
                     </div>
