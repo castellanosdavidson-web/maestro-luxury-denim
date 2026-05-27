@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
 import parse, { domToReact, HTMLReactParserOptions } from "html-react-parser";
 import FadeIn from "@/components/ui/FadeIn";
+import ShareButtons from "@/components/ui/ShareButtons";
 import { Metadata, ResolvingMetadata } from "next";
 
 export const dynamic = 'force-dynamic';
@@ -189,6 +190,10 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
           </FadeIn>
 
         </div>
+        
+        {/* Share Buttons */}
+        <ShareButtons title={post.title} text={post.excerpt} />
+
       </article>
 
       {/* Lo más leído / Recomendados */}
