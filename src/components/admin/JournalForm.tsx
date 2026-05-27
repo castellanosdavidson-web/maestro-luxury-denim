@@ -16,6 +16,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const quillRef = useRef<any>(null);
 
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
@@ -65,11 +66,21 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
       if (data.url) {
         const isVideo = file.type.startsWith('video/');
-        const snippet = isVideo 
-          ? `\n\n<video src="${data.url}" controls loop class="w-full"></video>\n\n`
-          : `\n\n![${file.name}](${data.url})\n\n`;
-
-        setFormData(prev => ({ ...prev, content: prev.content + snippet }));
+        const editor = quillRef.current?.getEditor();
+        if (editor) {
+          const range = editor.getSelection(true) || { index: editor.getLength() };
+          if (isVideo) {
+            editor.insertEmbed(range.index, 'video', data.url);
+          } else {
+            editor.insertEmbed(range.index, 'image', data.url);
+          }
+          editor.setSelection(range.index + 1);
+        } else {
+          const snippet = isVideo 
+            ? `<p><video src="${data.url}" controls loop class="w-full"></video></p>`
+            : `<p><img src="${data.url}" alt="${file.name}" /></p>`;
+          setFormData(prev => ({ ...prev, content: prev.content + snippet }));
+        }
       } else {
         alert(data.error || 'Error al subir archivo');
       }
@@ -179,10 +190,11 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 </div>
               </div>
               <p className="text-[10px] text-maestro-bone/40 mb-3">
-                Usa la barra de herramientas para tamaños y enlaces. Tus imágenes o videos se insertarán al final del texto.
+                Puedes copiar y pegar imágenes directamente en el texto, o usar el botón para insertar en la posición del cursor.
               </p>
               <div className="bg-maestro-bone/5 border border-maestro-bone/20 text-maestro-bone">
                 <ReactQuill 
+                  ref={quillRef}
                   theme="snow" 
                   value={formData.content} 
                   onChange={(val) => setFormData({ ...formData, content: val })}
