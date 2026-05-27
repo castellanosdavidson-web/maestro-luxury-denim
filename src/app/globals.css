@@ -192,9 +192,14 @@ body {
   line-height: 1.8; /* improved readability */
   text-align: left;
   font-size: 0.9375rem; /* 15px */
-  word-break: normal !important;
-  overflow-wrap: normal !important;
-  hyphens: none !important;
+  overflow-wrap: break-word !important; /* The modern, safe way to break long strings */
+  word-wrap: break-word !important;
+  word-break: normal !important; /* prevents cutting normal words like "pertenece" */
+  white-space: pre-wrap !important; /* Preserves Quill spacing but allows wrapping */
+  max-width: 100%;
+}
+.ql-editor-content * {
+  max-width: 100%;
 }
 
 /* Soporte para alineación del editor visual */
