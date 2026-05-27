@@ -3,9 +3,8 @@ import { supabaseAdmin } from "@/lib/supabase";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
+import parse, { domToReact, HTMLReactParserOptions } from "html-react-parser";
 import FadeIn from "@/components/ui/FadeIn";
-import rehypeRaw from "rehype-raw";
 import { Metadata, ResolvingMetadata } from "next";
 
 export const dynamic = 'force-dynamic';
@@ -147,65 +146,61 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
           </div>
         )}
 
-        {/* Markdown Renderer with Custom Components */}
-        <div className="max-w-3xl mx-auto">
-          <ReactMarkdown
-            rehypePlugins={[rehypeRaw]}
-            components={{
-              p: ({ node, ...props }) => {
-                // Si el p contiene un img, no le ponemos p para evitar bugs visuales
-                if (node?.children?.some((child: any) => child.tagName === 'img')) {
-                  return <>{props.children}</>;
+        {/* HTML Renderer with Custom Components & Animations */}
+        <div className="max-w-3xl mx-auto ql-editor-content">
+          {parse(post.content || "", {
+            replace: (domNode: any) => {
+              if (domNode.type === 'tag') {
+                if (domNode.name === 'p') {
+                  const hasMedia = domNode.children?.some((child: any) => child.name === 'img' || child.name === 'video' || child.name === 'iframe');
+                  if (hasMedia) return <>{domToReact(domNode.children)}</>;
+                  return (
+                    <FadeIn>
+                      <p className="text-maestro-bone/80 font-light leading-loose text-justify text-sm md:text-base mb-8">
+                        {domToReact(domNode.children)}
+                      </p>
+                    </FadeIn>
+                  );
                 }
-                return (
-                  <FadeIn>
-                    <p className="text-maestro-bone/80 font-light leading-loose text-justify text-sm md:text-base mb-8" {...props} />
-                  </FadeIn>
-                );
-              },
-              h1: ({ node, ...props }) => (
-                <FadeIn><h1 className="text-4xl md:text-5xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center" {...props} /></FadeIn>
-              ),
-              h2: ({ node, ...props }) => (
-                <FadeIn><h2 className="text-3xl md:text-4xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center" {...props} /></FadeIn>
-              ),
-              h3: ({ node, ...props }) => (
-                <FadeIn><h3 className="text-xl md:text-2xl text-editorial text-maestro-gold mt-12 mb-6 uppercase tracking-widest" {...props} /></FadeIn>
-              ),
-              blockquote: ({ node, ...props }) => (
-                <FadeIn>
-                  <blockquote 
-                    className="my-16 md:my-24 py-8 md:py-12 border-t border-b border-maestro-bone/10 text-center text-3xl md:text-5xl text-editorial text-maestro-gold leading-tight italic" 
-                    {...props} 
-                  />
-                </FadeIn>
-              ),
-              img: ({ node, ...props }) => (
-                <FadeIn>
-                  <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative">
-                    <img className="w-full h-auto object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000" {...props} />
-                  </span>
-                </FadeIn>
-              ),
-              strong: ({ node, ...props }) => (
-                <strong className="font-semibold text-maestro-bone" {...props} />
-              ),
-              a: ({ node, ...props }) => (
-                <a className="text-maestro-gold hover:text-maestro-bone underline underline-offset-4 decoration-maestro-gold/30 hover:decoration-maestro-bone transition-all" target="_blank" rel="noopener noreferrer" {...props} />
-              ),
-              // Soporte para videos subidos localmente
-              video: ({ node, ...props }) => (
-                <FadeIn>
-                  <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative bg-maestro-carbon">
-                    <video className="w-full h-auto" {...props as any} />
-                  </span>
-                </FadeIn>
-              )
-            }}
-          >
-            {post.content}
-          </ReactMarkdown>
-
+                if (domNode.name === 'h1') {
+                  return <FadeIn><h1 className="text-4xl md:text-5xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center">{domToReact(domNode.children)}</h1></FadeIn>;
+                }
+                if (domNode.name === 'h2') {
+                  return <FadeIn><h2 className="text-3xl md:text-4xl text-editorial text-maestro-bone mt-16 mb-8 uppercase tracking-widest text-center">{domToReact(domNode.children)}</h2></FadeIn>;
+                }
+                if (domNode.name === 'h3') {
+                  return <FadeIn><h3 className="text-xl md:text-2xl text-editorial text-maestro-gold mt-12 mb-6 uppercase tracking-widest">{domToReact(domNode.children)}</h3></FadeIn>;
+                }
+                if (domNode.name === 'blockquote') {
+                  return <FadeIn><blockquote className="my-16 md:my-24 py-8 md:py-12 border-t border-b border-maestro-bone/10 text-center text-3xl md:text-5xl text-editorial text-maestro-gold leading-tight italic">{domToReact(domNode.children)}</blockquote></FadeIn>;
+                }
+                if (domNode.name === 'img') {
+                  return (
+                    <FadeIn>
+                      <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative">
+                        <img src={domNode.attribs?.src} alt={domNode.attribs?.alt || ''} className="w-full h-auto object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000" />
+                      </span>
+                    </FadeIn>
+                  );
+                }
+                if (domNode.name === 'video') {
+                  return (
+                    <FadeIn>
+                      <span className="block my-16 w-[110%] -ml-[5%] md:w-[130%] md:-ml-[15%] relative bg-maestro-carbon">
+                        <video src={domNode.attribs?.src} controls loop className="w-full h-auto" />
+                      </span>
+                    </FadeIn>
+                  );
+                }
+                if (domNode.name === 'a') {
+                  return <a href={domNode.attribs?.href} target="_blank" rel="noopener noreferrer" className="text-maestro-gold hover:text-maestro-bone underline underline-offset-4 decoration-maestro-gold/30 hover:decoration-maestro-bone transition-all">{domToReact(domNode.children)}</a>;
+                }
+                if (domNode.name === 'strong' || domNode.name === 'b') {
+                  return <strong className="font-semibold text-maestro-bone">{domToReact(domNode.children)}</strong>;
+                }
+              }
+            }
+          })}
           {/* Banner Publicitario Dinámico (Ejemplo AdSense) */}
           <FadeIn className="my-24">
             <div className="w-full aspect-[4/1] md:aspect-[6/1] bg-maestro-carbon border border-maestro-bone/10 flex flex-col items-center justify-center relative overflow-hidden group">
