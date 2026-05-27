@@ -68,7 +68,7 @@ export default function Navbar() {
 
     // Fetch dinámico de todas las categorías
     fetch('/api/categories').then(res => res.json()).then(data => {
-      if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || !c.status));
+      if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || c.status === "Activa" || !c.status));
     });
 
     // Fetch para logo
