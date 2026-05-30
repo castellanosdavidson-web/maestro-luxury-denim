@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+﻿import fs from 'fs/promises';
 import path from 'path';
 
 const dbPath = path.join(process.cwd(), 'data', 'db.json');
@@ -17,10 +17,10 @@ export type DbSchema = {
 
 const defaultData: DbSchema = {
   settings: {
-    heroTitle: "DISEÑADO\nPARA MUJERES",
+    heroTitle: "DISEÃ‘ADO\nPARA MUJERES",
     heroSubtitle: "que imponen estilo.",
-    heroCaption: "Denim premium · Edición limitada",
-    heroValueProp: "Confección colombiana con estándares globales",
+    heroCaption: "Denim premium Â· EdiciÃ³n limitada",
+    heroValueProp: "ConfecciÃ³n colombiana con estÃ¡ndares globales",
     heroImage: "/uploads/hero-custom.jpg"
   },
   products: [],

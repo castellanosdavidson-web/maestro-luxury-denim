@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import path from 'path';
 
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
     const basePayload = { name, slug, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl, material };
 
-    // Intentar insertar con campos de posición
+    // Intentar insertar con campos de posiciÃ³n
     let { data, error } = await supabaseAdmin
       .from('products')
       .insert([{ ...basePayload, focal_x: focalX, focal_y: focalY, zoom }])
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
     // Si falla por columna inexistente, reintenta sin esos campos
     if (error && (error.code === '42703' || error.message?.includes('column'))) {
-      console.warn('Retrying POST without focal fields — run SQL migration in Supabase');
+      console.warn('Retrying POST without focal fields â€” run SQL migration in Supabase');
       const retry = await supabaseAdmin.from('products').insert([basePayload]).select().single();
       data  = retry.data;
       error = retry.error;

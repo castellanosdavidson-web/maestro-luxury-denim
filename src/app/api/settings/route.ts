@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import path from 'path';
 
@@ -137,8 +137,8 @@ export async function POST(request: Request) {
     const termsText = formData.get('termsText') as string;
     if (termsText !== null) updates.terms_text = termsText;
 
-    // ── Popup Promocional ──
-    // Siempre guardar el estado del toggle (on/off/true/false → boolean)
+    // â”€â”€ Popup Promocional â”€â”€
+    // Siempre guardar el estado del toggle (on/off/true/false â†’ boolean)
     const popupEnabledVal = formData.get('popupEnabled');
     updates.popup_enabled = popupEnabledVal === 'on' || popupEnabledVal === 'true';
 

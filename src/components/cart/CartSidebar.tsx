@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
@@ -53,7 +53,7 @@ export default function CartSidebar() {
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4 text-maestro-bone/50">
                   <ShoppingBag size={48} strokeWidth={1} />
-                  <p className="uppercase tracking-widest text-sm">Tu bolsa de compras está vacía</p>
+                  <p className="uppercase tracking-widest text-sm">Tu bolsa de compras estÃ¡ vacÃ­a</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -115,7 +115,7 @@ export default function CartSidebar() {
                   Finalizar Compra
                 </a>
                 <p className="text-[10px] text-center text-maestro-bone/40 mt-4 uppercase tracking-widest">
-                  Te contactaremos para confirmar disponibilidad y envío
+                  Te contactaremos para confirmar disponibilidad y envÃ­o
                 </p>
               </div>
             )}

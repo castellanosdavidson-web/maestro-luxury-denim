@@ -1,4 +1,4 @@
-import CollectionsClient from "./CollectionsClient";
+﻿import CollectionsClient from "./CollectionsClient";
 import { supabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = 'force-dynamic';

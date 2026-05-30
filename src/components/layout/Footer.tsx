@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -21,14 +21,14 @@ export default function Footer() {
           
           {/* Newsletter (Left / 5 cols) */}
           <div className="lg:col-span-5">
-            <h3 className="text-sm tracking-[0.3em] uppercase text-maestro-gold mb-6">Únete a MAESTRO</h3>
+            <h3 className="text-sm tracking-[0.3em] uppercase text-maestro-gold mb-6">Ãšnete a MAESTRO</h3>
             <p className="text-maestro-bone/60 font-light text-sm mb-8 leading-relaxed pr-8">
-              Suscríbete a The Journal para recibir acceso anticipado a nuestras ediciones limitadas de denim, invitaciones a eventos privados y editoriales exclusivos.
+              SuscrÃ­bete a The Journal para recibir acceso anticipado a nuestras ediciones limitadas de denim, invitaciones a eventos privados y editoriales exclusivos.
             </p>
             <form className="flex relative border-b border-maestro-bone/30 pb-2 group">
               <input 
                 type="email" 
-                placeholder="Tu correo electrónico" 
+                placeholder="Tu correo electrÃ³nico" 
                 className="w-full bg-transparent text-sm tracking-widest text-maestro-bone placeholder:text-maestro-bone/30 outline-none"
                 required
               />
@@ -63,9 +63,9 @@ export default function Footer() {
             <div className="flex flex-col space-y-4">
               <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/70 mb-2">Soporte</h4>
               <Link href="/faq" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">FAQ</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Envíos & Retornos</Link>
-              <Link href="/privacy" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Política de Privacidad</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Términos Legales</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">EnvÃ­os & Retornos</Link>
+              <Link href="/privacy" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">PolÃ­tica de Privacidad</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">TÃ©rminos Legales</Link>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40">
-          <p>© {new Date().getFullYear()} MAESTRO DENIM. TODOS LOS DERECHOS RESERVADOS.</p>
+          <p>Â© {new Date().getFullYear()} MAESTRO DENIM. TODOS LOS DERECHOS RESERVADOS.</p>
           
           <div className="flex gap-6">
             <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" className="hover:text-maestro-gold transition-colors">

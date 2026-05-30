@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -87,11 +87,11 @@ export default function AdminPartners() {
 
     const res = await fetch(url, { method, body: fd });
     if (res.ok) {
-      showToast(editing ? "Aliado actualizado ✓" : "Aliado creado ✓");
+      showToast(editing ? "Aliado actualizado âœ“" : "Aliado creado âœ“");
       setShowModal(false);
       fetchPartners();
     } else {
-      showToast("Ocurrió un error", false);
+      showToast("OcurriÃ³ un error", false);
     }
     setSaving(false);
   };
@@ -105,7 +105,7 @@ export default function AdminPartners() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("¿Eliminar este aliado permanentemente?")) return;
+    if (!confirm("Â¿Eliminar este aliado permanentemente?")) return;
     setDeletingId(id);
     await fetch(`/api/partners/${id}`, { method: "DELETE" });
     showToast("Aliado eliminado");
@@ -144,7 +144,7 @@ export default function AdminPartners() {
           <Handshake size={16} className="text-maestro-gold mt-0.5 flex-shrink-0" />
           <div>
             <p className="text-xs tracking-widest uppercase text-maestro-gold mb-1">Logos en el Footer de la tienda</p>
-            <p className="text-white/50 text-sm leading-relaxed">Los aliados marcados como activos aparecerán en el carrusel continuo que se muestra al final de la página. Puedes desactivarlos temporalmente en caso de finalizar una colaboración sin perder su información.</p>
+            <p className="text-white/50 text-sm leading-relaxed">Los aliados marcados como activos aparecerÃ¡n en el carrusel continuo que se muestra al final de la pÃ¡gina. Puedes desactivarlos temporalmente en caso de finalizar una colaboraciÃ³n sin perder su informaciÃ³n.</p>
           </div>
         </div>
 

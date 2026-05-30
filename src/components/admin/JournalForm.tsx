@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -52,7 +52,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
       const res = await fetch('/api/upload', { method: 'POST', body: form });
       
       if (res.status === 413) {
-        alert("La imagen es demasiado pesada. El tamaño máximo es 4.5MB.");
+        alert("La imagen es demasiado pesada. El tamaÃ±o mÃ¡ximo es 4.5MB.");
         return;
       }
 
@@ -109,7 +109,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
         router.push("/admin/journal");
       } else {
         if (res.status === 413) {
-          alert("Error: La imagen que intentas subir es demasiado pesada. Vercel permite un máximo de 4.5MB. Por favor, comprime tu imagen antes de subirla.");
+          alert("Error: La imagen que intentas subir es demasiado pesada. Vercel permite un mÃ¡ximo de 4.5MB. Por favor, comprime tu imagen antes de subirla.");
           return;
         }
         
@@ -137,7 +137,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
           <ArrowLeft size={24} />
         </Link>
         <h1 className="text-3xl text-editorial text-maestro-bone">
-          {initialData ? "Editar Artículo" : "Nuevo Artículo Editorial"}
+          {initialData ? "Editar ArtÃ­culo" : "Nuevo ArtÃ­culo Editorial"}
         </h1>
       </div>
 
@@ -147,7 +147,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
           {/* Main Info */}
           <div className="md:col-span-2 space-y-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título del Artículo</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TÃ­tulo del ArtÃ­culo</label>
               <input
                 type="text" name="title" required
                 value={formData.title} onChange={handleChange}
@@ -160,7 +160,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
               <textarea
                 name="excerpt" rows={2} required
                 value={formData.excerpt} onChange={handleChange}
-                placeholder="Un breve resumen que invite a leer más..."
+                placeholder="Un breve resumen que invite a leer mÃ¡s..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
@@ -190,7 +190,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
                 </div>
               </div>
               <p className="text-[10px] text-maestro-bone/40 mb-3">
-                Puedes copiar y pegar imágenes directamente en el texto, o usar el botón para insertar en la posición del cursor.
+                Puedes copiar y pegar imÃ¡genes directamente en el texto, o usar el botÃ³n para insertar en la posiciÃ³n del cursor.
               </p>
               <div className="bg-maestro-bone/5 border border-maestro-bone/20 text-maestro-bone">
                 <Editor 
@@ -215,10 +215,10 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
 
             {/* SEO Section */}
             <div className="pt-8 border-t border-maestro-bone/10 space-y-6">
-              <h3 className="text-lg text-editorial text-maestro-gold mb-4">Optimización SEO</h3>
+              <h3 className="text-lg text-editorial text-maestro-gold mb-4">OptimizaciÃ³n SEO</h3>
               
               <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título SEO (Recomendado: 50-60 caracteres)</label>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TÃ­tulo SEO (Recomendado: 50-60 caracteres)</label>
                 <input
                   type="text" name="seo_title"
                   value={formData.seo_title} onChange={handleChange}
@@ -228,11 +228,11 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción SEO (Recomendado: 150-160 caracteres)</label>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">DescripciÃ³n SEO (Recomendado: 150-160 caracteres)</label>
                 <textarea
                   name="seo_description" rows={2}
                   value={formData.seo_description} onChange={handleChange}
-                  placeholder="Descripción que aparecerá en los resultados de Google..."
+                  placeholder="DescripciÃ³n que aparecerÃ¡ en los resultados de Google..."
                   className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
                 />
               </div>
@@ -286,7 +286,7 @@ export default function JournalForm({ initialData }: { initialData?: any }) {
             disabled={loading}
             className="px-8 py-3 bg-maestro-gold text-maestro-dark uppercase tracking-widest text-xs font-semibold hover:bg-maestro-bone transition-colors disabled:opacity-50"
           >
-            {loading ? "Guardando..." : "Guardar Artículo"}
+            {loading ? "Guardando..." : "Guardar ArtÃ­culo"}
           </button>
         </div>
       </form>

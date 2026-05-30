@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { Link2, Check } from "lucide-react";
@@ -16,7 +16,7 @@ const TwitterIcon = ({ size = 20, className = "" }: { size?: number, className?:
 );
 import { motion } from "framer-motion";
 
-export default function ShareButtons({ title, text, label = "Compartir Artículo:" }: { title: string, text?: string, label?: string }) {
+export default function ShareButtons({ title, text, label = "Compartir ArtÃ­culo:" }: { title: string, text?: string, label?: string }) {
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState("");
 

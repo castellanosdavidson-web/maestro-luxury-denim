@@ -6,7 +6,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const DOMAIN = "https://maestrodeninmluxury.com";
+const DOMAIN = "https://www.maestrodeninmluxury.com";
 
 async function getProduct(slug: string) {
   try {

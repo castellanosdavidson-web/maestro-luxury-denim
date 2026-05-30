@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect } from "react";
 
@@ -14,11 +14,11 @@ interface Maestro {
 }
 
 const FALLBACK: Maestro[] = [
-  { id: 1, name: "Valentina M.", location: "Bogotá, Colombia", quote: "Nunca pensé que un denim me haría sentir tan poderosa. Las miradas en la oficina lo dicen todo.", product: "Chaqueta Obsidiana", image_url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=80", display_order: 1, active: true },
-  { id: 2, name: "Isabella R.", location: "Medellín, Colombia", quote: "Invertí en piezas MAESTRO y nunca volví a preocuparme por mi guardarropa. Calidad que se siente desde el primer uso.", product: "Vestido Crepúsculo", image_url: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80", display_order: 2, active: true },
+  { id: 1, name: "Valentina M.", location: "BogotÃ¡, Colombia", quote: "Nunca pensÃ© que un denim me harÃ­a sentir tan poderosa. Las miradas en la oficina lo dicen todo.", product: "Chaqueta Obsidiana", image_url: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=80", display_order: 1, active: true },
+  { id: 2, name: "Isabella R.", location: "MedellÃ­n, Colombia", quote: "InvertÃ­ en piezas MAESTRO y nunca volvÃ­ a preocuparme por mi guardarropa. Calidad que se siente desde el primer uso.", product: "Vestido CrepÃºsculo", image_url: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&q=80", display_order: 2, active: true },
   { id: 3, name: "Camila S.", location: "Cali, Colombia", quote: "Lo que diferencia a MAESTRO es la forma en que moldea el cuerpo. Es denim que entiende a la mujer.", product: "Falda Horizonte", image_url: "https://images.unsplash.com/photo-1488716820095-cbe80883c496?w=600&q=80", display_order: 3, active: true },
   { id: 4, name: "Daniela P.", location: "Cartagena, Colombia", quote: "Cada prenda cuenta una historia. Tengo tres piezas MAESTRO y con cada una me siento como en una editorial de moda.", product: "Chaleco Dorado", image_url: "https://images.unsplash.com/photo-1504703395950-b89145a5425b?w=600&q=80", display_order: 4, active: true },
-  { id: 5, name: "Ana Lucía T.", location: "Barranquilla, Colombia", quote: "Mi compra más inteligente del año. Denim que no se arruga, que no destiñe y que con el tiempo se adapta perfectamente.", product: "Pantalón Celosía", image_url: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80", display_order: 5, active: true },
+  { id: 5, name: "Ana LucÃ­a T.", location: "Barranquilla, Colombia", quote: "Mi compra mÃ¡s inteligente del aÃ±o. Denim que no se arruga, que no destiÃ±e y que con el tiempo se adapta perfectamente.", product: "PantalÃ³n CelosÃ­a", image_url: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80", display_order: 5, active: true },
 ];
 
 export default function MaestrosCarousel() {
@@ -87,7 +87,7 @@ export default function MaestrosCarousel() {
       <div className="container mx-auto px-6 md:px-12 mb-16">
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-maestro-gold mb-3">Casos de Éxito</p>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-maestro-gold mb-3">Casos de Ã‰xito</p>
             <h2 className="text-4xl md:text-6xl font-light text-maestro-bone leading-none tracking-tight">
               Maestros<br /><em className="text-maestro-gold not-italic">del Estilo</em>
             </h2>

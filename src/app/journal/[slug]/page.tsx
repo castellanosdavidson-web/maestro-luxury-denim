@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       publishedTime: post.created_at,
       images: [
         {
-          url: post.cover_image || "https://maestrodeninmluxury.com/og-default.jpg",
+          url: post.cover_image || "https://www.maestrodeninmluxury.com/og-default.jpg",
           width: 1200,
           height: 630,
           alt: post.title,
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
-      images: [post.cover_image || "https://maestrodeninmluxury.com/og-default.jpg"],
+      images: [post.cover_image || "https://www.maestrodeninmluxury.com/og-default.jpg"],
     }
   }
 }
@@ -105,7 +105,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
       "name": "MAESTRO Luxury Denim",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://maestrodeninmluxury.com/logo.png"
+        "url": "https://www.maestrodeninmluxury.com/logo.png"
       }
     }
   };
@@ -182,7 +182,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
           {/* Banner Publicitario Dinámico (Ejemplo AdSense) */}
           <FadeIn className="my-24">
             <div className="w-full aspect-[4/1] md:aspect-[6/1] bg-maestro-carbon border border-maestro-bone/10 flex flex-col items-center justify-center relative overflow-hidden group">
-              <div className="absolute inset-0 bg-[url('https://maestrodeninmluxury.com/og-default.jpg')] bg-cover bg-center opacity-10 grayscale group-hover:grayscale-0 transition-all duration-700 mix-blend-overlay"></div>
+              <div className="absolute inset-0 bg-[url('https://www.maestrodeninmluxury.com/og-default.jpg')] bg-cover bg-center opacity-10 grayscale group-hover:grayscale-0 transition-all duration-700 mix-blend-overlay"></div>
               <p className="text-[8px] uppercase tracking-[0.4em] text-maestro-bone/30 mb-2 z-10">Espacio Patrocinado</p>
               <h4 className="text-xl md:text-2xl text-editorial text-maestro-gold z-10">Tu Marca Aquí</h4>
               <p className="text-xs text-maestro-bone/40 font-light mt-1 z-10">Conecta Google AdSense o sponsors directos</p>

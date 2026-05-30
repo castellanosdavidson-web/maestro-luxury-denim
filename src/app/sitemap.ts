@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { supabaseAdmin } from '@/lib/supabase';
 
-const DOMAIN = 'https://maestrodeninmluxury.com';
+const DOMAIN = 'https://www.maestrodeninmluxury.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Rutas estáticas principales

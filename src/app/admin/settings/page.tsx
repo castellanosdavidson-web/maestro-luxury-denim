@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { Upload, Eye, X } from "lucide-react";
@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const FONT_SIZES = [
-  { value: "small",  label: "Pequeño" },
+  { value: "small",  label: "PequeÃ±o" },
   { value: "medium", label: "Mediano" },
   { value: "large",  label: "Grande" },
   { value: "xlarge", label: "Muy Grande" },
@@ -15,7 +15,7 @@ const FONT_SIZES = [
 const FONT_FAMILIES = [
   { value: "editorial", label: "Editorial (Playfair Display)" },
   { value: "modern",    label: "Moderno (Inter)" },
-  { value: "classic",   label: "Clásico (Georgia)" },
+  { value: "classic",   label: "ClÃ¡sico (Georgia)" },
   { value: "elegant",   label: "Elegante (Cormorant Garamond)" },
 ];
 
@@ -73,7 +73,7 @@ export default function AdminSettings() {
     // Valores que no viajan bien en FormData
     formData.set("heroFontSize",   settings.heroFontSize);
     formData.set("heroFontFamily", settings.heroFontFamily);
-    // Fix: checkbox desmarcado llega como null → forzar el valor siempre
+    // Fix: checkbox desmarcado llega como null â†’ forzar el valor siempre
     formData.set("popupEnabled", settings.popupEnabled ? "on" : "off");
 
     try {
@@ -91,18 +91,18 @@ export default function AdminSettings() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-3xl text-editorial text-maestro-bone mb-8">Configuración de Portada</h1>
+      <h1 className="text-3xl text-editorial text-maestro-bone mb-8">ConfiguraciÃ³n de Portada</h1>
 
       <form onSubmit={handleSubmit} className="space-y-8 bg-maestro-dark border border-maestro-bone/10 p-8 rounded-sm">
 
-        {/* ── Textos ── */}
+        {/* â”€â”€ Textos â”€â”€ */}
         <div>
           <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
             Textos Principales
           </h2>
           <div className="space-y-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título Principal</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TÃ­tulo Principal</label>
               <textarea
                 name="heroTitle"
                 value={settings.heroTitle}
@@ -112,7 +112,7 @@ export default function AdminSettings() {
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Subtítulo (Itálica)</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">SubtÃ­tulo (ItÃ¡lica)</label>
               <input
                 type="text" name="heroSubtitle" value={settings.heroSubtitle} onChange={handleChange}
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
@@ -133,10 +133,10 @@ export default function AdminSettings() {
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Texto de Botón (CTA)</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Texto de BotÃ³n (CTA)</label>
               <input
                 type="text" name="heroLinkText" value={settings.heroLinkText} onChange={handleChange}
-                placeholder="Ej: Explorar Colección"
+                placeholder="Ej: Explorar ColecciÃ³n"
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
@@ -144,12 +144,12 @@ export default function AdminSettings() {
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 text-maestro-gold">Cinta en movimiento (Marquesina)</label>
               <input
                 type="text" name="heroMarquee" value={settings.heroMarquee} onChange={handleChange}
-                placeholder="Ej: ENVÍO GRATIS EN COLOMBIA • NUEVA COLECCIÓN..."
+                placeholder="Ej: ENVÃO GRATIS EN COLOMBIA â€¢ NUEVA COLECCIÃ“N..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 text-maestro-gold">Número de WhatsApp (Ventas)</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2 text-maestro-gold">NÃºmero de WhatsApp (Ventas)</label>
               <input
                 type="text" name="whatsappNumber" value={settings.whatsappNumber} onChange={handleChange}
                 placeholder="Ej: 573001234567"
@@ -159,14 +159,14 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* ── Tipografía ── */}
+        {/* â”€â”€ TipografÃ­a â”€â”€ */}
         <div>
           <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
-            Tipografía del Título
+            TipografÃ­a del TÃ­tulo
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Tamaño de Texto</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TamaÃ±o de Texto</label>
               <select
                 name="heroFontSize"
                 value={settings.heroFontSize}
@@ -179,7 +179,7 @@ export default function AdminSettings() {
               </select>
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Tipografía</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TipografÃ­a</label>
               <select
                 name="heroFontFamily"
                 value={settings.heroFontFamily}
@@ -209,12 +209,12 @@ export default function AdminSettings() {
               }}
               className="text-maestro-bone leading-tight"
             >
-              {settings.heroTitle || "DISEÑADO\nPARA MUJERES"}
+              {settings.heroTitle || "DISEÃ‘ADO\nPARA MUJERES"}
             </p>
           </div>
         </div>
 
-        {/* ── Imagen y Video ── */}
+        {/* â”€â”€ Imagen y Video â”€â”€ */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div>
             <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4">
@@ -248,9 +248,9 @@ export default function AdminSettings() {
             </div>
           </div>
         </div>
-        <p className="text-[10px] text-maestro-bone/40 text-center">Si el video está configurado, reemplazará a la imagen en el diseño "Cinematic".</p>
+        <p className="text-[10px] text-maestro-bone/40 text-center">Si el video estÃ¡ configurado, reemplazarÃ¡ a la imagen en el diseÃ±o "Cinematic".</p>
 
-        {/* ── Redes Sociales y Logo ── */}
+        {/* â”€â”€ Redes Sociales y Logo â”€â”€ */}
         <div>
           <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
             Marca y Redes Sociales
@@ -264,7 +264,7 @@ export default function AdminSettings() {
                     name="logoFile" type="file" accept="image/png,image/svg+xml"
                     className="w-full text-sm text-maestro-bone/60 file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-semibold file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
                   />
-                  <p className="text-[10px] mt-2 text-maestro-bone/40">Si se sube, reemplazará el texto "MAESTRO" en el Footer y Navbar.</p>
+                  <p className="text-[10px] mt-2 text-maestro-bone/40">Si se sube, reemplazarÃ¡ el texto "MAESTRO" en el Footer y Navbar.</p>
                 </div>
                 {settings.logoUrl && (
                   <div className="ml-4 bg-maestro-carbon p-2 rounded">
@@ -310,17 +310,17 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* ── Páginas Informativas ── */}
+        {/* â”€â”€ PÃ¡ginas Informativas â”€â”€ */}
         <div>
           <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
-            Páginas Informativas (Footer)
+            PÃ¡ginas Informativas (Footer)
           </h2>
           <div className="space-y-6">
             <div>
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Nuestra Historia</label>
               <textarea
                 name="aboutText" value={settings.aboutText} onChange={handleChange} rows={5}
-                placeholder="Escribe la historia de la marca aquí..."
+                placeholder="Escribe la historia de la marca aquÃ­..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
@@ -328,22 +328,22 @@ export default function AdminSettings() {
               <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Preguntas Frecuentes (FAQ)</label>
               <textarea
                 name="faqText" value={settings.faqText} onChange={handleChange} rows={5}
-                placeholder="P: ¿Cuánto tarda el envío? R: ..."
+                placeholder="P: Â¿CuÃ¡nto tarda el envÃ­o? R: ..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Términos Legales y Envíos</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TÃ©rminos Legales y EnvÃ­os</label>
               <textarea
                 name="termsText" value={settings.termsText} onChange={handleChange} rows={5}
-                placeholder="Políticas de devolución, envíos, privacidad..."
+                placeholder="PolÃ­ticas de devoluciÃ³n, envÃ­os, privacidad..."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
           </div>
         </div>
 
-        {/* ── Popup Promocional ── */}
+        {/* â”€â”€ Popup Promocional â”€â”€ */}
         <div>
           <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
             Popup / Promo Modal
@@ -353,7 +353,7 @@ export default function AdminSettings() {
           <div className="flex items-center justify-between p-4 bg-maestro-carbon border border-maestro-bone/10 mb-6">
             <div>
               <p className="text-sm text-maestro-bone">Activar Popup</p>
-              <p className="text-[11px] text-maestro-bone/40 mt-1">Cuando esté activo, aparecerá automáticamente al entrar al sitio.</p>
+              <p className="text-[11px] text-maestro-bone/40 mt-1">Cuando estÃ© activo, aparecerÃ¡ automÃ¡ticamente al entrar al sitio.</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -379,22 +379,22 @@ export default function AdminSettings() {
               />
             </div>
 
-            {/* Título */}
+            {/* TÃ­tulo */}
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Título del Popup</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">TÃ­tulo del Popup</label>
               <input
                 type="text" name="popupTitle" value={settings.popupTitle} onChange={handleChange}
-                placeholder="Ej: Nueva Colección 2025"
+                placeholder="Ej: Nueva ColecciÃ³n 2025"
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
 
-            {/* Descripción */}
+            {/* DescripciÃ³n */}
             <div>
-              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción / Mensaje</label>
+              <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">DescripciÃ³n / Mensaje</label>
               <textarea
                 name="popupDescription" value={settings.popupDescription} onChange={handleChange} rows={3}
-                placeholder="Ej: Descubre las últimas piezas de la temporada. Edición limitada."
+                placeholder="Ej: Descubre las Ãºltimas piezas de la temporada. EdiciÃ³n limitada."
                 className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
               />
             </div>
@@ -402,15 +402,15 @@ export default function AdminSettings() {
             {/* CTA */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Texto del Botón (CTA)</label>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Texto del BotÃ³n (CTA)</label>
                 <input
                   type="text" name="popupLinkText" value={settings.popupLinkText} onChange={handleChange}
-                  placeholder="Ej: Ver Colección"
+                  placeholder="Ej: Ver ColecciÃ³n"
                   className="w-full bg-maestro-carbon border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link del Botón</label>
+                <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">Link del BotÃ³n</label>
                 <input
                   type="text" name="popupLinkUrl" value={settings.popupLinkUrl} onChange={handleChange}
                   placeholder="Ej: /collections o /category/chaquetas"
@@ -431,7 +431,7 @@ export default function AdminSettings() {
                     name="popupImageFile" type="file" accept="image/*"
                     className="w-full text-xs text-maestro-bone/60 file:mr-2 file:py-1 file:px-3 file:rounded-sm file:border-0 file:text-xs file:bg-maestro-bone file:text-maestro-dark hover:file:bg-maestro-gold"
                   />
-                  <p className="text-[10px] mt-2 text-maestro-bone/30">Se mostrará si no hay video.</p>
+                  <p className="text-[10px] mt-2 text-maestro-bone/30">Se mostrarÃ¡ si no hay video.</p>
                 </div>
               </div>
               <div>
@@ -449,7 +449,7 @@ export default function AdminSettings() {
               </div>
             </div>
 
-            {/* Botón de preview real */}
+            {/* BotÃ³n de preview real */}
             <button
               type="button"
               onClick={() => setShowPreview(true)}
@@ -470,7 +470,7 @@ export default function AdminSettings() {
         </button>
       </form>
 
-      {/* ── Preview Modal cinematográfico (fuera del form) ── */}
+      {/* â”€â”€ Preview Modal cinematogrÃ¡fico (fuera del form) â”€â”€ */}
       <AnimatePresence>
         {showPreview && (
           <>
@@ -489,7 +489,7 @@ export default function AdminSettings() {
               }}
             />
 
-            {/* Wrapper de centrado (sin animación) */}
+            {/* Wrapper de centrado (sin animaciÃ³n) */}
             <div style={{
               position: "fixed", inset: 0, zIndex: 10000,
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -601,7 +601,7 @@ export default function AdminSettings() {
                   </motion.div>
                 )}
 
-                {/* Línea gold */}
+                {/* LÃ­nea gold */}
                 <motion.div
                   initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
                   transition={{ duration: 1.2, delay: 0.5 }}

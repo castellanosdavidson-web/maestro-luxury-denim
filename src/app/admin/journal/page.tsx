@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { Plus, Edit, Trash2 } from "lucide-react";
@@ -25,7 +25,7 @@ export default function AdminJournal() {
   };
 
   const deletePost = async (id: string) => {
-    if (!confirm("¿Seguro que deseas eliminar este artículo?")) return;
+    if (!confirm("Â¿Seguro que deseas eliminar este artÃ­culo?")) return;
     try {
       await fetch(`/api/journal/${id}`, { method: "DELETE" });
       fetchPosts();
@@ -42,7 +42,7 @@ export default function AdminJournal() {
           href="/admin/journal/new"
           className="flex items-center gap-2 bg-maestro-gold text-maestro-dark px-4 py-2 uppercase tracking-widest text-xs font-semibold hover:bg-maestro-bone transition-colors"
         >
-          <Plus size={16} /> Crear Artículo
+          <Plus size={16} /> Crear ArtÃ­culo
         </Link>
       </div>
 
@@ -51,7 +51,7 @@ export default function AdminJournal() {
           <thead className="text-xs uppercase tracking-widest text-maestro-bone bg-maestro-carbon border-b border-maestro-bone/10">
             <tr>
               <th className="px-6 py-4">Imagen</th>
-              <th className="px-6 py-4">Título</th>
+              <th className="px-6 py-4">TÃ­tulo</th>
               <th className="px-6 py-4">Estado</th>
               <th className="px-6 py-4">Fecha</th>
               <th className="px-6 py-4 text-right">Acciones</th>
@@ -64,7 +64,7 @@ export default function AdminJournal() {
               </tr>
             ) : posts.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-maestro-bone/50">No hay artículos creados.</td>
+                <td colSpan={5} className="px-6 py-8 text-center text-maestro-bone/50">No hay artÃ­culos creados.</td>
               </tr>
             ) : (
               posts.map((post) => (

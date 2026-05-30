@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const DOMAIN = 'https://maestrodeninmluxury.com';
+  const DOMAIN = 'https://www.maestrodeninmluxury.com';
 
   return {
     rules: [

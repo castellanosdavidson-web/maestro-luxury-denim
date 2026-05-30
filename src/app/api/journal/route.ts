@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import path from 'path';
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const seo_description = formData.get('seo_description') as string;
     const seo_keywords = formData.get('seo_keywords') as string;
     
-    // Generar slug único
+    // Generar slug Ãºnico
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
 
     const newPost: any = { 

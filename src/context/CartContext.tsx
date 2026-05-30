@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { gtagAddToCart, gtagViewCart } from "@/lib/analytics";
@@ -98,8 +98,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const generateWhatsAppLink = () => {
-    const phone = whatsappNumber.replace(/\D/g, ''); // Limpiar el número de espacios o símbolos
-    let message = "Hola MAESTRO, me gustaría comprar los siguientes productos:%0A%0A";
+    const phone = whatsappNumber.replace(/\D/g, ''); // Limpiar el nÃºmero de espacios o sÃ­mbolos
+    let message = "Hola MAESTRO, me gustarÃ­a comprar los siguientes productos:%0A%0A";
     
     items.forEach((item, index) => {
       message += `${index + 1}. *${item.name}* (Ref: ${item.reference})%0A`;
@@ -107,7 +107,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
     
     message += `%0ATotal: $${totalPrice.toLocaleString("es-CO")}%0A%0A`;
-    message += "Quedo atenta. ¡Gracias!";
+    message += "Quedo atenta. Â¡Gracias!";
     
     return `https://wa.me/${phone}?text=${message}`;
   };

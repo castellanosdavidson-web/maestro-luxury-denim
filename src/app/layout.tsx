@@ -26,16 +26,16 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "MAESTRO | Luxury Denim Colombia",
-  description: "Denim premium de lujo diseñado para mujeres que imponen estilo. Jeans, chaquetas, blusas y más. Edición limitada. Envíos a toda Colombia.",
+  description: "Denim premium de lujo diseÃ±ado para mujeres que imponen estilo. Jeans, chaquetas, blusas y mÃ¡s. EdiciÃ³n limitada. EnvÃ­os a toda Colombia.",
   keywords: ["denim premium colombia", "jeans de lujo", "maestro denim", "ropa mujer colombia", "chaquetas denim", "jeans premium mujer", "moda de lujo bogota"],
   openGraph: {
     title: "MAESTRO | Luxury Denim",
     description: "Diseñado para mujeres que imponen estilo. Denim premium, edición limitada.",
-    url: "https://maestrodeninmluxury.com",
+    url: "https://www.maestrodeninmluxury.com",
     siteName: "MAESTRO Denim",
     images: [
       {
-        url: "https://maestrodeninmluxury.com/og-default.jpg",
+        url: "https://www.maestrodeninmluxury.com/og-default.jpg",
         width: 1200,
         height: 630,
         alt: "MAESTRO Luxury Denim",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
   verification: {
     google: "fjV9bKyHaFsvrsw_07OQo7DYCkgDJFSjuzTYR7JwvGk",
   },
-  metadataBase: new URL("https://maestrodeninmluxury.com"),
+  metadataBase: new URL("https://www.maestrodeninmluxury.com"),
   alternates: {
     canonical: "/",
   },
@@ -101,15 +101,15 @@ export default function RootLayout({
             <FloatingWhatsApp />
           </CartProvider>
         </SmoothScroll>
-        {/* Organization Schema.org — señal de autoridad para Google */}
+        {/* Organization Schema.org â€” seÃ±al de autoridad para Google */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ClothingStore",
             "name": "MAESTRO Luxury Denim",
-            "url": "https://maestrodeninmluxury.com",
-            "logo": "https://maestrodeninmluxury.com/logo.png",
+            "url": "https://www.maestrodeninmluxury.com",
+            "logo": "https://www.maestrodeninmluxury.com/logo.png",
             "description": "Denim premium de lujo diseñado para mujeres que imponen estilo. Edición limitada.",
             "address": { "@type": "PostalAddress", "addressCountry": "CO" },
             "sameAs": [

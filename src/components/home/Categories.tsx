@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -16,7 +16,7 @@ interface Category {
   status?: string;
 }
 
-// ── Layout DESKTOP: patrón editorial con anchos variables ──
+// â”€â”€ Layout DESKTOP: patrÃ³n editorial con anchos variables â”€â”€
 const ROW_PATTERNS = [
   [65, 35],
   [35, 65],
@@ -40,7 +40,7 @@ function buildRows(cats: Category[]) {
   return { rows, patterns: ROW_PATTERNS };
 }
 
-// ── Tarjeta desktop ──
+// â”€â”€ Tarjeta desktop â”€â”€
 function DesktopCard({
   cat, widthPct, isHovered,
   onEnter, onLeave,
@@ -75,7 +75,7 @@ function DesktopCard({
       <div className="absolute inset-0 bg-maestro-gold/10 transition-opacity duration-500"
         style={{ opacity: isHovered ? 1 : 0 }} />
 
-      {/* Línea diagonal */}
+      {/* LÃ­nea diagonal */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{ opacity: isHovered ? 1 : 0, transition: "opacity 600ms" }}>
         <div className="absolute bg-maestro-gold"
@@ -112,7 +112,7 @@ function DesktopCard({
         {/* CTA */}
         <div className="flex items-center gap-3 mt-3 transition-all duration-500"
           style={{ opacity: isHovered ? 1 : 0, transform: isHovered ? "translateY(0)" : "translateY(8px)" }}>
-          <span className="text-[9px] tracking-[0.35em] uppercase text-maestro-gold">Explorar colección</span>
+          <span className="text-[9px] tracking-[0.35em] uppercase text-maestro-gold">Explorar colecciÃ³n</span>
           <ArrowRight size={10} className="text-maestro-gold" />
         </div>
       </div>
@@ -120,7 +120,7 @@ function DesktopCard({
   );
 }
 
-// ── Tarjeta MOBILE: grid 2 columnas, texto siempre visible ──
+// â”€â”€ Tarjeta MOBILE: grid 2 columnas, texto siempre visible â”€â”€
 function MobileCard({ cat, tall = false }: { cat: Category; tall?: boolean }) {
   return (
     <Link
@@ -140,7 +140,7 @@ function MobileCard({ cat, tall = false }: { cat: Category; tall?: boolean }) {
       {/* Gradiente */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
 
-      {/* Nombre — siempre visible, nunca se corta */}
+      {/* Nombre â€” siempre visible, nunca se corta */}
       <div className="absolute inset-x-0 bottom-0 p-4">
         <h3
           className="font-light text-white leading-tight"
@@ -172,7 +172,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
 
   return (
     <section className="bg-black overflow-hidden">
-      {/* ── Header ── */}
+      {/* â”€â”€ Header â”€â”€ */}
       <div className="px-6 md:px-12 pt-20 pb-10 flex items-end justify-between">
         <div>
           <p className="text-[9px] tracking-[0.5em] uppercase text-maestro-gold mb-3">Editorial</p>
@@ -189,7 +189,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
         </Link>
       </div>
 
-      {/* ── MOBILE: grid 2 columnas ── */}
+      {/* â”€â”€ MOBILE: grid 2 columnas â”€â”€ */}
       <div className="md:hidden flex flex-col gap-[3px]">
         {/* Primera fila: 1 tarjeta grande (full width) */}
         {cats[0] && (
@@ -207,13 +207,13 @@ export default function Categories({ categories }: { categories?: Category[] }) 
                 <MobileCard cat={cat} />
               </div>
             ))}
-            {/* Si el par tiene solo 1 elemento (último impar), full width */}
+            {/* Si el par tiene solo 1 elemento (Ãºltimo impar), full width */}
             {pair.length === 1 && <div className="flex-1 min-w-0" />}
           </div>
         ))}
       </div>
 
-      {/* ── DESKTOP: grid editorial con anchos variables ── */}
+      {/* â”€â”€ DESKTOP: grid editorial con anchos variables â”€â”€ */}
       <div className="hidden md:flex flex-col gap-[3px]">
         {rows.map((row, rowIdx) => {
           const pattern = patterns[rowIdx % patterns.length];
@@ -238,7 +238,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
         })}
       </div>
 
-      {/* ── CTA móvil ── */}
+      {/* â”€â”€ CTA mÃ³vil â”€â”€ */}
       <div className="flex md:hidden justify-center py-10 px-6">
         <Link
           href="/collections"

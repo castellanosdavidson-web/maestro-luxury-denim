@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Aurora from "@/components/Aurora";
 
-// Mapa de tamaños de texto disponibles para el título
+// Mapa de tamaÃ±os de texto disponibles para el tÃ­tulo
 const fontSizeMap: Record<string, string> = {
   small:  "text-4xl md:text-5xl lg:text-6xl",
   medium: "text-5xl md:text-6xl lg:text-7xl",
@@ -12,7 +12,7 @@ const fontSizeMap: Record<string, string> = {
   xlarge: "text-7xl md:text-8xl lg:text-[10rem]",
 };
 
-// Mapa de tipografías disponibles
+// Mapa de tipografÃ­as disponibles
 const fontFamilyMap: Record<string, string> = {
   editorial: "font-['Playfair_Display',serif]",
   modern:    "font-['Inter',sans-serif]",
@@ -25,17 +25,17 @@ export default function Hero({ settings }: { settings?: any }) {
   const familyClass = fontFamilyMap[settings?.heroFontFamily || "editorial"] ?? fontFamilyMap.editorial;
   
   // Ticker text
-  const marqueeText = settings?.heroMarquee || "ENVÍO GRATIS A TODA COLOMBIA • CAMBIOS SIN COSTO • COLECCIÓN LIMITADA • ";
-  const linkText    = settings?.heroLinkText || "Explorar Colección";
+  const marqueeText = settings?.heroMarquee || "ENVÃO GRATIS A TODA COLOMBIA â€¢ CAMBIOS SIN COSTO â€¢ COLECCIÃ“N LIMITADA â€¢ ";
+  const linkText    = settings?.heroLinkText || "Explorar ColecciÃ³n";
 
-  // Dividir el título en palabras para la animación secuencial
-  const titleText = settings?.heroTitle || "DISEÑADO\nPARA MUJERES";
+  // Dividir el tÃ­tulo en palabras para la animaciÃ³n secuencial
+  const titleText = settings?.heroTitle || "DISEÃ‘ADO\nPARA MUJERES";
   const words = titleText.split(/(\s+)/);
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-maestro-dark flex flex-col justify-between">
       
-      {/* ── Background Media (Aurora / Video / Image) ── */}
+      {/* â”€â”€ Background Media (Aurora / Video / Image) â”€â”€ */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-t from-maestro-dark/90 via-maestro-dark/40 to-maestro-dark/60 z-10" />
         <div className="absolute inset-0 bg-gradient-to-r from-maestro-dark/80 via-transparent to-transparent z-10" />
@@ -78,12 +78,12 @@ export default function Hero({ settings }: { settings?: any }) {
         )}
       </div>
 
-      {/* ── Main Content (Center) ── */}
+      {/* â”€â”€ Main Content (Center) â”€â”€ */}
       <div className="relative z-20 flex-1 flex items-center pt-24 pb-10">
         <div className="container mx-auto px-6 md:px-12 w-full">
           <div className="max-w-4xl">
             
-            {/* Animación del Caption Superior */}
+            {/* AnimaciÃ³n del Caption Superior */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,11 +92,11 @@ export default function Hero({ settings }: { settings?: any }) {
             >
               <div className="h-px w-8 bg-maestro-gold" />
               <p className="text-[9px] md:text-[10px] text-maestro-gold tracking-[0.4em] uppercase">
-                {settings?.heroCaption || "Denim premium · Edición limitada"}
+                {settings?.heroCaption || "Denim premium Â· EdiciÃ³n limitada"}
               </p>
             </motion.div>
 
-            {/* Animación de Título (Palabra por palabra) */}
+            {/* AnimaciÃ³n de TÃ­tulo (Palabra por palabra) */}
             <h1 className={`${sizeClass} ${familyClass} text-white leading-[1] mb-4 whitespace-pre-wrap flex flex-wrap`}>
               {words.map((word: string, i: number) => {
                 if (word.match(/\s+/)) {
@@ -116,7 +116,7 @@ export default function Hero({ settings }: { settings?: any }) {
               })}
             </h1>
 
-            {/* Subtítulo Itálico */}
+            {/* SubtÃ­tulo ItÃ¡lico */}
             <motion.span
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -133,10 +133,10 @@ export default function Hero({ settings }: { settings?: any }) {
               transition={{ duration: 1, delay: 1 }}
               className="text-xs md:text-sm text-white/60 tracking-[0.25em] font-light mb-12 uppercase max-w-lg"
             >
-              {settings?.heroValueProp || "Confección colombiana con estándares globales"}
+              {settings?.heroValueProp || "ConfecciÃ³n colombiana con estÃ¡ndares globales"}
             </motion.p>
 
-            {/* Botón Magnético CTA */}
+            {/* BotÃ³n MagnÃ©tico CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export default function Hero({ settings }: { settings?: any }) {
         </div>
       </div>
 
-      {/* ── Marquee Footer / Cinta Animada ── */}
+      {/* â”€â”€ Marquee Footer / Cinta Animada â”€â”€ */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

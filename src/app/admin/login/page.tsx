@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -34,7 +34,7 @@ function LoginForm() {
         setLoading(false);
       }
     } catch {
-      setError("Error de conexión. Inténtalo de nuevo.");
+      setError("Error de conexiÃ³n. IntÃ©ntalo de nuevo.");
       setLoading(false);
     }
   };
@@ -68,7 +68,7 @@ function LoginForm() {
 
           <div>
             <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">
-              Contraseña
+              ContraseÃ±a
             </label>
             <input
               type="password"
@@ -77,7 +77,7 @@ function LoginForm() {
               required
               autoComplete="current-password"
               className="w-full bg-maestro-carbon border border-maestro-bone/20 p-4 text-sm text-maestro-bone focus:border-maestro-gold outline-none transition-colors"
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             />
           </div>
 

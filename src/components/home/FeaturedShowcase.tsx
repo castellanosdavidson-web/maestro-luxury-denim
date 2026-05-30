@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -6,12 +6,12 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FeaturedShowcase({ products }: { products: any[] }) {
-  // ── Desktop: scroll-driven horizontal pan ────────────────────────────
+  // â”€â”€ Desktop: scroll-driven horizontal pan â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const targetRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: targetRef });
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-65%"]);
 
-  // ── Mobile: touch-swipe carousel ─────────────────────────────────────
+  // â”€â”€ Mobile: touch-swipe carousel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [current, setCurrent]   = useState(0);
   const [dragging, setDragging] = useState(false);
   const touchStartX = useRef(0);
@@ -42,24 +42,24 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
 
   return (
     <>
-      {/* ══════════════════════════════════════════════════════════
-          MOBILE  — carrusel táctil (visible solo en < md)
-      ══════════════════════════════════════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          MOBILE  â€” carrusel tÃ¡ctil (visible solo en < md)
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="block md:hidden bg-maestro-carbon overflow-hidden select-none">
 
         {/* Encabezado */}
         <div className="px-6 pt-12 pb-6 flex items-end justify-between">
           <div>
             <h2 className="text-5xl text-editorial text-maestro-bone leading-none">NEW<br/>DROP</h2>
-            <p className="text-maestro-gold tracking-[0.3em] uppercase text-[10px] mt-3">Explora la colección</p>
+            <p className="text-maestro-gold tracking-[0.3em] uppercase text-[10px] mt-3">Explora la colecciÃ³n</p>
           </div>
-          {/* Paginación numérica */}
+          {/* PaginaciÃ³n numÃ©rica */}
           <span className="text-maestro-bone/40 text-sm tracking-widest">
             {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
         </div>
 
-        {/* Área de la tarjeta con swipe */}
+        {/* Ãrea de la tarjeta con swipe */}
         <div
           className="relative px-6 pb-4"
           onTouchStart={onTouchStart}
@@ -141,9 +141,9 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          DESKTOP — scroll-driven horizontal pan (sin cambios)
-      ══════════════════════════════════════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          DESKTOP â€” scroll-driven horizontal pan (sin cambios)
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section ref={targetRef} className="hidden md:block relative h-[250vh] bg-maestro-carbon">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
 
@@ -151,7 +151,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
             <h2 className="text-8xl text-editorial text-maestro-bone opacity-90 leading-none">
               NEW <br /> DROP
             </h2>
-            <p className="text-maestro-gold tracking-[0.3em] uppercase text-xs mt-4">Explora la colección</p>
+            <p className="text-maestro-gold tracking-[0.3em] uppercase text-xs mt-4">Explora la colecciÃ³n</p>
           </div>
 
           <motion.div style={{ x }} className="flex gap-12 px-[30vw]">

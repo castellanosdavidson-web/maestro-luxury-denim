@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback, useRef, startTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +18,7 @@ export default function ProductGallery({ images, productName }: Props) {
   const total = images.length;
 
   const go = useCallback((idx: number, dir: number) => {
-    // startTransition: marca la actualización como no urgente → no bloquea el hilo
+    // startTransition: marca la actualizaciÃ³n como no urgente â†’ no bloquea el hilo
     startTransition(() => {
       setDirection(dir);
       setActive(Math.max(0, Math.min(idx, total - 1)));
@@ -57,7 +57,7 @@ export default function ProductGallery({ images, productName }: Props) {
     });
   }, [total]);
 
-  // Keyboard nav — passive donde aplica
+  // Keyboard nav â€” passive donde aplica
   useEffect(() => {
     if (!lightbox) return;
     const onKey = (e: KeyboardEvent) => {
@@ -79,7 +79,7 @@ export default function ProductGallery({ images, productName }: Props) {
 
   return (
     <>
-      {/* ── Main gallery ── */}
+      {/* â”€â”€ Main gallery â”€â”€ */}
       <div className="flex flex-col gap-3">
 
         {/* Hero image */}
@@ -96,7 +96,7 @@ export default function ProductGallery({ images, productName }: Props) {
             <motion.img
               key={active}
               src={images[active]}
-              alt={`${productName} — vista ${active + 1}`}
+              alt={`${productName} â€” vista ${active + 1}`}
               custom={direction}
               variants={slideVariants}
               initial="enter"
@@ -170,7 +170,7 @@ export default function ProductGallery({ images, productName }: Props) {
         )}
       </div>
 
-      {/* ── Lightbox ── */}
+      {/* â”€â”€ Lightbox â”€â”€ */}
       <AnimatePresence>
         {lightbox && (
           <motion.div

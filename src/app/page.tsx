@@ -1,4 +1,4 @@
-import Navbar from "@/components/layout/Navbar";
+﻿import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/home/Hero";
 import FeaturedShowcase from "@/components/home/FeaturedShowcase";
 import Categories from "@/components/home/Categories";
@@ -20,10 +20,10 @@ async function getSettings() {
     if (error || !data) return {};
 
     return {
-      heroTitle:      data.hero_title      || "DISEÑADO\nPARA MUJERES",
+      heroTitle:      data.hero_title      || "DISEÃ‘ADO\nPARA MUJERES",
       heroSubtitle:   data.hero_subtitle   || "que imponen estilo.",
-      heroCaption:    data.hero_caption    || "Denim premium · Edición limitada",
-      heroValueProp:  data.hero_value_prop || "Confección colombiana con estándares globales",
+      heroCaption:    data.hero_caption    || "Denim premium Â· EdiciÃ³n limitada",
+      heroValueProp:  data.hero_value_prop || "ConfecciÃ³n colombiana con estÃ¡ndares globales",
       heroImage:      data.hero_image      || "",
       heroVideo:      data.hero_video      || "",
       heroFontSize:   data.hero_font_size  || "large",
@@ -43,7 +43,7 @@ async function getCategories() {
 
     if (error || !cats) return [];
 
-    // Para cada categoría, traer la imagen del último producto activo
+    // Para cada categorÃ­a, traer la imagen del Ãºltimo producto activo
     const enriched = await Promise.all(
       cats.map(async (c: any) => {
         const { data: latest } = await supabaseAdmin
@@ -58,8 +58,8 @@ async function getCategories() {
         return {
           id:                c.id,
           name:              c.name,
-          image:             latest?.image || c.image,  // último producto → fallback imagen de categoría
-          categoryImage:     c.image,                   // imagen original de la categoría
+          image:             latest?.image || c.image,  // Ãºltimo producto â†’ fallback imagen de categorÃ­a
+          categoryImage:     c.image,                   // imagen original de la categorÃ­a
           focal_x:           c.focal_x,
           focal_y:           c.focal_y,
           status:            c.status,

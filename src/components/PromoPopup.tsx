@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,7 +63,7 @@ export default function PromoPopup() {
     <AnimatePresence>
       {visible && (
         <>
-          {/* ── Overlay ── */}
+          {/* â”€â”€ Overlay â”€â”€ */}
           <motion.div
             key="popup-overlay"
             initial={{ opacity: 0 }}
@@ -80,7 +80,7 @@ export default function PromoPopup() {
             }}
           />
 
-          {/* ── Centering wrapper (NO animation here) ── */}
+          {/* â”€â”€ Centering wrapper (NO animation here) â”€â”€ */}
           <div
             style={{
               position: "fixed", inset: 0,
@@ -92,7 +92,7 @@ export default function PromoPopup() {
               pointerEvents: "none",
             }}
           >
-            {/* ── Modal animado ── */}
+            {/* â”€â”€ Modal animado â”€â”€ */}
             <motion.div
               key="popup-modal"
               initial={{ opacity: 0, scale: 0.88 }}
@@ -116,7 +116,7 @@ export default function PromoPopup() {
                 overflow: "hidden",
               }}
             >
-              {/* ── Esquinas decorativas ── */}
+              {/* â”€â”€ Esquinas decorativas â”€â”€ */}
               {["tl","tr","bl","br"].map(corner => (
                 <div key={corner} style={{
                   position: "absolute", width: "20px", height: "20px",
@@ -129,7 +129,7 @@ export default function PromoPopup() {
                 }} />
               ))}
 
-              {/* ── Botón cerrar ── */}
+              {/* â”€â”€ BotÃ³n cerrar â”€â”€ */}
               <button
                 onClick={close}
                 style={{
@@ -154,7 +154,7 @@ export default function PromoPopup() {
                 <X size={15} />
               </button>
 
-              {/* ── Zona de media con overlay editorial ── */}
+              {/* â”€â”€ Zona de media con overlay editorial â”€â”€ */}
               {hasMedia && (
                 <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
                   {/* Ken Burns en imagen */}
@@ -175,13 +175,13 @@ export default function PromoPopup() {
                     />
                   )}
 
-                  {/* Gradiente dramático sobre la imagen */}
+                  {/* Gradiente dramÃ¡tico sobre la imagen */}
                   <div style={{
                     position: "absolute", inset: 0,
                     background: "linear-gradient(to bottom, rgba(6,6,6,0.15) 0%, rgba(6,6,6,0.55) 70%, rgba(6,6,6,0.95) 100%)",
                   }} />
 
-                  {/* Franjas Letterbox cinematográficas */}
+                  {/* Franjas Letterbox cinematogrÃ¡ficas */}
                   <div style={{
                     position: "absolute", top: 0, left: 0, right: 0,
                     height: "40px",
@@ -203,7 +203,7 @@ export default function PromoPopup() {
                 </div>
               )}
 
-              {/* ── Panel de texto ── */}
+              {/* â”€â”€ Panel de texto â”€â”€ */}
               {hasText && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
@@ -317,7 +317,7 @@ export default function PromoPopup() {
                 </div>
               )}
 
-              {/* Línea gold inferior */}
+              {/* LÃ­nea gold inferior */}
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}

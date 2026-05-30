@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import path from 'path';
 
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const ext = path.extname(file.name);
-    // Para identificar que son subidas dinámicas del editor
+    // Para identificar que son subidas dinÃ¡micas del editor
     const filename = `media-${Date.now()}${ext}`;
 
     const { error: uploadError } = await supabaseAdmin.storage

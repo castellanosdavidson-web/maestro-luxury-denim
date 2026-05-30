@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -60,7 +60,7 @@ export default function Navbar() {
     setMounted(true);
     let rafId: number;
     const handleScroll = () => {
-      // RAF: ejecutar sólo una vez por frame, no bloquear el hilo principal
+      // RAF: ejecutar sÃ³lo una vez por frame, no bloquear el hilo principal
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         setIsScrolled(window.scrollY > 50);
@@ -68,12 +68,12 @@ export default function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // Fetch dinámico del megamenu
+    // Fetch dinÃ¡mico del megamenu
     fetch('/api/megamenu').then(res => res.json()).then(data => {
       if (data.items) setMegamenuItems(data.items);
     });
 
-    // Fetch dinámico de todas las categorías
+    // Fetch dinÃ¡mico de todas las categorÃ­as
     fetch('/api/categories').then(res => res.json()).then(data => {
       if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || c.status === "Activa" || !c.status));
     });
@@ -90,7 +90,7 @@ export default function Navbar() {
     };
   }, []);
 
-  // Bloquear scroll del body cuando el menú mobile está abierto
+  // Bloquear scroll del body cuando el menÃº mobile estÃ¡ abierto
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -163,13 +163,13 @@ export default function Navbar() {
             <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out transform group-hover:translate-y-0 translate-y-4 flex">
               <div className="w-1/3 bg-maestro-carbon/50 p-8 flex flex-col justify-between border-r border-maestro-bone/5">
                 <div>
-                  <h3 className="text-editorial text-2xl text-maestro-bone mb-2">Colección</h3>
+                  <h3 className="text-editorial text-2xl text-maestro-bone mb-2">ColecciÃ³n</h3>
                   <p className="text-maestro-bone/60 text-xs font-light tracking-wide leading-relaxed">
-                    Descubre todas las piezas de nuestra última campaña. Denim premium diseñado para empoderar.
+                    Descubre todas las piezas de nuestra Ãºltima campaÃ±a. Denim premium diseÃ±ado para empoderar.
                   </p>
                 </div>
                 <Link href="/collections" className="text-[10px] uppercase tracking-widest text-maestro-gold hover:text-maestro-bone flex items-center gap-2 transition-colors">
-                  Ver Colección Completa <ArrowRight size={14} />
+                  Ver ColecciÃ³n Completa <ArrowRight size={14} />
                 </Link>
               </div>
               <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
@@ -272,7 +272,7 @@ export default function Navbar() {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {/* Header del menú */}
+            {/* Header del menÃº */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "48px" }}>
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 {logoUrl ? (
@@ -331,7 +331,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Footer del menú */}
+            {/* Footer del menÃº */}
             <div style={{ marginTop: "auto", paddingTop: "48px" }}>
               <div style={{ display: "flex", gap: "24px", marginBottom: "24px" }}>
                 <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury")}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
@@ -339,7 +339,7 @@ export default function Navbar() {
                 </a>
               </div>
               <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.25)" }}>
-                MAESTRO © Luxury Denim
+                MAESTRO Â© Luxury Denim
               </p>
             </div>
           </motion.div>
