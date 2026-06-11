@@ -6,9 +6,9 @@ import { Upload, ZoomIn, ZoomOut, MoveHorizontal, MoveVertical, X, ImageIcon } f
 interface ImageUploaderProps {
   /** El src actual de la imagen (URL o blob) */
   currentUrl?: string;
-  /** PosiciÃ³n X guardada (0-100) */
+  /** Posición X guardada (0-100) */
   initialX?: number;
-  /** PosiciÃ³n Y guardada (0-100) */
+  /** Posición Y guardada (0-100) */
   initialY?: number;
   /** Zoom guardado (100-200) */
   initialZoom?: number;
@@ -16,7 +16,7 @@ interface ImageUploaderProps {
   label?: string;
   /** Aspecto del preview, ej: "3/4", "16/9", "1/1" */
   aspect?: string;
-  /** Hint de recomendaciÃ³n de tamaÃ±o */
+  /** Hint de recomendación de tamaño */
   hint?: string;
   /** name del input hidden para el file */
   fieldName?: string;
@@ -135,7 +135,7 @@ export default function ImageUploader({
       {/* Controls â€” only show if there's a preview */}
       {preview && (
         <div className="space-y-2.5 bg-white/3 border border-white/5 p-3">
-          <p className="text-[9px] tracking-[0.2em] uppercase text-white/25 mb-2">Ajustar posiciÃ³n</p>
+          <p className="text-[9px] tracking-[0.2em] uppercase text-white/25 mb-2">Ajustar posición</p>
 
           {/* X */}
           <div className="flex items-center gap-3">

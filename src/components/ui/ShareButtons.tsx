@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { Link2, Check } from "lucide-react";
@@ -16,7 +16,7 @@ const TwitterIcon = ({ size = 20, className = "" }: { size?: number, className?:
 );
 import { motion } from "framer-motion";
 
-export default function ShareButtons({ title, text, label = "Compartir ArtÃ­culo:" }: { title: string, text?: string, label?: string }) {
+export default function ShareButtons({ title, text, label = "Compartir Artículo:" }: { title: string, text?: string, label?: string }) {
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -50,6 +50,7 @@ export default function ShareButtons({ title, text, label = "Compartir ArtÃ­cu
         rel="noopener noreferrer"
         className="w-12 h-12 rounded-full border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/70 hover:text-maestro-gold hover:border-maestro-gold transition-all"
         title="Compartir en WhatsApp"
+        aria-label="Compartir en WhatsApp"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
       </a>
@@ -60,6 +61,7 @@ export default function ShareButtons({ title, text, label = "Compartir ArtÃ­cu
         rel="noopener noreferrer"
         className="w-12 h-12 rounded-full border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/70 hover:text-maestro-gold hover:border-maestro-gold transition-all"
         title="Compartir en Facebook"
+        aria-label="Compartir en Facebook"
       >
         <FacebookIcon size={20} />
       </a>
@@ -70,6 +72,7 @@ export default function ShareButtons({ title, text, label = "Compartir ArtÃ­cu
         rel="noopener noreferrer"
         className="w-12 h-12 rounded-full border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/70 hover:text-maestro-gold hover:border-maestro-gold transition-all"
         title="Compartir en X / Twitter"
+        aria-label="Compartir en X / Twitter"
       >
         <TwitterIcon size={20} />
       </a>
@@ -78,6 +81,7 @@ export default function ShareButtons({ title, text, label = "Compartir ArtÃ­cu
         onClick={handleCopy}
         className="w-12 h-12 rounded-full border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/70 hover:text-maestro-gold hover:border-maestro-gold transition-all relative overflow-hidden"
         title="Copiar Enlace"
+        aria-label="Copiar Enlace"
       >
         <motion.div
           initial={false}

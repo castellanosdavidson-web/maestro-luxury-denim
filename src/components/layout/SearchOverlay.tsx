@@ -102,7 +102,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             type="text"
             value={query}
             onChange={handleChange}
-            placeholder="Buscar por nombre, referencia o categorÃ­a..."
+            placeholder="Buscar por nombre, referencia o categoría..."
             className="flex-1 bg-transparent text-white text-xl md:text-2xl font-light tracking-wide placeholder:text-white/25 outline-none"
           />
           {loading && <Loader2 size={18} className="text-maestro-gold animate-spin mr-3" />}
@@ -126,7 +126,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             <p className="text-white/40 text-sm tracking-widest uppercase mb-2">Sin resultados para</p>
             <p className="text-maestro-gold text-xl font-light">"{query}"</p>
             <p className="text-white/20 text-xs tracking-widest uppercase mt-4">
-              Intenta con el nombre del producto, referencia o categorÃ­a
+              Intenta con el nombre del producto, referencia o categoría
             </p>
           </div>
         )}
@@ -189,7 +189,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                 onClick={onClose}
                 className="flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-white/40 hover:text-maestro-gold transition-colors group"
               >
-                Ver colecciÃ³n completa
+                Ver colección completa
                 <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

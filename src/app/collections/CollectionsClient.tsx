@@ -20,7 +20,7 @@ interface Product {
 const PAGE_SIZE = 14;
 
 const SORT_OPTIONS = [
-  { label: "MÃ¡s recientes",  value: "newest" },
+  { label: "Más recientes",  value: "newest" },
   { label: "Precio: menor", value: "price_asc" },
   { label: "Precio: mayor", value: "price_desc" },
   { label: "Nombre A-Z",    value: "name_asc" },
@@ -102,7 +102,7 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
               ${Number(p.price).toLocaleString("es-CO")}
             </p>
           </div>
-          {/* Referencia pequeÃ±a */}
+          {/* Referencia pequeña */}
           <p className="text-[8px] text-maestro-bone/20 mt-1 uppercase tracking-widest">{p.reference}</p>
         </div>
       </Link>
@@ -154,7 +154,7 @@ export default function CollectionsClient({ products }: { products: Product[] })
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="text-5xl md:text-7xl font-light text-maestro-bone leading-none"
               >
-                CatÃ¡logo
+                Catálogo
               </motion.h1>
             </div>
             <div className="overflow-hidden">
@@ -174,7 +174,7 @@ export default function CollectionsClient({ products }: { products: Product[] })
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-[10px] tracking-[0.3em] uppercase text-maestro-bone/40"
           >
-            {filtered.length} piezas Ãºnicas
+            {filtered.length} piezas únicas
           </motion.p>
         </div>
       </div>
@@ -238,7 +238,7 @@ export default function CollectionsClient({ products }: { products: Product[] })
               onClick={() => setPage(p => p + 1)}
               className="border border-maestro-bone/20 hover:border-maestro-gold text-maestro-bone/40 hover:text-maestro-gold px-16 py-4 text-[10px] tracking-[0.4em] uppercase transition-all duration-500"
             >
-              Cargar mÃ¡s piezas
+              Cargar más piezas
             </button>
           </div>
         )}

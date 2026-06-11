@@ -17,10 +17,10 @@ export type DbSchema = {
 
 const defaultData: DbSchema = {
   settings: {
-    heroTitle: "DISEÃ‘ADO\nPARA MUJERES",
+    heroTitle: "DISEÑADO\nPARA MUJERES",
     heroSubtitle: "que imponen estilo.",
-    heroCaption: "Denim premium Â· EdiciÃ³n limitada",
-    heroValueProp: "ConfecciÃ³n colombiana con estÃ¡ndares globales",
+    heroCaption: "Denim premium · Edición limitada",
+    heroValueProp: "Confección colombiana con estándares globales",
     heroImage: "/uploads/hero-custom.jpg"
   },
   products: [],

@@ -100,7 +100,7 @@ export default function AdminSuccessCases() {
       setShowModal(false);
       fetchCases();
     } else {
-      showToast("OcurriÃ³ un error", false);
+      showToast("Ocurrió un error", false);
     }
     setSaving(false);
   };
@@ -113,7 +113,7 @@ export default function AdminSuccessCases() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Â¿Eliminar este caso de Ã©xito?")) return;
+    if (!confirm("¿Eliminar este caso de éxito?")) return;
     setDeletingId(id);
     await fetch(`/api/success-cases/${id}`, { method: "DELETE" });
     showToast("Caso eliminado");
@@ -138,7 +138,7 @@ export default function AdminSuccessCases() {
           </Link>
           <div>
             <h1 className="text-sm font-medium tracking-widest uppercase">Maestros del Estilo</h1>
-            <p className="text-[10px] tracking-widest uppercase text-white/30 mt-0.5">Casos de Ã‰xito â€” {cases.length} registros</p>
+            <p className="text-[10px] tracking-widest uppercase text-white/30 mt-0.5">Casos de Éxito â€” {cases.length} registros</p>
           </div>
         </div>
         <button
@@ -155,8 +155,8 @@ export default function AdminSuccessCases() {
         <div className="border border-maestro-gold/20 bg-maestro-gold/5 p-5 mb-10 flex items-start gap-4">
           <Star size={16} className="text-maestro-gold mt-0.5 flex-shrink-0" />
           <div>
-            <p className="text-xs tracking-widest uppercase text-maestro-gold mb-1">SecciÃ³n activa en el Home</p>
-            <p className="text-white/50 text-sm leading-relaxed">Los casos marcados como activos aparecerÃ¡n en el carrusel "Maestros del Estilo" del sitio web en el orden que definas. Se muestran mÃ¡ximo <strong className="text-white">5 casos</strong> a la vez.</p>
+            <p className="text-xs tracking-widest uppercase text-maestro-gold mb-1">Sección activa en el Home</p>
+            <p className="text-white/50 text-sm leading-relaxed">Los casos marcados como activos aparecerán en el carrusel "Maestros del Estilo" del sitio web en el orden que definas. Se muestran máximo <strong className="text-white">5 casos</strong> a la vez.</p>
           </div>
         </div>
 
@@ -171,7 +171,7 @@ export default function AdminSuccessCases() {
         {!loading && cases.length === 0 && (
           <div className="flex flex-col items-center justify-center py-32 text-center">
             <Star size={48} className="text-white/10 mb-6" />
-            <p className="text-white/30 text-sm tracking-widest uppercase mb-2">Sin casos de Ã©xito</p>
+            <p className="text-white/30 text-sm tracking-widest uppercase mb-2">Sin casos de éxito</p>
             <p className="text-white/20 text-xs mb-8">Crea tu primer caso para que aparezca en el carrusel del Home</p>
             <button onClick={openCreate} className="flex items-center gap-2 border border-white/20 px-6 py-3 text-xs tracking-widest uppercase hover:border-maestro-gold hover:text-maestro-gold transition-colors">
               <Plus size={14} /> Crear primer caso
@@ -211,7 +211,7 @@ export default function AdminSuccessCases() {
                   <div className="flex items-start justify-between gap-2 mb-3">
                     <div>
                       <p className="text-white font-medium text-sm">{c.name || "Sin nombre"}</p>
-                      <p className="text-white/40 text-xs tracking-widest uppercase mt-0.5">{c.location || "Sin ubicaciÃ³n"}</p>
+                      <p className="text-white/40 text-xs tracking-widest uppercase mt-0.5">{c.location || "Sin ubicación"}</p>
                     </div>
                     <span className="text-[9px] tracking-widest uppercase text-maestro-gold/60 border border-maestro-gold/20 px-2 py-1 whitespace-nowrap flex-shrink-0">
                       {c.product || "Sin prenda"}
@@ -258,7 +258,7 @@ export default function AdminSuccessCases() {
             {/* Modal header */}
             <div className="flex items-center justify-between px-8 py-5 border-b border-white/5">
               <div>
-                <h2 className="text-sm font-medium tracking-widest uppercase">{editing ? "Editar Caso" : "Nuevo Caso de Ã‰xito"}</h2>
+                <h2 className="text-sm font-medium tracking-widest uppercase">{editing ? "Editar Caso" : "Nuevo Caso de Éxito"}</h2>
                 <p className="text-[10px] text-white/30 tracking-widest uppercase mt-0.5">{editing ? editing.name : "Completa los campos"}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-white/40 hover:text-white transition-colors">
@@ -305,10 +305,10 @@ export default function AdminSuccessCases() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Ciudad / UbicaciÃ³n *</label>
+                  <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Ciudad / Ubicación *</label>
                   <input
                     type="text" name="location" value={form.location} onChange={handleChange} required
-                    placeholder="Ej: BogotÃ¡, Colombia"
+                    placeholder="Ej: Bogotá, Colombia"
                     className="w-full bg-black/40 border border-white/10 focus:border-maestro-gold outline-none px-4 py-3 text-sm text-white placeholder:text-white/20"
                   />
                 </div>
@@ -319,7 +319,7 @@ export default function AdminSuccessCases() {
                 <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Prenda MAESTRO utilizada</label>
                 <input
                   type="text" name="product" value={form.product} onChange={handleChange}
-                  placeholder="Ej: Chaqueta Obsidiana, Vestido CrepÃºsculo..."
+                  placeholder="Ej: Chaqueta Obsidiana, Vestido Crepúsculo..."
                   className="w-full bg-black/40 border border-white/10 focus:border-maestro-gold outline-none px-4 py-3 text-sm text-white placeholder:text-white/20"
                 />
               </div>
@@ -329,7 +329,7 @@ export default function AdminSuccessCases() {
                 <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Testimonio / Cita *</label>
                 <textarea
                   name="quote" value={form.quote} onChange={handleChange} required rows={4}
-                  placeholder="Escribe el testimonio de la clienta tal como lo expresÃ³..."
+                  placeholder="Escribe el testimonio de la clienta tal como lo expresó..."
                   className="w-full bg-black/40 border border-white/10 focus:border-maestro-gold outline-none px-4 py-3 text-sm text-white placeholder:text-white/20 resize-none leading-relaxed"
                 />
                 <p className="text-[10px] text-white/20 mt-1">{form.quote.length} caracteres â€” Recomendado: entre 80 y 180</p>
@@ -338,7 +338,7 @@ export default function AdminSuccessCases() {
               {/* Order & Active */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Orden de apariciÃ³n</label>
+                  <label className="block text-[10px] tracking-widest uppercase text-white/40 mb-2">Orden de aparición</label>
                   <input
                     type="number" name="display_order" value={form.display_order} onChange={handleChange} min={1} max={20}
                     className="w-full bg-black/40 border border-white/10 focus:border-maestro-gold outline-none px-4 py-3 text-sm text-white"

@@ -13,7 +13,7 @@ export default async function AboutPage() {
       <div className="container mx-auto px-6 md:px-12 max-w-4xl">
         <h1 className="text-4xl md:text-6xl text-editorial text-maestro-bone mb-12 text-center">Nuestra Historia</h1>
         <div className="text-maestro-bone/90 mx-auto whitespace-pre-wrap leading-relaxed text-sm md:text-base tracking-wide font-light max-w-3xl">
-          {data?.about_text || "La historia de MAESTRO estÃ¡ por escribirse..."}
+          {data?.about_text || "La historia de MAESTRO está por escribirse..."}
         </div>
       </div>
     </main>

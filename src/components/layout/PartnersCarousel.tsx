@@ -43,7 +43,7 @@ export default function PartnersCarousel() {
           transition={{
             repeat: Infinity,
             ease: "linear",
-            duration: partners.length * 5, // Ajustar velocidad segÃºn cantidad de logos
+            duration: partners.length * 5, // Ajustar velocidad según cantidad de logos
           }}
           className="flex items-center gap-16 md:gap-32 px-8"
         >

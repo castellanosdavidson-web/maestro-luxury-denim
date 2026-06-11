@@ -11,11 +11,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Dashboard",          href: "/admin",                 icon: LayoutDashboard },
     { name: "Productos",          href: "/admin/products",        icon: Package },
-    { name: "CategorÃ­as",         href: "/admin/categories",      icon: Tag },
+    { name: "Categorías",         href: "/admin/categories",      icon: Tag },
     { name: "The Journal",        href: "/admin/journal",         icon: FileText },
     { name: "Maestros del Estilo",href: "/admin/success-cases",   icon: Star },
     { name: "Alianzas",           href: "/admin/partners",        icon: Handshake },
-    { name: "ConfiguraciÃ³n",      href: "/admin/settings",        icon: Settings },
+    { name: "Configuración",      href: "/admin/settings",        icon: Settings },
   ];
 
   const handleLogout = async () => {
@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.refresh();
   };
 
-  // No mostrar el layout en la pÃ¡gina de login
+  // No mostrar el layout en la página de login
   if (pathname === "/admin/login") return <>{children}</>;
 
   return (
@@ -60,7 +60,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             className="flex items-center gap-3 px-4 py-3 w-full text-sm tracking-widest uppercase text-maestro-bone/60 hover:text-maestro-gold transition-colors"
           >
             <LogOut size={18} />
-            Cerrar SesiÃ³n
+            Cerrar Sesión
           </button>
         </div>
       </aside>

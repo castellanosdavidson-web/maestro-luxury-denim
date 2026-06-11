@@ -129,7 +129,7 @@ export default function PromoPopup() {
                 }} />
               ))}
 
-              {/* â”€â”€ BotÃ³n cerrar â”€â”€ */}
+              {/* â”€â”€ Botón cerrar â”€â”€ */}
               <button
                 onClick={close}
                 style={{
@@ -175,13 +175,13 @@ export default function PromoPopup() {
                     />
                   )}
 
-                  {/* Gradiente dramÃ¡tico sobre la imagen */}
+                  {/* Gradiente dramático sobre la imagen */}
                   <div style={{
                     position: "absolute", inset: 0,
                     background: "linear-gradient(to bottom, rgba(6,6,6,0.15) 0%, rgba(6,6,6,0.55) 70%, rgba(6,6,6,0.95) 100%)",
                   }} />
 
-                  {/* Franjas Letterbox cinematogrÃ¡ficas */}
+                  {/* Franjas Letterbox cinematográficas */}
                   <div style={{
                     position: "absolute", top: 0, left: 0, right: 0,
                     height: "40px",
@@ -317,7 +317,7 @@ export default function PromoPopup() {
                 </div>
               )}
 
-              {/* LÃ­nea gold inferior */}
+              {/* Línea gold inferior */}
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}

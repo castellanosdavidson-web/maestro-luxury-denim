@@ -22,7 +22,7 @@ export default function AdminCategories() {
   };
 
   const handleCreateCategory = async () => {
-    const name = window.prompt("Nombre de la nueva categorÃ­a (ej: Ediciones Especiales):");
+    const name = window.prompt("Nombre de la nueva categoría (ej: Ediciones Especiales):");
     if (!name) return;
 
     const res = await fetch('/api/categories/new', {
@@ -32,7 +32,7 @@ export default function AdminCategories() {
     });
 
     if (res.ok) {
-      showToast('CategorÃ­a creada con Ã©xito âœ“');
+      showToast('Categoría creada con éxito âœ“');
       fetchCategories();
     } else {
       const data = await res.json();
@@ -50,17 +50,17 @@ export default function AdminCategories() {
 
       <div className="flex justify-between items-start mb-8">
         <div>
-          <h1 className="text-3xl text-editorial text-maestro-bone mb-3">GestiÃ³n de CategorÃ­as</h1>
+          <h1 className="text-3xl text-editorial text-maestro-bone mb-3">Gestión de Categorías</h1>
           <p className="text-maestro-bone/40 text-sm">
-            Cada categorÃ­a tiene <strong className="text-maestro-bone/70">dos imÃ¡genes</strong>: la imagen principal
-            (que aparece en el Home) y la imagen del popup del menÃº al pasar el cursor por &quot;Colecciones&quot;.
+            Cada categoría tiene <strong className="text-maestro-bone/70">dos imágenes</strong>: la imagen principal
+            (que aparece en el Home) y la imagen del popup del menú al pasar el cursor por &quot;Colecciones&quot;.
           </p>
         </div>
         <button
           onClick={handleCreateCategory}
           className="flex items-center gap-2 bg-maestro-gold text-black px-5 py-2.5 text-xs tracking-widest uppercase hover:bg-white transition-colors flex-shrink-0"
         >
-          <Plus size={14} /> Nueva CategorÃ­a
+          <Plus size={14} /> Nueva Categoría
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export default function AdminCategories() {
                 <ImageUploader
                   currentUrl={c.image || ""}
                   aspect="16/9"
-                  hint="Aparece en la secciÃ³n Colecciones del Home"
+                  hint="Aparece en la sección Colecciones del Home"
                   fieldName={`main_image_${c.id}`}
                   onChange={async (file) => {
                     if (!file) return;
@@ -102,12 +102,12 @@ export default function AdminCategories() {
               <div>
                 <div className="flex items-center gap-2 mb-3">
                   <LayoutGrid size={13} className="text-maestro-gold" />
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Imagen Popup del MenÃº</p>
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Imagen Popup del Menú</p>
                 </div>
                 <ImageUploader
                   currentUrl={c.megamenuImage || ""}
                   aspect="3/4"
-                  hint="Aparece al pasar el cursor por Colecciones Â· Formato vertical"
+                  hint="Aparece al pasar el cursor por Colecciones · Formato vertical"
                   fieldName={`menu_image_${c.id}`}
                   onChange={async (file) => {
                     if (!file) return;
@@ -116,7 +116,7 @@ export default function AdminCategories() {
                     fd.append('image', file);
                     fd.append('field', 'megamenu');
                     const res = await fetch('/api/categories', { method: 'PUT', body: fd });
-                    if (res.ok) { showToast('Imagen del menÃº actualizada âœ“'); fetchCategories(); }
+                    if (res.ok) { showToast('Imagen del menú actualizada âœ“'); fetchCategories(); }
                   }}
                 />
               </div>
@@ -128,7 +128,7 @@ export default function AdminCategories() {
 
       {categories.length === 0 && (
         <div className="flex items-center justify-center h-48 text-maestro-bone/20 text-sm tracking-widest uppercase">
-          No hay categorÃ­as registradas
+          No hay categorías registradas
         </div>
       )}
     </div>

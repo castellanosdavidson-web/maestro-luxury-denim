@@ -34,7 +34,7 @@ function LoginForm() {
         setLoading(false);
       }
     } catch {
-      setError("Error de conexiÃ³n. IntÃ©ntalo de nuevo.");
+      setError("Error de conexión. Inténtalo de nuevo.");
       setLoading(false);
     }
   };
@@ -68,7 +68,7 @@ function LoginForm() {
 
           <div>
             <label className="block text-xs uppercase tracking-widest text-maestro-bone/60 mb-2">
-              ContraseÃ±a
+              Contraseña
             </label>
             <input
               type="password"

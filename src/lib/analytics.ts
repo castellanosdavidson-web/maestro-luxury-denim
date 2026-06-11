@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-/** EnvÃ­a un evento personalizado a GA4 */
+/** Envía un evento personalizado a GA4 */
 export function gtagEvent(eventName: string, params: Record<string, any> = {}) {
   if (typeof window === "undefined") return;
   if (typeof window.gtag === "function") {
@@ -23,9 +23,9 @@ export function gtagEvent(eventName: string, params: Record<string, any> = {}) {
   }
 }
 
-// â”€â”€â”€ Eventos estÃ¡ndar GA4 Ecommerce â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â”€â”€â”€ Eventos estándar GA4 Ecommerce â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-/** Se llama al abrir la pÃ¡gina de un producto */
+/** Se llama al abrir la página de un producto */
 export function gtagViewItem(product: {
   id: string;
   name: string;

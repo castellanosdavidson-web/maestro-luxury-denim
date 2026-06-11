@@ -71,7 +71,7 @@ export default function AdminProducts() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Â¿Eliminar este producto?")) return;
+    if (!confirm("¿Eliminar este producto?")) return;
     const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
     if (res.ok) fetchProducts();
     else alert("Error al eliminar");
@@ -101,11 +101,11 @@ export default function AdminProducts() {
       if (res.ok) {
         const saved = await res.json().catch(() => ({}));
         if (!productId && saved?.id) {
-          // Producto nuevo creado: quedarse en el modal para galerÃ­a
+          // Producto nuevo creado: quedarse en el modal para galería
           setSavedId(saved.id);
           setEditingProduct(saved);
           fetchProducts();
-          alert("âœ“ Producto creado. Ahora puedes subir fotos adicionales de galerÃ­a.");
+          alert("âœ“ Producto creado. Ahora puedes subir fotos adicionales de galería.");
         } else {
           closeModal();
           fetchProducts();
@@ -148,7 +148,7 @@ export default function AdminProducts() {
   const handleGalleryDelete = async (url: string) => {
     const pid = savedId || editingProduct?.id;
     if (!pid) return;
-    if (!confirm("Â¿Eliminar esta foto?")) return;
+    if (!confirm("¿Eliminar esta foto?")) return;
     const res = await fetch(`/api/products/${pid}/gallery`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -166,7 +166,7 @@ export default function AdminProducts() {
     <div>
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl text-editorial text-maestro-bone">GestiÃ³n de Productos</h1>
+        <h1 className="text-3xl text-editorial text-maestro-bone">Gestión de Productos</h1>
         <button onClick={openNew}
           className="flex items-center gap-2 bg-maestro-gold text-maestro-dark px-4 py-2 uppercase tracking-widest text-xs font-semibold hover:bg-maestro-bone transition-colors">
           <Plus size={16} /> Nuevo Producto
@@ -178,7 +178,7 @@ export default function AdminProducts() {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b border-maestro-bone/10 bg-maestro-carbon">
-              {["Img","Producto","Referencia","Precio","GalerÃ­a","Estado",""].map(h => (
+              {["Img","Producto","Referencia","Precio","Galería","Estado",""].map(h => (
                 <th key={h} className="p-4 text-xs text-maestro-bone/60 uppercase tracking-widest font-normal">{h}</th>
               ))}
             </tr>
@@ -227,7 +227,7 @@ export default function AdminProducts() {
             {/* Modal header */}
             <div className="flex items-center justify-between px-8 pt-7 pb-5 border-b border-maestro-bone/10 flex-shrink-0">
               <h2 className="text-2xl text-editorial text-maestro-bone">
-                {editingProduct ? "Editar Producto" : currentId ? "Agregar Fotos de GalerÃ­a" : "Nuevo Producto"}
+                {editingProduct ? "Editar Producto" : currentId ? "Agregar Fotos de Galería" : "Nuevo Producto"}
               </h2>
               <button onClick={closeModal} className="text-maestro-bone/60 hover:text-maestro-bone"><X size={22} /></button>
             </div>
@@ -255,7 +255,7 @@ export default function AdminProducts() {
                 <div>
                   <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Material</label>
                   <input name="material" type="text"
-                    placeholder="Ej: 100% Denim Premium, Mezcla de algodÃ³n y elastano..."
+                    placeholder="Ej: 100% Denim Premium, Mezcla de algodón y elastano..."
                     defaultValue={editingProduct?.material}
                     className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
@@ -274,7 +274,7 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
-                {/* FILA 4: Precio + Estado + CategorÃ­a */}
+                {/* FILA 4: Precio + Estado + Categoría */}
                 <div className="grid grid-cols-3 gap-6">
                   <div>
                     <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Precio (COP)</label>
@@ -290,7 +290,7 @@ export default function AdminProducts() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">CategorÃ­a</label>
+                    <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Categoría</label>
                     <select required name="categoryId" defaultValue={editingProduct?.category_id}
                       className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none">
                       <option value="">Selecciona...</option>
@@ -306,21 +306,21 @@ export default function AdminProducts() {
                   </div>
                 </div>
 
-                {/* FILA 5: DescripciÃ³n */}
+                {/* FILA 5: Descripción */}
                 <div>
-                  <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">DescripciÃ³n</label>
+                  <label className="block text-[10px] uppercase tracking-widest text-maestro-bone/60 mb-2">Descripción</label>
                   <textarea required name="description" rows={3} defaultValue={editingProduct?.description}
                     className="w-full bg-maestro-dark border border-maestro-bone/20 p-3 text-sm text-maestro-bone focus:border-maestro-gold outline-none" />
                 </div>
 
                 <ImageUploader
-                  label={`Imagen Principal${editingProduct ? " (dejar vacÃ­o para conservar)" : ""}`}
+                  label={`Imagen Principal${editingProduct ? " (dejar vacío para conservar)" : ""}`}
                   currentUrl={editingProduct?.image || ""}
                   initialX={editingProduct?.focal_x ?? 50}
                   initialY={editingProduct?.focal_y ?? 50}
                   initialZoom={editingProduct?.zoom ?? 100}
                   aspect="3/4"
-                  hint="Formato vertical 3:4 Â· Min 800Ã—1067px"
+                  hint="Formato vertical 3:4 · Min 800×1067px"
                   fieldName="image"
                   focalXName="focal_x"
                   focalYName="focal_y"
@@ -334,17 +334,17 @@ export default function AdminProducts() {
               </form>
 
 
-              {/* â”€â”€ GALERÃA: siempre visible si hay un ID â”€â”€ */}
+              {/* â”€â”€ GALERÍA: siempre visible si hay un ID â”€â”€ */}
               {currentId && (
                 <div className="border-t border-maestro-bone/10 pt-6 space-y-4">
-                  {/* Header galerÃ­a */}
+                  {/* Header galería */}
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-[10px] tracking-[0.25em] uppercase text-maestro-gold mb-0.5 flex items-center gap-2">
-                        <Images size={11} /> Fotos Adicionales de GalerÃ­a
+                        <Images size={11} /> Fotos Adicionales de Galería
                       </p>
                       <p className="text-[9px] text-maestro-bone/30">
-                        Muestra el producto desde varios Ã¡ngulos Â· {localGallery.length} / 6 fotos
+                        Muestra el producto desde varios ángulos · {localGallery.length} / 6 fotos
                       </p>
                     </div>
                   </div>
@@ -366,7 +366,7 @@ export default function AdminProducts() {
                     </div>
                   )}
 
-                  {/* Zona upload mÃºltiple */}
+                  {/* Zona upload múltiple */}
                   <label className={`flex flex-col items-center justify-center gap-3 w-full py-7 border-2 border-dashed cursor-pointer transition-all ${
                     galleryLoading
                       ? "border-maestro-gold/40 opacity-60 pointer-events-none"
@@ -382,7 +382,7 @@ export default function AdminProducts() {
                         <Upload size={18} className="text-maestro-bone/30" />
                         <div className="text-center">
                           <p className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/50">Subir fotos adicionales</p>
-                          <p className="text-[9px] text-maestro-bone/25 mt-1">Selecciona varias a la vez Â· Se comprimen automÃ¡ticamente</p>
+                          <p className="text-[9px] text-maestro-bone/25 mt-1">Selecciona varias a la vez · Se comprimen automáticamente</p>
                         </div>
                       </>
                     )}
@@ -399,11 +399,11 @@ export default function AdminProducts() {
                 </div>
               )}
 
-              {/* Hint si aÃºn no hay ID */}
+              {/* Hint si aún no hay ID */}
               {!currentId && (
                 <div className="border border-dashed border-maestro-bone/10 p-4 text-center">
                   <p className="text-[9px] text-maestro-bone/25 tracking-wide">
-                    Primero crea el producto â†’ luego aparece aquÃ­ la secciÃ³n de galerÃ­a para subir fotos adicionales
+                    Primero crea el producto â†’ luego aparece aquí la sección de galería para subir fotos adicionales
                   </p>
                 </div>
               )}

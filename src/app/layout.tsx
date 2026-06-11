@@ -26,7 +26,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "MAESTRO | Luxury Denim Colombia",
-  description: "Denim premium de lujo diseÃ±ado para mujeres que imponen estilo. Jeans, chaquetas, blusas y mÃ¡s. EdiciÃ³n limitada. EnvÃ­os a toda Colombia.",
+  description: "Denim premium de lujo diseñado para mujeres que imponen estilo. Jeans, chaquetas, blusas y más. Edición limitada. Envíos a toda Colombia.",
   keywords: ["denim premium colombia", "jeans de lujo", "maestro denim", "ropa mujer colombia", "chaquetas denim", "jeans premium mujer", "moda de lujo bogota"],
   openGraph: {
     title: "MAESTRO | Luxury Denim",
@@ -101,7 +101,7 @@ export default function RootLayout({
             <FloatingWhatsApp />
           </CartProvider>
         </SmoothScroll>
-        {/* Organization Schema.org â€” seÃ±al de autoridad para Google */}
+        {/* Organization Schema.org â€” señal de autoridad para Google */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify({

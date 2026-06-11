@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
@@ -16,7 +17,7 @@ interface Category {
   status?: string;
 }
 
-// â”€â”€ Layout DESKTOP: patrÃ³n editorial con anchos variables â”€â”€
+// â”€â”€ Layout DESKTOP: patrón editorial con anchos variables â”€â”€
 const ROW_PATTERNS = [
   [65, 35],
   [35, 65],
@@ -63,7 +64,7 @@ function DesktopCard({
         style={{ transform: isHovered ? "scale(1.08)" : "scale(1)" }}
       >
         {cat.image
-          ? <img src={cat.image} alt={cat.name} className="w-full h-full object-cover"
+          ? <Image src={cat.image} alt={cat.name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover"
               style={{ objectPosition: `${cat.focal_x ?? 50}% ${cat.focal_y ?? 50}%` }} />
           : <div className="w-full h-full bg-white/5" />}
       </div>
@@ -75,7 +76,7 @@ function DesktopCard({
       <div className="absolute inset-0 bg-maestro-gold/10 transition-opacity duration-500"
         style={{ opacity: isHovered ? 1 : 0 }} />
 
-      {/* LÃ­nea diagonal */}
+      {/* Línea diagonal */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{ opacity: isHovered ? 1 : 0, transition: "opacity 600ms" }}>
         <div className="absolute bg-maestro-gold"
@@ -112,7 +113,7 @@ function DesktopCard({
         {/* CTA */}
         <div className="flex items-center gap-3 mt-3 transition-all duration-500"
           style={{ opacity: isHovered ? 1 : 0, transform: isHovered ? "translateY(0)" : "translateY(8px)" }}>
-          <span className="text-[9px] tracking-[0.35em] uppercase text-maestro-gold">Explorar colecciÃ³n</span>
+          <span className="text-[9px] tracking-[0.35em] uppercase text-maestro-gold">Explorar colección</span>
           <ArrowRight size={10} className="text-maestro-gold" />
         </div>
       </div>
@@ -131,9 +132,8 @@ function MobileCard({ cat, tall = false }: { cat: Category; tall?: boolean }) {
       {/* Imagen */}
       <div className="absolute inset-0">
         {cat.image
-          ? <img src={cat.image} alt={cat.name} className="w-full h-full object-cover"
-              style={{ objectPosition: `${cat.focal_x ?? 50}% ${cat.focal_y ?? 50}%` }}
-              loading="lazy" />
+          ? <Image src={cat.image} alt={cat.name} fill sizes="100vw" className="object-cover"
+              style={{ objectPosition: `${cat.focal_x ?? 50}% ${cat.focal_y ?? 50}%` }} />
           : <div className="w-full h-full bg-white/5" />}
       </div>
 
@@ -207,7 +207,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
                 <MobileCard cat={cat} />
               </div>
             ))}
-            {/* Si el par tiene solo 1 elemento (Ãºltimo impar), full width */}
+            {/* Si el par tiene solo 1 elemento (último impar), full width */}
             {pair.length === 1 && <div className="flex-1 min-w-0" />}
           </div>
         ))}
@@ -238,7 +238,7 @@ export default function Categories({ categories }: { categories?: Category[] }) 
         })}
       </div>
 
-      {/* â”€â”€ CTA mÃ³vil â”€â”€ */}
+      {/* â”€â”€ CTA móvil â”€â”€ */}
       <div className="flex md:hidden justify-center py-10 px-6">
         <Link
           href="/collections"

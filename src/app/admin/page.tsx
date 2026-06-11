@@ -9,7 +9,7 @@
           <p className="text-4xl text-maestro-bone font-light">24</p>
         </div>
         <div className="bg-maestro-dark p-6 border border-maestro-bone/10 rounded-sm">
-          <h3 className="text-maestro-bone/60 text-xs tracking-widest uppercase mb-2">CategorÃ­as Activas</h3>
+          <h3 className="text-maestro-bone/60 text-xs tracking-widest uppercase mb-2">Categorías Activas</h3>
           <p className="text-4xl text-maestro-bone font-light">5</p>
         </div>
         <div className="bg-maestro-dark p-6 border border-maestro-bone/10 rounded-sm">

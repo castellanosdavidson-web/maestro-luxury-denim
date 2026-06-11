@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback, useRef, startTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
   images: string[];
@@ -18,7 +19,7 @@ export default function ProductGallery({ images, productName }: Props) {
   const total = images.length;
 
   const go = useCallback((idx: number, dir: number) => {
-    // startTransition: marca la actualizaciÃ³n como no urgente â†’ no bloquea el hilo
+    // startTransition: marca la actualización como no urgente â†’ no bloquea el hilo
     startTransition(() => {
       setDirection(dir);
       setActive(Math.max(0, Math.min(idx, total - 1)));
@@ -93,20 +94,26 @@ export default function ProductGallery({ images, productName }: Props) {
           onMouseLeave={startTimer}
         >
           <AnimatePresence custom={direction} mode="wait">
-            <motion.img
+            <motion.div
               key={active}
-              src={images[active]}
-              alt={`${productName} â€” vista ${active + 1}`}
               custom={direction}
               variants={slideVariants}
               initial="enter"
               animate="center"
               exit="exit"
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full"
               style={{ willChange: "opacity, transform" }}
-              loading="eager"
-            />
+            >
+              <Image
+                src={images[active]}
+                alt={`${productName} — vista ${active + 1}`}
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </motion.div>
           </AnimatePresence>
 
           {/* Zoom */}
@@ -163,7 +170,9 @@ export default function ProductGallery({ images, productName }: Props) {
                 style={{ width: 64, height: 80 }}
                 aria-label={`Ver imagen ${i + 1}`}
               >
-                <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" />
+                <div className="relative w-full h-full">
+                  <Image src={img} alt={`Miniatura ${i + 1}`} fill sizes="100px" className="object-cover" />
+                </div>
               </button>
             ))}
           </div>
@@ -197,20 +206,26 @@ export default function ProductGallery({ images, productName }: Props) {
 
             {/* Image */}
             <AnimatePresence custom={direction} mode="wait">
-              <motion.img
+              <motion.div
                 key={lightboxIdx}
-                src={images[lightboxIdx]}
-                alt={`${productName} ${lightboxIdx + 1}`}
                 custom={direction}
                 variants={slideVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="max-h-[85vh] max-w-[90vw] object-contain"
+                className="relative w-[90vw] h-[85vh]"
                 style={{ willChange: "opacity, transform" }}
                 onClick={e => e.stopPropagation()}
-              />
+              >
+                <Image
+                  src={images[lightboxIdx]}
+                  alt={`${productName} ${lightboxIdx + 1}`}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                />
+              </motion.div>
             </AnimatePresence>
 
             {/* Arrows */}

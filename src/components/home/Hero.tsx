@@ -1,10 +1,11 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import Aurora from "@/components/Aurora";
 
-// Mapa de tamaÃ±os de texto disponibles para el tÃ­tulo
+// Mapa de tamaños de texto disponibles para el título
 const fontSizeMap: Record<string, string> = {
   small:  "text-4xl md:text-5xl lg:text-6xl",
   medium: "text-5xl md:text-6xl lg:text-7xl",
@@ -12,7 +13,7 @@ const fontSizeMap: Record<string, string> = {
   xlarge: "text-7xl md:text-8xl lg:text-[10rem]",
 };
 
-// Mapa de tipografÃ­as disponibles
+// Mapa de tipografías disponibles
 const fontFamilyMap: Record<string, string> = {
   editorial: "font-['Playfair_Display',serif]",
   modern:    "font-['Inter',sans-serif]",
@@ -25,11 +26,11 @@ export default function Hero({ settings }: { settings?: any }) {
   const familyClass = fontFamilyMap[settings?.heroFontFamily || "editorial"] ?? fontFamilyMap.editorial;
   
   // Ticker text
-  const marqueeText = settings?.heroMarquee || "ENVÃO GRATIS A TODA COLOMBIA â€¢ CAMBIOS SIN COSTO â€¢ COLECCIÃ“N LIMITADA â€¢ ";
-  const linkText    = settings?.heroLinkText || "Explorar ColecciÃ³n";
+  const marqueeText = settings?.heroMarquee || "ENVÍO GRATIS A TODA COLOMBIA â€¢ CAMBIOS SIN COSTO â€¢ COLECCIÓN LIMITADA â€¢ ";
+  const linkText    = settings?.heroLinkText || "Explorar Colección";
 
-  // Dividir el tÃ­tulo en palabras para la animaciÃ³n secuencial
-  const titleText = settings?.heroTitle || "DISEÃ‘ADO\nPARA MUJERES";
+  // Dividir el título en palabras para la animación secuencial
+  const titleText = settings?.heroTitle || "DISEÑADO\nPARA MUJERES";
   const words = titleText.split(/(\s+)/);
 
   return (
@@ -53,14 +54,21 @@ export default function Hero({ settings }: { settings?: any }) {
             className="w-full h-full object-cover object-center"
           />
         ) : settings?.heroImage ? (
-          <motion.img
+          <motion.div
             initial={{ scale: 1.05, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
-            src={settings?.heroImage}
-            alt="Maestro Luxury Denim Collection"
-            className="w-full h-full object-cover object-center"
-          />
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={settings.heroImage}
+              alt="Maestro Luxury Denim Collection"
+              fill
+              priority
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </motion.div>
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
@@ -83,7 +91,7 @@ export default function Hero({ settings }: { settings?: any }) {
         <div className="container mx-auto px-6 md:px-12 w-full">
           <div className="max-w-4xl">
             
-            {/* AnimaciÃ³n del Caption Superior */}
+            {/* Animación del Caption Superior */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -92,11 +100,11 @@ export default function Hero({ settings }: { settings?: any }) {
             >
               <div className="h-px w-8 bg-maestro-gold" />
               <p className="text-[9px] md:text-[10px] text-maestro-gold tracking-[0.4em] uppercase">
-                {settings?.heroCaption || "Denim premium Â· EdiciÃ³n limitada"}
+                {settings?.heroCaption || "Denim premium · Edición limitada"}
               </p>
             </motion.div>
 
-            {/* AnimaciÃ³n de TÃ­tulo (Palabra por palabra) */}
+            {/* Animación de Título (Palabra por palabra) */}
             <h1 className={`${sizeClass} ${familyClass} text-white leading-[1] mb-4 whitespace-pre-wrap flex flex-wrap`}>
               {words.map((word: string, i: number) => {
                 if (word.match(/\s+/)) {
@@ -116,7 +124,7 @@ export default function Hero({ settings }: { settings?: any }) {
               })}
             </h1>
 
-            {/* SubtÃ­tulo ItÃ¡lico */}
+            {/* Subtítulo Itálico */}
             <motion.span
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -133,10 +141,10 @@ export default function Hero({ settings }: { settings?: any }) {
               transition={{ duration: 1, delay: 1 }}
               className="text-xs md:text-sm text-white/60 tracking-[0.25em] font-light mb-12 uppercase max-w-lg"
             >
-              {settings?.heroValueProp || "ConfecciÃ³n colombiana con estÃ¡ndares globales"}
+              {settings?.heroValueProp || "Confección colombiana con estándares globales"}
             </motion.p>
 
-            {/* BotÃ³n MagnÃ©tico CTA */}
+            {/* Botón Magnético CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

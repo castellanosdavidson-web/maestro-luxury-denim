@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
 import SearchOverlay from "./SearchOverlay";
+import Image from "next/image";
 
 function MegamenuImageRotate({ imgs, alt }: { imgs: string[], alt: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -30,16 +31,16 @@ function MegamenuImageRotate({ imgs, alt }: { imgs: string[], alt: string }) {
   return (
     <div className="relative w-full h-full overflow-hidden bg-maestro-carbon">
       <AnimatePresence mode="wait">
-        <motion.img
+        <motion.div
           key={currentIndex}
-          src={imgs[currentIndex]}
-          alt={alt}
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-1000"
-        />
+          className="absolute inset-0 w-full h-full grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:scale-110 transition-all duration-1000"
+        >
+          <Image src={imgs[currentIndex]} alt={alt} fill sizes="20vw" className="object-cover" />
+        </motion.div>
       </AnimatePresence>
     </div>
   );
@@ -60,7 +61,7 @@ export default function Navbar() {
     setMounted(true);
     let rafId: number;
     const handleScroll = () => {
-      // RAF: ejecutar sÃ³lo una vez por frame, no bloquear el hilo principal
+      // RAF: ejecutar sólo una vez por frame, no bloquear el hilo principal
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         setIsScrolled(window.scrollY > 50);
@@ -68,12 +69,12 @@ export default function Navbar() {
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // Fetch dinÃ¡mico del megamenu
+    // Fetch dinámico del megamenu
     fetch('/api/megamenu').then(res => res.json()).then(data => {
       if (data.items) setMegamenuItems(data.items);
     });
 
-    // Fetch dinÃ¡mico de todas las categorÃ­as
+    // Fetch dinámico de todas las categorías
     fetch('/api/categories').then(res => res.json()).then(data => {
       if (Array.isArray(data)) setCategories(data.filter(c => c.status === "Activo" || c.status === "Activa" || !c.status));
     });
@@ -90,7 +91,7 @@ export default function Navbar() {
     };
   }, []);
 
-  // Bloquear scroll del body cuando el menÃº mobile estÃ¡ abierto
+  // Bloquear scroll del body cuando el menú mobile está abierto
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -130,6 +131,7 @@ export default function Navbar() {
         <button
           className="md:hidden text-maestro-bone hover:text-maestro-gold transition-colors"
           onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Abrir menú"
         >
           <Menu size={24} />
         </button>
@@ -163,13 +165,13 @@ export default function Navbar() {
             <div className="absolute top-full left-1/2 -translate-x-1/2 w-[800px] bg-maestro-dark/95 backdrop-blur-xl border border-maestro-bone/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 ease-out transform group-hover:translate-y-0 translate-y-4 flex">
               <div className="w-1/3 bg-maestro-carbon/50 p-8 flex flex-col justify-between border-r border-maestro-bone/5">
                 <div>
-                  <h3 className="text-editorial text-2xl text-maestro-bone mb-2">ColecciÃ³n</h3>
+                  <h3 className="text-editorial text-2xl text-maestro-bone mb-2">Colección</h3>
                   <p className="text-maestro-bone/60 text-xs font-light tracking-wide leading-relaxed">
-                    Descubre todas las piezas de nuestra Ãºltima campaÃ±a. Denim premium diseÃ±ado para empoderar.
+                    Descubre todas las piezas de nuestra última campaña. Denim premium diseñado para empoderar.
                   </p>
                 </div>
                 <Link href="/collections" className="text-[10px] uppercase tracking-widest text-maestro-gold hover:text-maestro-bone flex items-center gap-2 transition-colors">
-                  Ver ColecciÃ³n Completa <ArrowRight size={14} />
+                  Ver Colección Completa <ArrowRight size={14} />
                 </Link>
               </div>
               <div className="w-2/3 p-8 grid grid-cols-3 gap-6">
@@ -225,6 +227,7 @@ export default function Navbar() {
             rel="noopener noreferrer" 
             className="hidden md:block text-maestro-bone hover:text-maestro-gold transition-colors"
             title="Chatea con nosotros en WhatsApp"
+            aria-label="Chatea con nosotros en WhatsApp"
           >
             <WhatsAppIcon size={20} />
           </a>
@@ -240,6 +243,7 @@ export default function Navbar() {
           </button>
           <button 
             onClick={() => setIsCartOpen(true)}
+            aria-label="Abrir carrito"
             className="text-maestro-bone hover:text-maestro-gold transition-colors relative"
           >
             <ShoppingBag size={20} />
@@ -272,7 +276,7 @@ export default function Navbar() {
               WebkitOverflowScrolling: "touch",
             }}
           >
-            {/* Header del menÃº */}
+            {/* Header del menú */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "48px" }}>
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 {logoUrl ? (
@@ -294,6 +298,7 @@ export default function Navbar() {
               </Link>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Cerrar menú"
                 style={{ background: "none", border: "none", cursor: "pointer", color: "#F5F5F5", padding: "8px" }}
               >
                 <X size={28} />
@@ -331,15 +336,15 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Footer del menÃº */}
+            {/* Footer del menú */}
             <div style={{ marginTop: "auto", paddingTop: "48px" }}>
               <div style={{ display: "flex", gap: "24px", marginBottom: "24px" }}>
-                <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury")}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }}>
+                <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hola, estoy interesad@ en cotizar un producto de Maestro Denim Luxury")}`} target="_blank" rel="noopener noreferrer" style={{ color: "#F5F5F5", opacity: 0.8 }} aria-label="Chatea con nosotros en WhatsApp">
                   <WhatsAppIcon size={24} />
                 </a>
               </div>
               <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.25)" }}>
-                MAESTRO Â© Luxury Denim
+                MAESTRO © Luxury Denim
               </p>
             </div>
           </motion.div>

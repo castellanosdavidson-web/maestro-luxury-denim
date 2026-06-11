@@ -3,7 +3,7 @@
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // No proteger la pÃ¡gina de login ni las APIs de auth
+  // No proteger la página de login ni las APIs de auth
   if (
     pathname === '/admin/login' ||
     pathname.startsWith('/api/auth')
@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Verificar cookie de sesiÃ³n
+  // Verificar cookie de sesión
   const adminCookie = request.cookies.get('maestro_admin');
 
   if (!adminCookie?.value) {

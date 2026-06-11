@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
     const basePayload = { name, slug, price, description, reference, status, category_id: categoryId, sizes, colors, image: imageUrl, material };
 
-    // Intentar insertar con campos de posiciÃ³n
+    // Intentar insertar con campos de posición
     let { data, error } = await supabaseAdmin
       .from('products')
       .insert([{ ...basePayload, focal_x: focalX, focal_y: focalY, zoom }])

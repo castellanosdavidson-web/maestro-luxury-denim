@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -21,18 +21,18 @@ export default function Footer() {
           
           {/* Newsletter (Left / 5 cols) */}
           <div className="lg:col-span-5">
-            <h3 className="text-sm tracking-[0.3em] uppercase text-maestro-gold mb-6">Ãšnete a MAESTRO</h3>
+            <h3 className="text-sm tracking-[0.3em] uppercase text-maestro-gold mb-6">Únete a MAESTRO</h3>
             <p className="text-maestro-bone/60 font-light text-sm mb-8 leading-relaxed pr-8">
-              SuscrÃ­bete a The Journal para recibir acceso anticipado a nuestras ediciones limitadas de denim, invitaciones a eventos privados y editoriales exclusivos.
+              Suscríbete a The Journal para recibir acceso anticipado a nuestras ediciones limitadas de denim, invitaciones a eventos privados y editoriales exclusivos.
             </p>
             <form className="flex relative border-b border-maestro-bone/30 pb-2 group">
               <input 
                 type="email" 
-                placeholder="Tu correo electrÃ³nico" 
+                placeholder="Tu correo electrónico" 
                 className="w-full bg-transparent text-sm tracking-widest text-maestro-bone placeholder:text-maestro-bone/30 outline-none"
                 required
               />
-              <button type="submit" className="text-maestro-bone/50 group-hover:text-maestro-gold transition-colors">
+              <button type="submit" aria-label="Suscribirse al boletín" className="text-maestro-bone/50 group-hover:text-maestro-gold transition-colors">
                 <ArrowRight size={20} />
               </button>
             </form>
@@ -63,9 +63,9 @@ export default function Footer() {
             <div className="flex flex-col space-y-4">
               <h4 className="text-[10px] tracking-[0.2em] uppercase text-maestro-bone/70 mb-2">Soporte</h4>
               <Link href="/faq" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">FAQ</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">EnvÃ­os & Retornos</Link>
-              <Link href="/privacy" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">PolÃ­tica de Privacidad</Link>
-              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">TÃ©rminos Legales</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Envíos & Retornos</Link>
+              <Link href="/privacy" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Política de Privacidad</Link>
+              <Link href="/terms" className="text-xs tracking-widest uppercase text-maestro-bone/80 hover:text-maestro-gold transition-colors">Términos Legales</Link>
             </div>
           </div>
         </div>
@@ -83,19 +83,19 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.2em] uppercase text-maestro-bone/40">
-          <p>Â© {new Date().getFullYear()} MAESTRO DENIM. TODOS LOS DERECHOS RESERVADOS.</p>
+          <p>© {new Date().getFullYear()} MAESTRO DENIM. TODOS LOS DERECHOS RESERVADOS.</p>
           
           <div className="flex gap-6">
-            <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" className="hover:text-maestro-gold transition-colors">
+            <a href={settings.instagramUrl || "#"} target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-maestro-gold transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
             </a>
-            <a href={settings.facebookUrl || "#"} target="_blank" rel="noreferrer" className="hover:text-maestro-gold transition-colors">
+            <a href={settings.facebookUrl || "#"} target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-maestro-gold transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
-            <a href={settings.tiktokUrl || "#"} target="_blank" rel="noreferrer" className="hover:text-maestro-gold transition-colors">
+            <a href={settings.tiktokUrl || "#"} target="_blank" rel="noreferrer" aria-label="TikTok" className="hover:text-maestro-gold transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
             </a>
-            <a href={settings.mailUrl ? `mailto:${settings.mailUrl}` : "#"} className="hover:text-maestro-gold transition-colors">
+            <a href={settings.mailUrl ? `mailto:${settings.mailUrl}` : "#"} aria-label="Enviar email" className="hover:text-maestro-gold transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </a>
           </div>

@@ -4,11 +4,11 @@ const supabaseUrl     = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const serviceKey      = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Cliente pÃºblico (para el frontend)
+// Cliente público (para el frontend)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Cliente admin: usa service role si existe, si no usa anon key
-// Ambas claves funcionan para leer/escribir si las RLS policies estÃ¡n abiertas
+// Ambas claves funcionan para leer/escribir si las RLS policies están abiertas
 export const supabaseAdmin = createClient(
   supabaseUrl,
   serviceKey || supabaseAnonKey,
@@ -16,7 +16,7 @@ export const supabaseAdmin = createClient(
     auth: { persistSession: false },
     global: {
       headers: {
-        // Usar apikey header explÃ­cito para Storage
+        // Usar apikey header explícito para Storage
         apikey: serviceKey || supabaseAnonKey,
       }
     }

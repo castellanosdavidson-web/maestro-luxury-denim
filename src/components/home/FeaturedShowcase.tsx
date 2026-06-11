@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function FeaturedShowcase({ products }: { products: any[] }) {
@@ -43,7 +44,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
   return (
     <>
       {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-          MOBILE  â€” carrusel tÃ¡ctil (visible solo en < md)
+          MOBILE  â€” carrusel táctil (visible solo en < md)
       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="block md:hidden bg-maestro-carbon overflow-hidden select-none">
 
@@ -51,15 +52,15 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
         <div className="px-6 pt-12 pb-6 flex items-end justify-between">
           <div>
             <h2 className="text-5xl text-editorial text-maestro-bone leading-none">NEW<br/>DROP</h2>
-            <p className="text-maestro-gold tracking-[0.3em] uppercase text-[10px] mt-3">Explora la colecciÃ³n</p>
+            <p className="text-maestro-gold tracking-[0.3em] uppercase text-[10px] mt-3">Explora la colección</p>
           </div>
-          {/* PaginaciÃ³n numÃ©rica */}
+          {/* Paginación numérica */}
           <span className="text-maestro-bone/40 text-sm tracking-widest">
             {String(current + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
         </div>
 
-        {/* Ãrea de la tarjeta con swipe */}
+        {/* Área de la tarjeta con swipe */}
         <div
           className="relative px-6 pb-4"
           onTouchStart={onTouchStart}
@@ -79,10 +80,12 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
                 className="group relative w-full flex-shrink-0 overflow-hidden bg-maestro-dark"
                 style={{ height: "65vw", minHeight: 260, maxHeight: 480 }}
               >
-                <img
+                <Image
                   src={product.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6"}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="100vw"
                   draggable={false}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -111,6 +114,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
             {products.map((_, i) => (
               <button
                 key={i}
+                aria-label={`Ir al producto ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={`transition-all duration-300 rounded-full ${
                   i === current
@@ -124,6 +128,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
           {/* Flechas */}
           <div className="flex gap-3">
             <button
+              aria-label="Anterior"
               onClick={prev}
               disabled={current === 0}
               className="w-10 h-10 border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/50 disabled:opacity-20 hover:border-maestro-gold hover:text-maestro-gold transition-all"
@@ -131,6 +136,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
               <ChevronLeft size={18} />
             </button>
             <button
+              aria-label="Siguiente"
               onClick={next}
               disabled={current === total - 1}
               className="w-10 h-10 border border-maestro-bone/20 flex items-center justify-center text-maestro-bone/50 disabled:opacity-20 hover:border-maestro-gold hover:text-maestro-gold transition-all"
@@ -151,7 +157,7 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
             <h2 className="text-8xl text-editorial text-maestro-bone opacity-90 leading-none">
               NEW <br /> DROP
             </h2>
-            <p className="text-maestro-gold tracking-[0.3em] uppercase text-xs mt-4">Explora la colecciÃ³n</p>
+            <p className="text-maestro-gold tracking-[0.3em] uppercase text-xs mt-4">Explora la colección</p>
           </div>
 
           <motion.div style={{ x }} className="flex gap-12 px-[30vw]">
@@ -161,10 +167,12 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
                 href={`/${product.category_id}/${product.slug}`}
                 className="group relative w-[35vw] lg:w-[25vw] h-[70vh] flex-shrink-0 cursor-pointer overflow-hidden bg-maestro-dark"
               >
-                <img
+                <Image
                   src={product.image || "https://images.unsplash.com/photo-1542272604-784c46ce5ac6"}
                   alt={product.name}
-                  className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+                  fill
+                  sizes="(max-width: 1024px) 35vw, 25vw"
+                  className="object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-maestro-dark/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-700" />
                 <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end">

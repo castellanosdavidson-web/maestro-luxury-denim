@@ -8,7 +8,7 @@ export const revalidate = 0;
 
 export const metadata = {
   title: "The Journal | MAESTRO Luxury Denim",
-  description: "Tendencias, editoriales de moda y la visiÃ³n del denim de lujo. Explora The Journal por MAESTRO.",
+  description: "Tendencias, editoriales de moda y la visión del denim de lujo. Explora The Journal por MAESTRO.",
   openGraph: {
     title: "The Journal | MAESTRO",
     description: "Tendencias y editoriales sobre denim de lujo.",
@@ -43,13 +43,13 @@ export default async function JournalPage() {
         <header className="mb-20 md:mb-32 text-center">
           <h1 className="text-5xl md:text-8xl text-editorial text-maestro-bone mb-6 uppercase tracking-tight">The Journal</h1>
           <p className="text-xs md:text-sm text-maestro-bone/60 tracking-[0.4em] uppercase max-w-2xl mx-auto">
-            Tendencias Â· Editoriales Â· Denim de Lujo
+            Tendencias · Editoriales · Denim de Lujo
           </p>
         </header>
 
         {posts.length === 0 ? (
           <div className="text-center text-maestro-bone/40 py-20 uppercase tracking-widest text-sm">
-            PrÃ³ximamente...
+            Próximamente...
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
