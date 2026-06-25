@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, startTransition } from "react";
 import Link from "next/link";
@@ -102,8 +102,6 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
               ${Number(p.price).toLocaleString("es-CO")}
             </p>
           </div>
-          {/* Referencia pequeña */}
-          <p className="text-[8px] text-maestro-bone/20 mt-1 uppercase tracking-widest">{p.reference}</p>
         </div>
       </Link>
     </motion.div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
@@ -102,7 +102,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             type="text"
             value={query}
             onChange={handleChange}
-            placeholder="Buscar por nombre, referencia o categoría..."
+            placeholder="Buscar por nombre o categoría..."
             className="flex-1 bg-transparent text-white text-xl md:text-2xl font-light tracking-wide placeholder:text-white/25 outline-none"
           />
           {loading && <Loader2 size={18} className="text-maestro-gold animate-spin mr-3" />}
@@ -126,7 +126,7 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
             <p className="text-white/40 text-sm tracking-widest uppercase mb-2">Sin resultados para</p>
             <p className="text-maestro-gold text-xl font-light">"{query}"</p>
             <p className="text-white/20 text-xs tracking-widest uppercase mt-4">
-              Intenta con el nombre del producto, referencia o categoría
+              Intenta con el nombre del producto o categoría
             </p>
           </div>
         )}
@@ -169,11 +169,6 @@ export default function SearchOverlay({ open, onClose }: SearchOverlayProps) {
                     <h3 className="text-xs text-white leading-snug group-hover:text-maestro-gold transition-colors">
                       {highlight(p.name, query)}
                     </h3>
-                    {p.reference && (
-                      <p className="text-[9px] text-white/30 tracking-widest">
-                        Ref. {highlight(p.reference, query)}
-                      </p>
-                    )}
                     <p className="text-xs text-white/60 mt-0.5">
                       ${Number(p.price).toLocaleString("es-CO")}
                     </p>

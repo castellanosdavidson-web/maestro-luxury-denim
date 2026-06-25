@@ -91,9 +91,6 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end">
                   <div>
-                    <span className="text-[9px] text-maestro-gold tracking-widest uppercase mb-1 block">
-                      Ref: {product.reference}
-                    </span>
                     <h3 className="text-xl text-editorial text-white">{product.name}</h3>
                   </div>
                   <div className="w-9 h-9 border border-white/30 rounded-full flex items-center justify-center text-white">
@@ -177,9 +174,6 @@ export default function FeaturedShowcase({ products }: { products: any[] }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-maestro-dark/80 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-700" />
                 <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end">
                   <div>
-                    <span className="text-[10px] text-maestro-gold tracking-widest uppercase mb-2 block opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
-                      Ref: {product.reference}
-                    </span>
                     <h3 className="text-2xl text-editorial text-maestro-bone">{product.name}</h3>
                   </div>
                   <div className="w-10 h-10 border border-maestro-bone/30 rounded-full flex items-center justify-center text-maestro-bone group-hover:bg-maestro-gold group-hover:border-maestro-gold group-hover:text-maestro-dark transition-colors duration-500">

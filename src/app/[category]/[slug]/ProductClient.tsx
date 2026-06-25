@@ -107,9 +107,6 @@ export default function ProductClient({ product, related = [] }: { product: any;
             }}>
               {productName}
             </h1>
-            <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.35)" }}>
-              Ref. {product.reference}
-            </p>
           </div>
 
           <ProductGallery images={allImages} productName={productName} />
@@ -143,9 +140,6 @@ export default function ProductClient({ product, related = [] }: { product: any;
               }}>
                 {productName}
               </h1>
-              <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(245,245,245,0.35)", marginBottom: "32px" }}>
-                Ref. {product.reference}
-              </p>
             </div>
 
             {/* Precio */}
