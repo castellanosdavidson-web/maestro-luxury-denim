@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: post.seo_title || post.title,
       description: post.seo_description || post.excerpt,
+      url: `https://www.maestrodeninmluxury.com/journal/${post.slug}`,
       type: "article",
       publishedTime: post.created_at,
       images: [
@@ -44,6 +45,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: post.title,
       description: post.excerpt,
       images: [post.cover_image || "https://www.maestrodeninmluxury.com/og-default.jpg"],
+    },
+    alternates: {
+      canonical: `https://www.maestrodeninmluxury.com/journal/${post.slug}`,
     }
   }
 }
