@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Playfair_Display, Inter, Geist } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
+import { PromoProvider } from "@/context/PromoContext";
 import CartSidebar from "@/components/cart/CartSidebar";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Footer from "@/components/layout/Footer";
@@ -92,14 +93,16 @@ export default function RootLayout({
           <img height="1" width="1" style={{ display: "none" }} src="https://www.facebook.com/tr?id=2018668862108446&ev=PageView&noscript=1" />
         </noscript>
         <SmoothScroll>
-          <CartProvider>
-            {children}
-            <PartnersCarousel />
-            <Footer />
-            <CartSidebar />
-            <PromoPopup />
-            <FloatingWhatsApp />
-          </CartProvider>
+          <PromoProvider>
+            <CartProvider>
+              {children}
+              <PartnersCarousel />
+              <Footer />
+              <CartSidebar />
+              <PromoPopup />
+              <FloatingWhatsApp />
+            </CartProvider>
+          </PromoProvider>
         </SmoothScroll>
         {/* Organization Schema.org â€” señal de autoridad para Google */}
         <script

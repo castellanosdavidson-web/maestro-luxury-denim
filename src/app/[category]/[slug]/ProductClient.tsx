@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
 import ProductGallery from "@/components/product/ProductGallery";
 import ShareButtons from "@/components/ui/ShareButtons";
+import { usePromos } from "@/context/PromoContext";
 
 function toLabel(slug: string) {
   return slug?.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) || "";
@@ -42,6 +43,7 @@ function RelatedCard({ product, index }: { product: any; index: number }) {
 
 export default function ProductClient({ product, related = [] }: { product: any; related?: any[] }) {
   const { addItem } = useCart();
+  const { promo50Off } = usePromos();
   const [selectedSize,  setSelectedSize]  = useState(product.sizes?.[0]  || "U");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "Default");
 
@@ -143,13 +145,30 @@ export default function ProductClient({ product, related = [] }: { product: any;
             </div>
 
             {/* Precio */}
-            <p style={{
-              fontSize: "1.5rem", color: "#F5F5F5", letterSpacing: "0.1em",
+            <div style={{
               marginBottom: "32px", paddingBottom: "28px",
               borderBottom: "1px solid rgba(245,245,245,0.08)"
             }}>
-              ${Number(product.price).toLocaleString("es-CO")}
-            </p>
+              {promo50Off ? (
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-3">
+                    <p style={{ fontSize: "1.5rem", color: "#C8A96B", letterSpacing: "0.1em" }}>
+                      ${(Number(product.price) / 2).toLocaleString("es-CO")}
+                    </p>
+                    <span className="bg-maestro-gold text-maestro-dark text-[10px] font-bold px-2 py-1 uppercase tracking-widest">
+                      -50% OFF
+                    </span>
+                  </div>
+                  <p style={{ fontSize: "0.85rem", color: "rgba(245,245,245,0.4)", textDecoration: "line-through", letterSpacing: "0.05em" }}>
+                    ${Number(product.price).toLocaleString("es-CO")}
+                  </p>
+                </div>
+              ) : (
+                <p style={{ fontSize: "1.5rem", color: "#F5F5F5", letterSpacing: "0.1em" }}>
+                  ${Number(product.price).toLocaleString("es-CO")}
+                </p>
+              )}
+            </div>
 
             {/* Descripción */}
             <p style={{

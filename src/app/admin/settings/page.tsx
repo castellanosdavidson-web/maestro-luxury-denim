@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { Upload, Eye, X } from "lucide-react";
@@ -50,6 +50,10 @@ export default function AdminSettings() {
     popupLinkText:    "Ver ahora",
     popupDelay:       "1",
   });
+  const [promos, setPromos] = useState({
+    promo_50_off: false,
+    promo_2x1: false,
+  });
   const [isLoading,   setIsLoading]   = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -57,6 +61,9 @@ export default function AdminSettings() {
     fetch('/api/settings').then(r => r.json()).then(data =>
       setSettings(prev => ({ ...prev, ...data }))
     );
+    fetch('/api/promotions').then(r => r.json()).then(data => {
+      if(data) setPromos(data);
+    });
   }, []);
 
   const handleChange = (
@@ -78,10 +85,20 @@ export default function AdminSettings() {
 
     try {
       await fetch('/api/settings', { method: 'POST', body: formData });
+      await fetch('/api/promotions', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(promos) 
+      });
       alert("Cambios guardados correctamente");
+      
       const res = await fetch('/api/settings');
       const data = await res.json();
       setSettings(prev => ({ ...prev, ...data }));
+
+      const resPromos = await fetch('/api/promotions');
+      const dataPromos = await resPromos.json();
+      setPromos(dataPromos);
     } catch {
       alert("Error al guardar");
     } finally {
@@ -458,6 +475,61 @@ export default function AdminSettings() {
               <Eye size={14} />
               Previsualizar Popup (sin guardar)
             </button>
+          </div>
+        </div>
+
+        {/* ── Promociones Globales ── */}
+        <div>
+          <h2 className="text-lg text-maestro-gold tracking-widest uppercase mb-6 border-b border-maestro-bone/10 pb-4 mt-8">
+            Promociones Globales
+          </h2>
+          
+          <div className="space-y-4">
+            {/* Toggle 50% Off */}
+            <div className="flex items-center justify-between p-4 bg-maestro-carbon border border-maestro-bone/10">
+              <div>
+                <p className="text-sm text-maestro-bone">Activar 50% de Descuento Global</p>
+                <p className="text-[11px] text-maestro-bone/40 mt-1">Aplica un 50% de descuento a todos los productos del sitio.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={promos.promo_50_off}
+                  onChange={e => {
+                    setPromos(prev => ({
+                      ...prev,
+                      promo_50_off: e.target.checked,
+                      promo_2x1: e.target.checked ? false : prev.promo_2x1 // Mutuamente excluyente
+                    }));
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-maestro-graphite peer-checked:bg-maestro-gold rounded-full peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
+
+            {/* Toggle 2x1 */}
+            <div className="flex items-center justify-between p-4 bg-maestro-carbon border border-maestro-bone/10">
+              <div>
+                <p className="text-sm text-maestro-bone">Activar Promoción 2x1 Global</p>
+                <p className="text-[11px] text-maestro-bone/40 mt-1">Lleva 2 y paga 1. Si agregas 2 productos, se descuenta el de menor o igual valor.</p>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={promos.promo_2x1}
+                  onChange={e => {
+                    setPromos(prev => ({
+                      ...prev,
+                      promo_2x1: e.target.checked,
+                      promo_50_off: e.target.checked ? false : prev.promo_50_off // Mutuamente excluyente
+                    }));
+                  }}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-maestro-graphite peer-checked:bg-maestro-gold rounded-full peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+              </label>
+            </div>
           </div>
         </div>
 

@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, startTransition } from "react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePromos } from "@/context/PromoContext";
 
 function toLabel(slug: string) {
   return slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
@@ -13,6 +14,7 @@ function toLabel(slug: string) {
 function AnimatedCard({ p, i }: { p: any; i: number }) {
   const ref    = useRef(null);
   const [inView, setInView] = useState(false);
+  const { promo50Off } = usePromos();
 
   useEffect(() => {
     const el = ref.current as HTMLElement | null;
@@ -46,7 +48,17 @@ function AnimatedCard({ p, i }: { p: any; i: number }) {
         <h3 className="text-sm tracking-widest uppercase text-maestro-bone group-hover:text-maestro-gold transition-colors">
           {p.name}
         </h3>
-        <p className="text-maestro-gold text-sm mt-1">${Number(p.price).toLocaleString("es-CO")}</p>
+        {promo50Off ? (
+          <div className="flex flex-col mt-1">
+            <div className="flex items-center gap-2">
+              <p className="text-maestro-gold text-sm font-semibold">${(Number(p.price) / 2).toLocaleString("es-CO")}</p>
+              <span className="bg-maestro-gold text-maestro-dark text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-widest">-50%</span>
+            </div>
+            <p className="text-[10px] text-white/30 line-through">${Number(p.price).toLocaleString("es-CO")}</p>
+          </div>
+        ) : (
+          <p className="text-maestro-gold text-sm mt-1">${Number(p.price).toLocaleString("es-CO")}</p>
+        )}
       </Link>
     </motion.div>
   );

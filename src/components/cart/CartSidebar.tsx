@@ -1,13 +1,15 @@
-﻿"use client";
+"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { usePromos } from "@/context/PromoContext";
 import { gtagBeginCheckout } from "@/lib/analytics";
 import { useEffect, useState } from "react";
 
 export default function CartSidebar() {
-  const { isCartOpen, setIsCartOpen, items, removeItem, updateQuantity, totalItems, totalPrice, generateWhatsAppLink } = useCart();
+  const { isCartOpen, setIsCartOpen, items, removeItem, updateQuantity, totalItems, totalPrice, originalTotal, discountTotal, generateWhatsAppLink } = useCart();
+  const { promo50Off, promo2x1 } = usePromos();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -85,7 +87,14 @@ export default function CartSidebar() {
                               <Plus size={12} />
                             </button>
                           </div>
-                          <p className="text-sm text-maestro-gold tracking-widest">${(item.price * item.quantity).toLocaleString("es-CO")}</p>
+                          {promo50Off ? (
+                            <div className="text-right">
+                              <p className="text-sm text-maestro-gold tracking-widest">${((item.price / 2) * item.quantity).toLocaleString("es-CO")}</p>
+                              <p className="text-[10px] text-maestro-bone/40 line-through">${(item.price * item.quantity).toLocaleString("es-CO")}</p>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-maestro-gold tracking-widest">${(item.price * item.quantity).toLocaleString("es-CO")}</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -97,9 +106,21 @@ export default function CartSidebar() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="p-6 border-t border-maestro-bone/10 bg-maestro-dark/50">
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-2">
                   <span className="text-sm uppercase tracking-widest text-maestro-bone/60">Subtotal</span>
-                  <span className="text-xl text-maestro-gold tracking-widest">${totalPrice.toLocaleString("es-CO")}</span>
+                  <span className="text-sm text-maestro-bone/60 tracking-widest line-through">${originalTotal.toLocaleString("es-CO")}</span>
+                </div>
+                {discountTotal > 0 && (
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm uppercase tracking-widest text-maestro-gold">
+                      {promo2x1 ? "Promo 2x1" : "Promo 50% OFF"}
+                    </span>
+                    <span className="text-sm text-maestro-gold tracking-widest">-${discountTotal.toLocaleString("es-CO")}</span>
+                  </div>
+                )}
+                <div className="flex justify-between items-center mb-6 pt-4 border-t border-maestro-bone/10">
+                  <span className="text-base font-semibold uppercase tracking-widest text-maestro-bone">Total</span>
+                  <span className="text-xl text-maestro-gold tracking-widest font-bold">${totalPrice.toLocaleString("es-CO")}</span>
                 </div>
                 <a
                   href={generateWhatsAppLink()}

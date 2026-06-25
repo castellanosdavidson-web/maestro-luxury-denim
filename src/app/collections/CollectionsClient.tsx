@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import { ArrowUpDown, X } from "lucide-react";
 import { motion, useInView } from "framer-motion";
+import { usePromos } from "@/context/PromoContext";
 
 interface Product {
   id: string;
@@ -53,6 +54,7 @@ function heightClass(size: string) {
 function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
   const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { promo50Off } = usePromos();
   const { col, size } = getLayout(i);
   const hClass  = heightClass(size);
   const isHero  = size === "hero";
@@ -83,9 +85,19 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
             <h3 className={`font-light text-white leading-tight ${isHero ? "text-3xl" : "text-base"}`}>
               {p.name}
             </h3>
-            <p className="text-white/60 text-sm mt-2">
-              ${Number(p.price).toLocaleString("es-CO")}
-            </p>
+            {promo50Off ? (
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
+                  <p className="text-maestro-gold text-sm">${(Number(p.price) / 2).toLocaleString("es-CO")}</p>
+                  <span className="bg-maestro-gold text-maestro-dark text-[8px] font-bold px-1.5 py-0.5 uppercase tracking-widest">-50%</span>
+                </div>
+                <p className="text-white/40 text-[10px] line-through">${Number(p.price).toLocaleString("es-CO")}</p>
+              </div>
+            ) : (
+              <p className="text-white/60 text-sm mt-2">
+                ${Number(p.price).toLocaleString("es-CO")}
+              </p>
+            )}
           </div>
         </div>
 
@@ -98,9 +110,20 @@ function AnimatedProductCard({ p, i }: { p: Product; i: number }) {
                 {p.name}
               </h3>
             </div>
-            <p className="text-xs text-maestro-bone/60 font-light">
-              ${Number(p.price).toLocaleString("es-CO")}
-            </p>
+            {promo50Off ? (
+              <div className="flex flex-col text-right">
+                <p className="text-xs text-maestro-gold font-semibold">
+                  ${(Number(p.price) / 2).toLocaleString("es-CO")}
+                </p>
+                <p className="text-[9px] text-maestro-bone/40 line-through">
+                  ${Number(p.price).toLocaleString("es-CO")}
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs text-maestro-bone/60 font-light">
+                ${Number(p.price).toLocaleString("es-CO")}
+              </p>
+            )}
           </div>
         </div>
       </Link>

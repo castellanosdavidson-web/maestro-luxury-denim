@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { gtagAddToCart, gtagViewCart } from "@/lib/analytics";
+import { usePromos } from "@/context/PromoContext";
 
 export type CartItem = {
   id: string;
@@ -23,6 +24,8 @@ type CartContextType = {
   setIsCartOpen: (isOpen: boolean) => void;
   totalItems: number;
   totalPrice: number;
+  originalTotal: number;
+  discountTotal: number;
   generateWhatsAppLink: () => string;
 };
 
@@ -32,6 +35,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { promo50Off, promo2x1 } = usePromos();
 
   const [whatsappNumber, setWhatsappNumber] = useState("573000000000");
 
@@ -95,7 +99,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  
+  let totalPrice = 0;
+  let originalTotal = 0;
+  let discountTotal = 0;
+
+  if (promo2x1) {
+    const flatItems: number[] = [];
+    items.forEach(item => {
+      for (let i = 0; i < item.quantity; i++) {
+        flatItems.push(item.price);
+      }
+    });
+    flatItems.sort((a, b) => b - a); // Mayor a menor
+    totalPrice = flatItems.reduce((sum, price, index) => {
+      return sum + (index % 2 === 0 ? price : 0); // Paga los pares (0, 2, 4...) que son los más caros
+    }, 0);
+    originalTotal = flatItems.reduce((sum, price) => sum + price, 0);
+    discountTotal = originalTotal - totalPrice;
+  } else if (promo50Off) {
+    originalTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    totalPrice = originalTotal / 2;
+    discountTotal = originalTotal / 2;
+  } else {
+    originalTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    totalPrice = originalTotal;
+    discountTotal = 0;
+  }
 
   const generateWhatsAppLink = () => {
     const phone = whatsappNumber.replace(/\D/g, ''); // Limpiar el número de espacios o símbolos
@@ -104,16 +134,32 @@ export function CartProvider({ children }: { children: ReactNode }) {
     items.forEach((item, index) => {
       message += `${index + 1}. *${item.name}* (Ref: ${item.reference})%0A`;
       message += `   Talla: ${item.size} | Color: ${item.color} | Cant: ${item.quantity}%0A`;
+      if (promo50Off) {
+        message += `   Precio Orig: $${item.price.toLocaleString("es-CO")} | Con 50%: $${(item.price / 2).toLocaleString("es-CO")}%0A`;
+      } else {
+        message += `   Precio: $${item.price.toLocaleString("es-CO")}%0A`;
+      }
     });
     
-    message += `%0ATotal: $${totalPrice.toLocaleString("es-CO")}%0A%0A`;
+    message += `%0A`;
+    if (promo2x1) {
+      message += `🔥 Promoción 2x1 Aplicada 🔥%0A`;
+    }
+    if (promo50Off) {
+      message += `🔥 Descuento 50% Aplicado 🔥%0A`;
+    }
+    if (discountTotal > 0) {
+      message += `Subtotal original: $${originalTotal.toLocaleString("es-CO")}%0A`;
+      message += `Descuento: -$${discountTotal.toLocaleString("es-CO")}%0A`;
+    }
+    message += `*TOTAL A PAGAR: $${totalPrice.toLocaleString("es-CO")}*%0A%0A`;
     message += "Quedo atenta. ¡Gracias!";
     
     return `https://wa.me/${phone}?text=${message}`;
   };
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, isCartOpen, setIsCartOpen, totalItems, totalPrice, generateWhatsAppLink }}>
+    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, isCartOpen, setIsCartOpen, totalItems, totalPrice, originalTotal, discountTotal, generateWhatsAppLink }}>
       {children}
     </CartContext.Provider>
   );
