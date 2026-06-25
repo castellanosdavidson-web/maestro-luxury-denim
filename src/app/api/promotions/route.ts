@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
+
 const BUCKET_NAME = 'uploads';
 const FILE_NAME = 'promotions.json';
 

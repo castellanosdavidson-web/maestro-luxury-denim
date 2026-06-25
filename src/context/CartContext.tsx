@@ -129,33 +129,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const generateWhatsAppLink = () => {
     const phone = whatsappNumber.replace(/\D/g, ''); // Limpiar el número de espacios o símbolos
-    let message = "Hola MAESTRO, me gustaría comprar los siguientes productos:%0A%0A";
+    let message = "Hola MAESTRO, me gustaría comprar los siguientes productos:\n\n";
     
     items.forEach((item, index) => {
-      message += `${index + 1}. *${item.name}* (Ref: ${item.reference})%0A`;
-      message += `   Talla: ${item.size} | Color: ${item.color} | Cant: ${item.quantity}%0A`;
+      message += `${index + 1}. *${item.name}* (Ref: ${item.reference})\n`;
+      message += `   Talla: ${item.size} | Color: ${item.color} | Cant: ${item.quantity}\n`;
       if (promo50Off) {
-        message += `   Precio Orig: $${item.price.toLocaleString("es-CO")} | Con 50%: $${(item.price / 2).toLocaleString("es-CO")}%0A`;
+        message += `   Precio Orig: $${item.price.toLocaleString("es-CO")} | Con 50%: $${(item.price / 2).toLocaleString("es-CO")}\n`;
       } else {
-        message += `   Precio: $${item.price.toLocaleString("es-CO")}%0A`;
+        message += `   Precio: $${item.price.toLocaleString("es-CO")}\n`;
       }
     });
     
-    message += `%0A`;
+    message += `\n`;
     if (promo2x1) {
-      message += `🔥 Promoción 2x1 Aplicada 🔥%0A`;
+      message += `🔥 Promoción 2x1 Aplicada 🔥\n`;
     }
     if (promo50Off) {
-      message += `🔥 Descuento 50% Aplicado 🔥%0A`;
+      message += `🔥 Descuento 50% Aplicado 🔥\n`;
     }
     if (discountTotal > 0) {
-      message += `Subtotal original: $${originalTotal.toLocaleString("es-CO")}%0A`;
-      message += `Descuento: -$${discountTotal.toLocaleString("es-CO")}%0A`;
+      message += `Subtotal original: $${originalTotal.toLocaleString("es-CO")}\n`;
+      message += `Descuento: -$${discountTotal.toLocaleString("es-CO")}\n`;
     }
-    message += `*TOTAL A PAGAR: $${totalPrice.toLocaleString("es-CO")}*%0A%0A`;
+    message += `*TOTAL A PAGAR: $${totalPrice.toLocaleString("es-CO")}*\n\n`;
     message += "Quedo atenta. ¡Gracias!";
     
-    return `https://wa.me/${phone}?text=${message}`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   };
 
   return (

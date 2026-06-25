@@ -22,7 +22,7 @@ export const PromoProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/promotions')
+    fetch(`/api/promotions?t=${Date.now()}`)
       .then(r => r.json())
       .then(data => {
         if (data) {
