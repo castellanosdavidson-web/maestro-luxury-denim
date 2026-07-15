@@ -1,6 +1,12 @@
-﻿import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
-import path from 'path';
+import { NextResponse } from 'next/server';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configuración con tus credenciales
+cloudinary.config({ 
+  cloud_name: 'gwc8t3re', 
+  api_key: '681281257956792', 
+  api_secret: '5HFdL6vBF5kb9RnY1v3RtQ9Zt-E' 
+});
 
 export async function POST(request: Request) {
   try {
@@ -13,25 +19,34 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    const ext = path.extname(file.name);
-    // Para identificar que son subidas dinámicas del editor
-    const filename = `media-${Date.now()}${ext}`;
 
-    const { error: uploadError } = await supabaseAdmin.storage
-      .from('uploads')
-      .upload(filename, buffer, { contentType: file.type });
+    // Subir a Cloudinary
+    const uploadResult = await new Promise<any>((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { 
+          resource_type: 'auto', 
+          folder: 'maestro' 
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      uploadStream.end(buffer);
+    });
 
-    if (uploadError) {
-      console.error('Upload Error:', uploadError);
-      return NextResponse.json({ error: uploadError.message }, { status: 500 });
+    const isVideo = file.type.startsWith('video/');
+    let fileUrl = uploadResult.secure_url;
+
+    // Si es imagen, optimizar automáticamente el formato y calidad
+    if (!isVideo) {
+      fileUrl = cloudinary.url(uploadResult.public_id, {
+        fetch_format: 'auto',
+        quality: 'auto',
+        secure: true
+      });
     }
 
-    const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(filename);
-    const fileUrl = urlData.publicUrl;
-
-    // Retornamos la URL y el tipo (para saber si inyectar <img> o <video>)
-    const isVideo = file.type.startsWith('video/');
-    
     return NextResponse.json({ url: fileUrl, isVideo });
   } catch (error: any) {
     console.error('Unexpected error in API Upload:', error);
